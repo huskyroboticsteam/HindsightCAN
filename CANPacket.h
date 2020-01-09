@@ -14,6 +14,9 @@ extern int SendCANPacket(CANPacket packet);
 CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data);
 uint16_t ConstructCANID(uint8_t priority, uint8_t devGroup, uint8_t devSerial);
 
+void WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID);
+void WritePacketIDOnly(uint8_t *data, uint8_t packetID);
+
 uint8_t GetDeviceGroupCode(CANPacket *packet);
 uint8_t GetDeviceSerialNumber(CANPacket *packet);
 uint8_t GetSenderDeviceSerialNumber(CANPacket *packet);
