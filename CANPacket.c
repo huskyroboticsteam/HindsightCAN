@@ -46,75 +46,26 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
     return cp;
 }
 
-// Gets the sender device group number from the payload data
+// Gets the device serial number from CAN packet
 // Inputs:
-//      data:       Address of the byte array of the payload from CAN packet
+//      packet:     CAN Packet to analyze
 // Outputs:
-//                  A byte representing the sender device number
-uint8_t ParseDataSenderDevice(uint8_t* data)
+//                  A byte representing the device
+//                  serial number.
+uint8_t GetDeviceSerialNumber(CANPacket *packet)
 {
-    return ((data[0] & 0xC0) >> 4) + ((data[1] & 0xC0) >> 6);
+    uint8_t id = (packet->id & 0x00FF);
+    // Strip fo only serial number portion of id
+    return id & 0x3F;
 }
 
-//      data:       A byte array of the payload from CAN packet
-//      dataLength: Length of the given data array
+// Returns Sender device serial number as 
+//      packet:       CAN packet from which to resolve serial number
 // Outputs:
 //                  A byte representing the sender device number
-uint8_t ParseDataSenderSerial(uint8_t* data)
+uint8_t GetSenderDeviceSerialNumber(CANPacket *packet)
 {
-    return (data[1] & 0x2F);
-}
-
-// Gets the packet payload type from the payload data
-// Inputs:
-//      data:       Address of the byte array of the payload from CAN packet
-// Outputs:
-//                  A byte representing the sender device number
-uint8_t ParseDataPayloadType(uint8_t* data)
-{
-    return (data[0] & 0x2F);
-}
-
-// Gets the sender device group number from the payload data
-// Inputs:
-//      packet:     CAN Packet to parse from
-// Outputs:
-//                  A byte representing the sender device number
-uint8_t ParseDataSenderDeviceFromPacket(CANPacket *packet)
-{
-    return ParseDataSenderDevice(packet->data);
-}
-
-// Gets the sender device serial number from the payload data
-// Inputs:
-//      packet:     CAN Packet to parse from
-// Outputs:
-//                  A byte representing the sender device number
-uint8_t ParseDataSenderSerialFromPacket(CANPacket *packet)
-{
-    return ParseDataSenderDevice(packet->data);
-}
-
-// Gets the packet payload type from the payload data
-// Inputs:
-//      packet:     CAN Packet to parse from
-// Outputs:
-//                  A byte representing the sender device number
-uint8_t ParseDataPayloadTypeFromPacket(CANPacket *packet)
-{
-    return ParseDataPayloadType(packet->data);
-}
-
-// Ensures that the given packet is of a specified group
-// Inputs:
-//      packet:         CAN Packet to check
-//      expectedType:   ExpectedType of CAN packet
-// Outputs:
-//                  0 if packet not of expectedType,
-//                  Other int otherwise
-int PacketIsInGroup(CANPacket *packet, uint8_t expectedType) 
-{
-    return GetDeviceGroupCode(packet) == expectedType;
+    return ((packet->data[0] & 0xC0) >> 4) + ((packet->data[1] & 0xC0) >> 6);
 }
 
 // Gets the device group code from CAN packet
@@ -132,22 +83,36 @@ uint8_t GetDeviceGroupCode(CANPacket *packet)
     return group;
 }
 
-// Gets the device serial number from CAN packet
+// Gets the sender device group number from the payload data
 // Inputs:
-//      packet:     CAN Packet to analyze
+//      data:       Address of the byte array of the payload from CAN packet
 // Outputs:
-//                  A byte representing the device
-//                  serial number.
-uint8_t GetDeviceSerialNumber(CANPacket *packet)
+//                  A byte representing the sender device number
+uint8_t GetSenderDeviceGroupCode(CANPacket *packet)
 {
-    uint8_t id = (packet->id & 0x00FF);
-    // Strip fo only serial number portion of id
-    return id & 0x3F;
+    return (packet->data[1] & 0x2F);
+}
+
+// Ensures that the given packet is of a specified group
+// Inputs:
+//      packet:         CAN Packet to check
+//      expectedType:   ExpectedType of CAN packet
+// Outputs:
+//                  0 if packet not of expectedType,
+//                  Other int otherwise
+int PacketIsInGroup(CANPacket *packet, uint8_t expectedType) 
+{
+    return GetDeviceGroupCode(packet) == expectedType;
+}
+
+int SenderPacketIsInGroup(CANPacket *packet, uint8_t expectedType)
+{
+    return GetSenderDeviceGroupCode(packet) == expectedType;
 }
 
 int GetPacketID(CANPacket *packet)
 {
-    return packet->data[0];
+    return packet->data[0] & 0x3F;
 }
 
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID)
@@ -210,36 +175,59 @@ uint32_t GetHeartbeatTimeStamp(CANPacket *packet)
 {
     if (PacketIsOfID(packet, ID_HEARTBEAT)) 
     {
-        uint32_t time = (packet->data[1] << 24);
-        time |= (packet->data[2] << 16);
-        time |= (packet->data[3] << 8);
-        time |= packet->data[4]; 
+        uint32_t time = (packet->data[3] << 24);
+        time |= (packet->data[4] << 16);
+        time |= (packet->data[5] << 8);
+        time |= packet->data[6]; 
         return time;
     }
     else { return -1; }
+}
+
+// Validates the Heartbeat Packet, returns the heartbeat leniency code of the packet
+// Inputs:
+//      packet:     CAN Packet to check
+// Outputs:
+//                  Heartbeat leniency code of given packet
+uint8_t GetHeartbeatLeniencyCode(CANPacket *packet)
+{
+    if (PacketIsOfID(packet, ID_HEARTBEAT))
+    {
+        return packet->data[2];
+    } else {
+        return 0x00;
+    }
 }
 
 // Assembles Heartbeat Packet with given parameters
 // Inputs:
 //      packet:                 CAN Packet to assemble (will overwrite).
 //      broadcast:              1 if broadcast to all devices. 0 to return to MAIN_CPU / Jetson.
+//      senderSerial:           Serial number of sender device
+//      senderDeviceGroup:      Device group of sender device
 //      heartbeatLeniencyCode:  Max time between heartbeats before system automatically enters a safe operating condition.
 //      timestamp:              Current timestamp as seen by the sender device. (ms)
-void AssembleHeartbeatPacket(CANPacket *packetToAssemble, int broadcast, uint8_t heartbeatLeniencyCode, uint32_t timestamp)
+void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
+    int broadcast, 
+    uint8_t senderSerial,
+    uint8_t senderDeviceGroup,
+    uint8_t heartbeatLeniencyCode,
+    uint32_t timestamp)
 {
-    uint16_t id = PACKET_PRIORITY_HIGH << 15;
-    uint8_t dlc = 0x06;
+    uint16_t id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_BROADCAST, DEVICE_SERIAL_BROADCAST);
     if (!broadcast)
     { 
-        id |= DEVICE_GROUP_JETSON << 6;
-        id |= DEVICE_SERIAL_JETSON & 0x3F;
+        id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON);
     }
+    uint8_t dlc = 0x07;
 
     packetToAssemble->id = id;
     packetToAssemble->dlc = dlc;
-    packetToAssemble->data[0] = heartbeatLeniencyCode;
-    packetToAssemble->data[1] = (timestamp & 0xFF000000) >> 24;
-    packetToAssemble->data[2] = (timestamp & 0x00FF0000) >> 16;
-    packetToAssemble->data[3] = (timestamp & 0x0000FF00) >> 8;
-    packetToAssemble->data[4] = (timestamp & 0x000000FF);
+    packetToAssemble->data[0] = ((senderDeviceGroup & 0x0C) << 6) | ID_HEARTBEAT;
+    packetToAssemble->data[1] = ((senderDeviceGroup & 0x03) << 6) | senderSerial;
+    packetToAssemble->data[2] = heartbeatLeniencyCode;
+    packetToAssemble->data[3] = (timestamp & 0xFF000000) >> 24;
+    packetToAssemble->data[4] = (timestamp & 0x00FF0000) >> 16;
+    packetToAssemble->data[5] = (timestamp & 0x0000FF00) >> 8;
+    packetToAssemble->data[6] = (timestamp & 0x000000FF);
 }
