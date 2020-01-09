@@ -54,6 +54,8 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     uint8_t heartbeatLeniencyCode,
     uint32_t timestamp);
 
+void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial);
+
 // Device group nibbles
 #define DEVICE_GROUP_BROADCAST          (uint8_t) 0x00
 #define DEVICE_GROUP_RESERVED           (uint8_t) 0x01 // DO NOT USE. For future expansion
