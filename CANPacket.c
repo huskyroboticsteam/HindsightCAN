@@ -88,7 +88,7 @@ uint8_t GetDeviceSerialNumber(CANPacket *packet)
 //                  A byte representing the sender device number
 uint8_t GetSenderDeviceSerialNumber(CANPacket *packet)
 {
-    return ((packet->data[0] & 0xC0) >> 4) + ((packet->data[1] & 0xC0) >> 6);
+    return (packet->data[1] & 0x3F);
 }
 
 // Gets the device group code from CAN packet
