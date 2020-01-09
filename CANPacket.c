@@ -292,7 +292,7 @@ uint8_t GetHeartbeatLeniencyCode(CANPacket *packet)
 
 // Assembles Heartbeat Packet with given parameters
 // Inputs:
-//      packet:                 CAN Packet to assemble (will overwrite).
+//      packetToAssemble:       CAN Packet to assemble (will overwrite).
 //      broadcast:              1 if broadcast to all devices. 0 to return to MAIN_CPU / Jetson.
 //      senderSerial:           Serial number of sender device
 //      senderDeviceGroup:      Device group of sender device
@@ -322,3 +322,15 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     packetToAssemble->data[6] = (timestamp & 0x000000FF);
 }
 
+// Assembles override protection packet with given parameters
+// Inputs:
+//      packetToAssemble:       CAN Packet to assemble (will overwrite).
+//      targetGroup:            Device gorup of target device.
+//      targetSerial:           Device serial of target device.
+void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial)
+{
+    uint16_t id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->id = id;
+    packetToAssemble->dlc = 1;
+    WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
+}
