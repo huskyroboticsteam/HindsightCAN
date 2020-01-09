@@ -113,9 +113,8 @@ uint8_t GetDeviceGroupCode(CANPacket *packet)
 //                  A byte representing the sender device number
 uint8_t GetSenderDeviceGroupCode(CANPacket *packet)
 {
-    uint8_t devGroupCode = packet->data[0] & 0x3F;
-    devGroupCode <<= 2;
-    devGroupCode |= (packet->data[1] & 0x3F) >> 6;
+    uint8_t devGroupCode = (packet->data[0] & 0xC0) >> 4;
+    devGroupCode |= (packet->data[1] & 0xC0) >> 6;
     return devGroupCode;
 }
 
