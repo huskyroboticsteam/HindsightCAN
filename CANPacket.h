@@ -1,3 +1,11 @@
+/* File:         CANPacket.h
+ * Authors:      Jaden Bottemiller, Benton Kwong, Dylan Tomberlin.
+ * Organization: Husky Robotics Team
+ * 
+ * This file includes fuction prototypes for CAN Packet manipulation
+ * using the Hindsight CAN Communication standard.
+ */
+
 #pragma once
 
 #include <stdint.h>
