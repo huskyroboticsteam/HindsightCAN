@@ -46,6 +46,29 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
     return cp;
 }
 
+// Writes sender group, serial number, and packet ID to data bytes. Writes to bytes 0 and 1 in data.
+// DO NOT OVERWRITE BYTES 0 AND 1 AFTER CALLING THIS FUNCTION.
+// Inputs:
+//      data:           Data to write to.
+//      senderGroup:    Device group the sender device is a part of.
+//      senderSerial:   Device serial number for sender.
+//      packetID:       ID for packet to be sent.
+void WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID)
+{
+    data[0] = ((senderGroup & 0x0C) << 6) | packetID;
+    data[1] = ((senderGroup & 0x03) << 6) | senderSerial;
+}
+
+// Writes packet ID to data bytes. Writes to byte 0 data.
+// DO NOT OVERWRITE BYTE 0 AFTER CALLING THIS FUNCTION.
+// Inputs:
+//      data:           Data to write to.
+//      packetID:       ID for packet to be sent.
+void WritePacketIDOnly(uint8_t *data, uint8_t packetID) 
+{
+    data[0] = ((PACKET_GROUP_NO_SENDER_SERIAL & 0x0C) << 6) | packetID;
+}
+
 // Gets the device serial number from CAN packet
 // Inputs:
 //      packet:     CAN Packet to analyze
@@ -223,8 +246,7 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
 
     packetToAssemble->id = id;
     packetToAssemble->dlc = dlc;
-    packetToAssemble->data[0] = ((senderDeviceGroup & 0x0C) << 6) | ID_HEARTBEAT;
-    packetToAssemble->data[1] = ((senderDeviceGroup & 0x03) << 6) | senderSerial;
+    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
     packetToAssemble->data[2] = heartbeatLeniencyCode;
     packetToAssemble->data[3] = (timestamp & 0xFF000000) >> 24;
     packetToAssemble->data[4] = (timestamp & 0x00FF0000) >> 16;

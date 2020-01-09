@@ -89,6 +89,7 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
 // Priority bits
 #define PACKET_PRIORITY_HIGH            (uint8_t) 0x00
 #define PACKET_PRIORITY_NORMAL          (uint8_t) 0x01
+#define PACKET_GROUP_NO_SENDER_SERIAL   (uint8_t) 0x0C
 
 // Telemetry Types
 #define PACKET_TELEMETRY_VOLTAGE        (uint8_t) 0x00
