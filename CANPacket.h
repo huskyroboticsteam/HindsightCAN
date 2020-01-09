@@ -34,17 +34,16 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t senderDeviceGroup,
     uint8_t senderDeviceSerialNumber,
     uint8_t errorCode);
-
 void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
     uint8_t groupCode, 
     uint8_t senderDeviceGroup, 
     uint8_t senderDeviceSerialNumber, 
     uint8_t errorCode);
-
 void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
     uint8_t senderDeviceGroup, 
     uint8_t senderDeviceSerialNumber, 
     uint8_t errorCode);
+uint8_t GetEmergencyStopErrorCode(CANPacket *packet);
 
 uint32_t GetTimeBetweenHeartbeatPacket(CANPacket *packet, uint32_t lastHeartbeat);
 uint32_t GetHeartbeatTimeStamp(CANPacket *packet);

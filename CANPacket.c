@@ -226,6 +226,18 @@ void AssembleBrodcastEmergencyStopPacket(CANPacket *packet,
     AssembleGroupBroadcastingEmergencyStopPacket(packet, DEVICE_GROUP_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
 }
 
+// Gets the Error Code reported from an emergency stop packet.
+// Inputs:
+//      packet:     Packet to check.
+uint8_t GetEmergencyStopErrorCode(CANPacket *packet)
+{
+    if (PacketIsOfID(packet, ID_ESTOP))
+    {
+        return packet->data[2];
+    }
+    else { return -1; }
+}
+
 // Validates the Heartbeat Packet, returns time between previous Heartbeat packets
 // Inputs:
 //      packet:         CAN Packet to check
