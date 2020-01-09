@@ -173,6 +173,33 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
 
 // ---------------- COMMON INTERFACING FUNCTIONS ------------------- //
 
+void AssembleEmergencyStopPacket(CANPacket *packet,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerialNumber,
+    uint8_t senderDeviceGroup,
+    uint8_t senderDeviceSerialNumber,
+    uint8_t errorCode)
+{
+
+}
+
+void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
+    uint8_t groupCode, 
+    uint8_t senderDeviceGroup, 
+    uint8_t senderDeviceSerialNumber, 
+    uint8_t errorCode)
+{
+    AssembleEmergencyStopPacket(packet, groupCode, DEVICE_SERIAL_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
+}
+
+void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
+    uint8_t senderDeviceGroup, 
+    uint8_t senderDeviceSerialNumber, 
+    uint8_t errorCode)
+{
+    AssembleGroupBroadcastingEmergencyStopPacket(packet, DEVICE_GROUP_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
+}
+
 // Validates the Heartbeat Packet, returns time between previous Heartbeat packets
 // Inputs:
 //      packet:         CAN Packet to check
@@ -256,3 +283,4 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     packetToAssemble->data[5] = (timestamp & 0x0000FF00) >> 8;
     packetToAssemble->data[6] = (timestamp & 0x000000FF);
 }
+

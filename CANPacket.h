@@ -28,6 +28,24 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
 int GetPacketID(CANPacket *packet);
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
+void AssembleEmergencyStopPacket(CANPacket *packet,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerialNumber,
+    uint8_t senderDeviceGroup,
+    uint8_t senderDeviceSerialNumber,
+    uint8_t errorCode);
+
+void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
+    uint8_t groupCode, 
+    uint8_t senderDeviceGroup, 
+    uint8_t senderDeviceSerialNumber, 
+    uint8_t errorCode);
+
+void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
+    uint8_t senderDeviceGroup, 
+    uint8_t senderDeviceSerialNumber, 
+    uint8_t errorCode);
+
 uint32_t GetTimeBetweenHeartbeatPacket(CANPacket *packet, uint32_t lastHeartbeat);
 uint32_t GetHeartbeatTimeStamp(CANPacket *packet);
 void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
