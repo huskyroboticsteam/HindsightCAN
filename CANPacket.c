@@ -173,6 +173,14 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
 
 // ---------------- COMMON INTERFACING FUNCTIONS ------------------- //
 
+// Assembles Emergency Stop Packet with given parameters
+// Inputs:
+//      packet:                     CAN Packet to assemble (will overwrite).
+//      targetDeviceGroup:          Group to target
+//      targetDeviceSerialNumber:   Serial number of target device
+//      senderDeviceGroup:          Device group of sender device
+//      senderDeviceSerialNumber:   Device serial number of sender device
+//      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
 void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerialNumber,
@@ -180,9 +188,20 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t senderDeviceSerialNumber,
     uint8_t errorCode)
 {
-
+    packet->dlc = 3;
+    uint16_t id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
+    WriteSenderSerialAndPacketID(packet->data, senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
+    packet->data[2] = errorCode;
 }
 
+// Assembles Emergency Stop Packet with given parameters.
+// This will broadcast the emergency stop command to a desired device group.
+// Inputs:
+//      packet:                     CAN Packet to assemble (will overwrite).
+//      deviceGroup:                Group to target
+//      senderDeviceGroup:          Device group of sender device
+//      senderDeviceSerialNumber:   Device serial number of sender device
+//      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
 void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
     uint8_t groupCode, 
     uint8_t senderDeviceGroup, 
@@ -192,6 +211,13 @@ void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet,
     AssembleEmergencyStopPacket(packet, groupCode, DEVICE_SERIAL_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
 }
 
+// Assembles Emergency Stop Packet with given parameters.
+// This will broadcast the emergency stop command to all devices
+// Inputs:
+//      packet:                     CAN Packet to assemble (will overwrite).
+//      senderDeviceGroup:          Device group of sender device
+//      senderDeviceSerialNumber:   Device serial number of sender device
+//      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
 void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
     uint8_t senderDeviceGroup, 
     uint8_t senderDeviceSerialNumber, 
