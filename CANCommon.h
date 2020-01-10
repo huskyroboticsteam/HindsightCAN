@@ -37,3 +37,34 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     uint32_t timestamp);
 
 void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial);
+
+void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
+    uint8_t targetGroup, 
+    uint8_t targetSerial, 
+    uint32_t msBetweenReports);
+
+void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
+    uint8_t targetGroup, 
+    uint8_t targetSerial, 
+    uint8_t telemetryTypeCode);
+
+void AssembleTelemetryReportPacketSignedInt(CANPacket *packetToAssemble, 
+    uint8_t targetGroup, 
+    uint8_t targetSerial,
+    uint8_t telemetryTypeCode,
+    int32_t data);
+
+void AssembleTelemetryReportPacketUnsignedInt(CANPacket *packetToAssemble, 
+    uint8_t targetGroup, 
+    uint8_t targetSerial,
+    uint8_t telemetryTypeCode,
+    uint32_t data);
+
+void AssembleRGBColorPacket(CANPacket *packetToAssemble,
+    uint8_t targetGroup,
+    uint8_t targetSerial,
+    uint8_t addrLED,
+    uint8_t R,
+    uint8_t G,
+    uint8_t B
+);
