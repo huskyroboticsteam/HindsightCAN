@@ -1,4 +1,4 @@
-/* File:         port.h
+/* File:         Port.h
  * Authors:      Dylan Tomberlin
  * Organization: Husky Robotics Team
  * 
@@ -10,4 +10,4 @@
 
 #include "CANPacket.h"
 
-
+int SendCANPacket(CANPacket packet);

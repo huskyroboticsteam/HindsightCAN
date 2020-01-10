@@ -17,8 +17,6 @@ typedef struct
     uint8_t data[8];
 } CANPacket;
 
-extern int SendCANPacket(CANPacket packet);
-
 CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data);
 uint16_t ConstructCANID(uint8_t priority, uint8_t devGroup, uint8_t devSerial);
 
