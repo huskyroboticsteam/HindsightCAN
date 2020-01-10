@@ -36,6 +36,9 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
 int GetPacketID(CANPacket *packet);
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
+void PacketIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex);
+int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
+
 // Device group nibbles
 #define DEVICE_GROUP_BROADCAST          (uint8_t) 0x00
 #define DEVICE_GROUP_RESERVED           (uint8_t) 0x01 // DO NOT USE. For future expansion
@@ -45,28 +48,14 @@ int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 #define DEVICE_GROUP_TELEMETRY          (uint8_t) 0x05
 #define DEVICE_GROUP_GPIO_BOARDS        (uint8_t) 0x06
 
-// Common Mode Packet IDs
-#define ID_ESTOP                        (uint8_t) 0x30
-#define ID_HEARTBEAT                    (uint8_t) 0x31
-#define ID_FAIL_REPORT                  (uint8_t) 0x32
-#define ID_OVRD_PROTECTION              (uint8_t) 0x33
-#define ID_TELEMETRY_TIMING             (uint8_t) 0x34
-#define ID_TELEMETRY_PULL               (uint8_t) 0x35
-#define ID_TELEMETRY_REPORT             (uint8_t) 0x36
-#define ID_LED_COLOR                    (uint8_t) 0x37
+// Device Serial Numbers
+#define DEVICE_SERIAL_BROADCAST         (uint8_t) 0x00
+#define DEVICE_SERIAL_JETSON            (uint8_t) 0x00 // NEEDS TO BE POPULATED 
 
-// Motor Unit Packet IDs
-#define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
-#define ID_MOTOR_UNIT_CHIP_TYPE_PULL    (uint8_t) 0x01
-#define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x02
-#define ID_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x03
-#define ID_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x04
-#define ID_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x05
-#define ID_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x06
-#define ID_MOTOR_UNIT_INIT              (uint8_t) 0x07
-#define ID_MOTOR_UNIT_LIM_ALRT          (uint8_t) 0x08
-#define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x09
-#define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0A
+// Priority bits
+#define PACKET_PRIORITY_HIGH            (uint8_t) 0x00
+#define PACKET_PRIORITY_NORMAL          (uint8_t) 0x01
+#define PACKET_GROUP_NO_SENDER_SERIAL   (uint8_t) 0x0C
 
 // GPIO Board Packet IDs
 #define ID_GPIO_BOARD_PWM_SET_STATE     (uint8_t) 0x00 
@@ -87,32 +76,3 @@ int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
 // Telemetry Packet IDs
 #define ID_TELEMETRY_SET_MAG_OFFSET     (uint8_t) 0x00
-
-// Priority bits
-#define PACKET_PRIORITY_HIGH            (uint8_t) 0x00
-#define PACKET_PRIORITY_NORMAL          (uint8_t) 0x01
-#define PACKET_GROUP_NO_SENDER_SERIAL   (uint8_t) 0x0C
-
-// Telemetry Types
-#define PACKET_TELEMETRY_VOLTAGE        (uint8_t) 0x00
-#define PACKET_TELEMETRY_CURRENT        (uint8_t) 0x01
-#define PACKET_TELEMETRY_PWR_RAIL_STATE (uint8_t) 0x02
-#define PACKET_TELEMETRY_TEMPERATURE    (uint8_t) 0x03
-#define PACKET_TELEMETRY_ANG_POSITION   (uint8_t) 0x04
-#define PACKET_TELEMETRY_GPS_LAT        (uint8_t) 0x05
-#define PACKET_TELEMETRY_GPS_LON        (uint8_t) 0x06
-#define PACKET_TELEMETRY_MAG_DIR        (uint8_t) 0x07
-#define PACKET_TELEMETRY_ACCEL_X        (uint8_t) 0x08
-#define PACKET_TELEMETRY_ACCEL_Y        (uint8_t) 0x09
-#define PACKET_TELEMETRY_ACCEL_Z        (uint8_t) 0x0A
-#define PACKET_TELEMETRY_GYRO_X         (uint8_t) 0x0B
-#define PACKET_TELEMETRY_GYRO_Y         (uint8_t) 0x0C
-#define PACKET_TELEMETRY_GYRO_Z         (uint8_t) 0x0D
-#define PACKET_TELEMETRY_LIM_SW_STATE   (uint8_t) 0x0E
-
-// ESTOP ERROR CODES
-#define ESTOP_ERR_GENERAL               (uint8_t) 0x00
-// MORE TBD...
-
-#define DEVICE_SERIAL_BROADCAST         (uint8_t) 0x00
-#define DEVICE_SERIAL_JETSON            (uint8_t) 0x00 // NEEDS TO BE POPULATED 

@@ -165,10 +165,34 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
     {
         uint8_t serialNumber = GetDeviceSerialNumber(packet);
         // Return if serial number matches target
-        if (serialNumber == targetDeviceSerialNumber) { return 1; }
         // Otherwise only return true if packet is broadcast to group
-        return serialNumber == DEVICE_SERIAL_BROADCAST;
+        return serialNumber == DEVICE_SERIAL_BROADCAST || serialNumber == targetDeviceSerialNumber;
     }
     // Otherwise only return true if packet is broadcast to all devices
     return packetGroup == DEVICE_GROUP_BROADCAST;
+}
+
+void PacketIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex)
+{
+    data[startIndex]     = (dataToPack & 0xFF000000) >> 24;
+    data[startIndex + 1] = (dataToPack & 0x00FF0000) >> 16;
+    data[startIndex + 2] = (dataToPack & 0x0000FF00) >> 8;
+    data[startIndex + 4] = (dataToPack & 0x000000FF);
+}
+
+int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
+{
+    int length = 4;
+    int32_t decodedData = 0;
+
+    if (endIndex > 0 && startIndex >= 0) {
+        length = endIndex - startIndex;
+        if (length > 4) { length = 4; }
+        if (length < 1) { length = 0; }
+    }
+
+    for (int i = 0; i < length; i++) 
+    {
+        decodedData |= data[startIndex + i] << (8 * i);
+    }
 }

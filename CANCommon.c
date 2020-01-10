@@ -152,10 +152,7 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     packetToAssemble->dlc = dlc;
     WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
     packetToAssemble->data[2] = heartbeatLeniencyCode;
-    packetToAssemble->data[3] = (timestamp & 0xFF000000) >> 24;
-    packetToAssemble->data[4] = (timestamp & 0x00FF0000) >> 16;
-    packetToAssemble->data[5] = (timestamp & 0x0000FF00) >> 8;
-    packetToAssemble->data[6] = (timestamp & 0x000000FF);
+    PacketIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
 }
 
 // Assembles override protection packet with given parameters
@@ -169,4 +166,68 @@ void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targe
     packetToAssemble->id = id;
     packetToAssemble->dlc = 1;
     WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
+}
+
+
+void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
+    uint8_t targetGroup, 
+    uint8_t targetSerial, 
+    uint8_t telemetryTypeCode,
+    uint32_t msBetweenReports)
+{
+    
+}
+
+void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
+    uint8_t senderGroup,
+    uint8_t senderSerial,
+    uint8_t targetGroup, 
+    uint8_t targetSerial, 
+    uint8_t telemetryTypeCode)
+{
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = 3;
+    WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_PULL);
+    packetToAssemble->data[2] = telemetryTypeCode;
+}
+
+void AssembleTelemetryReportPacket(CANPacket *packetToAssemble, 
+    uint8_t senderGroup,
+    uint8_t senderSerial,
+    uint8_t targetGroup, 
+    uint8_t targetSerial,
+    uint8_t telemetryTypeCode,
+    int32_t data)
+{
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = 7;
+    WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
+    packetToAssemble->data[2] = telemetryTypeCode;
+    PacketIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
+}
+
+int32_t DecodeTelemetryDataSigned(CANPacket *packet)
+{
+    return DecodeBytesToIntMSBFirst(packet->data, 3, 6);
+}
+
+uint32_t DecodeTelemetryDataUnsigned(CANPacket *packet)
+{
+    return (uint32_t) DecodeTelemetryDataSigned(packet);
+}
+
+uint8_t DecodeTelemetryType(CANPacket *packet)
+{
+    return packet->data[2];
+}
+
+void AssembleRGBColorPacket(CANPacket *packetToAssemble,
+    uint8_t targetGroup,
+    uint8_t targetSerial,
+    uint8_t addrLED,
+    uint8_t R,
+    uint8_t G,
+    uint8_t B)
+{
+
 }
