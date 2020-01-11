@@ -16,9 +16,9 @@ void AssembleModeSetPacket(CANPacket *packetToAssemble,
     uint8_t mode)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_MODE_SEL);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_MODE_SEL;
-    packetToAssemble->data[1] = mode;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_MODE_SEL);
+    packetToAssemble->data[nextByte] = mode;
 }
 
 uint8_t GetModeFromPacket(CANPacket *packet)
@@ -34,7 +34,8 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     uint8_t yourChipType)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_PULL);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_PULL;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_PULL);
 
 }
 
@@ -46,13 +47,14 @@ void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
     uint8_t chipType)
 {
     packetToAssemble->id = ConstructCANID(packetToAssemble->data, targetDeviceGroup, targetDeviceSerial);
-    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_REP);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_REP;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_REP);
 
 }
 
 uint8_t GetChipTypeFromPacket(CANPacket *packet)
 {
-
+    
 }
 
 void AssemblePWMDirSetPacket(CANPacket *packetToAssemble, 

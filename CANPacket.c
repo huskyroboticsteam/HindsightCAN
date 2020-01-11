@@ -56,10 +56,13 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
 //      senderGroup:    Device group the sender device is a part of.
 //      senderSerial:   Device serial number for sender.
 //      packetID:       ID for packet to be sent.
-void WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID)
+// Output:
+//                      Index of next byte in `data` that can be written
+int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID)
 {
     data[0] = ((senderGroup & 0x0C) << 6) | packetID;
     data[1] = ((senderGroup & 0x03) << 6) | senderSerial;
+    return 2;
 }
 
 // Writes packet ID to data bytes. Writes to byte 0 data.
@@ -67,9 +70,12 @@ void WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t se
 // Inputs:
 //      data:           Data to write to.
 //      packetID:       ID for packet to be sent.
+// Outputs:
+//                      Index to next byte in `data` that can be written;
 void WritePacketIDOnly(uint8_t *data, uint8_t packetID) 
 {
     data[0] = ((PACKET_GROUP_NO_SENDER_SERIAL & 0x0C) << 6) | packetID;
+    return 1;
 }
 
 // Gets the device serial number from CAN packet

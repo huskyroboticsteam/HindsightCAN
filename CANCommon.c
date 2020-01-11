@@ -26,8 +26,8 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
 {
     packet->dlc = DLC_ESTOP;
     packet->id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
-    WriteSenderSerialAndPacketID(packet->data, senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
-    packet->data[2] = errorCode;
+    int nextByte = WriteSenderSerialAndPacketID(packet->data, senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
+    packet->data[nextByte] = errorCode;
 }
 
 // Assembles Emergency Stop Packet with given parameters.
@@ -147,8 +147,8 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
         packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON);
     }
     packetToAssemble->dlc = DLC_HEARTBEAT;
-    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
-    packetToAssemble->data[2] = heartbeatLeniencyCode;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
+    packetToAssemble->data[nextByte] = heartbeatLeniencyCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
 }
 
@@ -161,8 +161,8 @@ void AssembleFailReportPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_FAIL_REPORT;
-    WriteSenderSerialAndPacketID(packetToAssemble->dlc, senderGroup, senderSerial, ID_FAIL_REPORT);
-    packetToAssemble->data[2] = failedPacketID;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->dlc, senderGroup, senderSerial, ID_FAIL_REPORT);
+    packetToAssemble->data[nextByte] = failedPacketID;
 }
 
 // Assembles override protection packet with given parameters
@@ -186,8 +186,8 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_TIMING;
-    WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
-    packetToAssemble->data[2] = telemetryTypeCode;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
+    packetToAssemble->data[nextByte] = telemetryTypeCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
 }
 
@@ -200,8 +200,8 @@ void AssembleTelemetryPullPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_PULL;
-    WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_PULL);
-    packetToAssemble->data[2] = telemetryTypeCode;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_PULL);
+    packetToAssemble->data[nextByte] = telemetryTypeCode;
 }
 
 void AssembleTelemetryReportPacket(CANPacket *packetToAssemble, 
@@ -214,8 +214,8 @@ void AssembleTelemetryReportPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_REPORT;
-    WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
-    packetToAssemble->data[2] = telemetryTypeCode;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
+    packetToAssemble->data[nextByte] = telemetryTypeCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
 }
 
@@ -244,9 +244,9 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_LED_COLOR;
-    WritePacketIDOnly(packetToAssemble->data, ID_LED_COLOR);
-    packetToAssemble->data[2] = R;
-    packetToAssemble->data[3] = G;
-    packetToAssemble->data[4] = B;
-    packetToAssemble->data[5] = addrLED;   
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_LED_COLOR);
+    packetToAssemble->data[nextByte] = R;
+    packetToAssemble->data[nextByte + 1] = G;
+    packetToAssemble->data[nextByte + 2] = B;
+    packetToAssemble->data[nextByte + 3] = addrLED;   
 }
