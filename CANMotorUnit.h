@@ -28,7 +28,7 @@ void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint8_t chipType);
-void GetChipTypeFromPacket(CANPacket *packet);
+uint8_t GetChipTypeFromPacket(CANPacket *packet);
 
 void AssemblePWMDirSetPacket(CANPacket *packetToAssemble, 
     uint8_t targetDeviceGroup,
@@ -61,8 +61,9 @@ void AssembleDSetPacket(CANPacket *packetToAssemble,
     int32_t dCoef);
 int32_t GetDFromPacket(CANPacket *packet);
 
-void AssembleInitializePacket(CANPacket *packetToAssemble);
-uint8_t GetInitializationModeFromPacket(CANPacket *packet);
+void AssembleInitializePacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial);
 
 void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble);
 
