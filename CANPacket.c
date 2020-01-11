@@ -178,7 +178,7 @@ int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDe
     return packetGroup == DEVICE_GROUP_BROADCAST;
 }
 
-void PacketIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex)
+void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex)
 {
     data[startIndex]     = (dataToPack & 0xFF000000) >> 24;
     data[startIndex + 1] = (dataToPack & 0x00FF0000) >> 16;

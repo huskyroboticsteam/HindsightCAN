@@ -149,7 +149,7 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     packetToAssemble->dlc = DLC_HEARTBEAT;
     int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
     packetToAssemble->data[nextByte] = heartbeatLeniencyCode;
-    PacketIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
 }
 
 void AssembleFailReportPacket(CANPacket *packetToAssemble, 
@@ -188,7 +188,7 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     packetToAssemble->dlc = DLC_TELEMETRY_TIMING;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
-    PacketIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
 }
 
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
@@ -216,7 +216,7 @@ void AssembleTelemetryReportPacket(CANPacket *packetToAssemble,
     packetToAssemble->dlc = DLC_TELEMETRY_REPORT;
     int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
-    PacketIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
 }
 
 int32_t DecodeTelemetryDataSigned(CANPacket *packet)
