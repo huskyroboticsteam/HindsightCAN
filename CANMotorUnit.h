@@ -63,7 +63,8 @@ int32_t GetDFromPacket(CANPacket *packet);
 
 void AssembleInitializePacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial);
+    uint8_t targetDeviceSerial,
+    uint8_t initMode);
 
 void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble);
 
