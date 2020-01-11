@@ -36,6 +36,13 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     uint8_t heartbeatLeniencyCode,
     uint32_t timestamp);
 
+void AssembleFailReportPacket(CANPacket *packetToAssemble, 
+    uint8_t senderGroup, 
+    uint8_t senderSerial,
+    uint8_t targetGroup, 
+    uint8_t targetSerial,
+    uint8_t failedPacketID);
+
 void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial);
 
 void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
@@ -80,6 +87,16 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define ID_TELEMETRY_PULL               (uint8_t) 0x35
 #define ID_TELEMETRY_REPORT             (uint8_t) 0x36
 #define ID_LED_COLOR                    (uint8_t) 0x37
+
+// DLC Common Mode Packets 
+#define DLC_ESTOP                        (uint8_t) 0x03
+#define DLC_HEARTBEAT                    (uint8_t) 0x07
+#define DLC_FAIL_REPORT                  (uint8_t) 0x03
+#define DLC_OVRD_PROTECTION              (uint8_t) 0x01
+#define DLC_TELEMETRY_TIMING             (uint8_t) 0x06
+#define DLC_TELEMETRY_PULL               (uint8_t) 0x03
+#define DLC_TELEMETRY_REPORT             (uint8_t) 0x07
+#define DLC_LED_COLOR                    (uint8_t) 0x06
 
 // Telemetry Types
 #define PACKET_TELEMETRY_VOLTAGE        (uint8_t) 0x00

@@ -87,6 +87,20 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 
+// Packet DLCs
+#define DLC_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_CHIP_TYPE_PULL    (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_CHIP_TYPE_REP     (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_INIT              (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_LIM_ALRT          (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x00
+#define DLC_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x00
+
 // Motor Unit Mode IDs
 #define MOTOR_UNIT_MODE_PWM             (uint8_t) 0x00
 #define MOTOR_UNIT_MODE_PID             (uint8_t) 0x01

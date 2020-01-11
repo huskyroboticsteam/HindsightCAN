@@ -7,6 +7,7 @@
  * for the motor unit boards.
  */
 
+#include "CANPacket.h"
 #include "CANMotorUnit.h"
 
 void AssembleModeSetPacket(CANPacket *packetToAssemble,
@@ -14,12 +15,15 @@ void AssembleModeSetPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial,
     uint8_t mode)
 {
-    
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+    WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_MODE_SEL);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_MODE_SEL;
+    packetToAssemble->data[1] = mode;
 }
 
 uint8_t GetModeFromPacket(CANPacket *packet)
 {
-
+    return packet->data[1];
 }
 
 void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
@@ -29,6 +33,8 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial,
     uint8_t yourChipType)
 {
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_PULL);
 
 }
 
@@ -39,6 +45,8 @@ void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial,
     uint8_t chipType)
 {
+    packetToAssemble->id = ConstructCANID(packetToAssemble->data, targetDeviceGroup, targetDeviceSerial);
+    WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_REP);
 
 }
 

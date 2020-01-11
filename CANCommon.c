@@ -24,8 +24,8 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t senderDeviceSerialNumber,
     uint8_t errorCode)
 {
-    packet->dlc = 3;
-    uint16_t id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
+    packet->dlc = DLC_ESTOP;
+    packet->id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
     WriteSenderSerialAndPacketID(packet->data, senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
     packet->data[2] = errorCode;
 }
@@ -136,23 +136,33 @@ uint8_t GetHeartbeatLeniencyCode(CANPacket *packet)
 //      timestamp:              Current timestamp as seen by the sender device. (ms)
 void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
     int broadcast, 
-    uint8_t senderSerial,
     uint8_t senderDeviceGroup,
+    uint8_t senderSerial,
     uint8_t heartbeatLeniencyCode,
     uint32_t timestamp)
 {
-    uint16_t id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_BROADCAST, DEVICE_SERIAL_BROADCAST);
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_BROADCAST, DEVICE_SERIAL_BROADCAST);
     if (!broadcast)
     { 
-        id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON);
+        packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON);
     }
-    uint8_t dlc = 0x07;
-
-    packetToAssemble->id = id;
-    packetToAssemble->dlc = dlc;
+    packetToAssemble->dlc = DLC_HEARTBEAT;
     WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
     packetToAssemble->data[2] = heartbeatLeniencyCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
+}
+
+void AssembleFailReportPacket(CANPacket *packetToAssemble, 
+    uint8_t senderGroup, 
+    uint8_t senderSerial,
+    uint8_t targetGroup, 
+    uint8_t targetSerial,
+    uint8_t failedPacketID)
+{
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = DLC_FAIL_REPORT;
+    WriteSenderSerialAndPacketID(packetToAssemble->dlc, senderGroup, senderSerial, ID_FAIL_REPORT);
+    packetToAssemble->data[2] = failedPacketID;
 }
 
 // Assembles override protection packet with given parameters
@@ -162,9 +172,8 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
 //      targetSerial:           Device serial of target device.
 void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial)
 {
-    uint16_t id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-    packetToAssemble->id = id;
-    packetToAssemble->dlc = 1;
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = DLC_OVRD_PROTECTION;
     WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
 }
 
@@ -176,7 +185,7 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     uint32_t msBetweenReports)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-    packetToAssemble->dlc = 6;
+    packetToAssemble->dlc = DLC_TELEMETRY_TIMING;
     WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
     packetToAssemble->data[2] = telemetryTypeCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
@@ -190,7 +199,7 @@ void AssembleTelemetryPullPacket(CANPacket *packetToAssemble,
     uint8_t telemetryTypeCode)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-    packetToAssemble->dlc = 3;
+    packetToAssemble->dlc = DLC_TELEMETRY_PULL;
     WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_PULL);
     packetToAssemble->data[2] = telemetryTypeCode;
 }
@@ -204,7 +213,7 @@ void AssembleTelemetryReportPacket(CANPacket *packetToAssemble,
     int32_t data)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-    packetToAssemble->dlc = 7;
+    packetToAssemble->dlc = DLC_TELEMETRY_REPORT;
     WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
     packetToAssemble->data[2] = telemetryTypeCode;
     PacketIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
@@ -234,7 +243,7 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
     uint8_t B)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-    packetToAssemble->dlc = 6;
+    packetToAssemble->dlc = DLC_LED_COLOR;
     WritePacketIDOnly(packetToAssemble->data, ID_LED_COLOR);
     packetToAssemble->data[2] = R;
     packetToAssemble->data[3] = G;

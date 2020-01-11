@@ -9,6 +9,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "CANSerialNumbers.h"
 
 typedef struct
 {
@@ -45,10 +46,6 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 #define DEVICE_GROUP_MOTOR_CONTROL      (uint8_t) 0x04
 #define DEVICE_GROUP_TELEMETRY          (uint8_t) 0x05
 #define DEVICE_GROUP_GPIO_BOARDS        (uint8_t) 0x06
-
-// Device Serial Numbers
-#define DEVICE_SERIAL_BROADCAST         (uint8_t) 0x00
-#define DEVICE_SERIAL_JETSON            (uint8_t) 0x00 // NEEDS TO BE POPULATED 
 
 // Priority bits
 #define PACKET_PRIORITY_HIGH            (uint8_t) 0x00
