@@ -71,7 +71,6 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
     uint8_t G,
     uint8_t B);
 
-
 // Common Mode Packet IDs
 #define ID_ESTOP                        (uint8_t) 0x30
 #define ID_HEARTBEAT                    (uint8_t) 0x31
