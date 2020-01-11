@@ -175,7 +175,11 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     uint8_t telemetryTypeCode,
     uint32_t msBetweenReports)
 {
-    
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = 6;
+    WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
+    packetToAssemble->data[2] = telemetryTypeCode;
+    PacketIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
 }
 
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
@@ -229,5 +233,11 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
     uint8_t G,
     uint8_t B)
 {
-
+    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+    packetToAssemble->dlc = 6;
+    WritePacketIDOnly(packetToAssemble->data, ID_LED_COLOR);
+    packetToAssemble->data[2] = R;
+    packetToAssemble->data[3] = G;
+    packetToAssemble->data[4] = B;
+    packetToAssemble->data[5] = addrLED;   
 }
