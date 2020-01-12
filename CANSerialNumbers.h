@@ -43,3 +43,9 @@
 #define DEVICE_SERIAL_POWER_ARM_UPPER_1         (uint8_t) 0x05
 #define DEVICE_SERIAL_POWER_SCIENCE             (uint8_t) 0x06
 
+//Telemetry group
+#define DEVICE_SERIAL_TELEM_LOCALIZATION        (uint8_t) 0x01
+#define DEVICE_SERIAL_TELEM_IMU                 (uint8_t) 0x02
+#define DEVICE_SERIAL_TELEM_TEMPERATURE         (uint8_t) 0x03
+#define DEVICE_SERIAL_TELEM_SCIENCE             (uint8_t) 0x04
+
