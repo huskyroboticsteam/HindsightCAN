@@ -1,5 +1,5 @@
 /* File:         Port.h
- * Authors:      Dylan Tomberlin
+ * Authors:      Jaden Bottemiller, Benton Kwong, Dylan Tomberlin
  * Organization: Husky Robotics Team
  * 
  * This file includes function prototypes for all functions which must be
@@ -11,3 +11,4 @@
 #include "CANPacket.h"
 
 int SendCANPacket(CANPacket packet);
+uint8_t getLocalDeviceSerial(void);

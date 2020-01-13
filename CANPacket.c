@@ -9,7 +9,7 @@
 #include "CANPacket.h"
 
 // Constructs a CAN ID according to standards set by electronics subsystem
-// for PY2020 rover. Not compatible with Orpheus (PY2019)
+// for hindsight (PY2020 rover). Not compatible with Orpheus (PY2019)
 // Inputs: 
 //      priority:   A byte determing if the packet should be prioritized
 //                  High priority would mean setting this value to 0

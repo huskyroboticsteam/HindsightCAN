@@ -1,5 +1,5 @@
 /* File:         CANSerialNumbers.h
- * Authors:      Dylan Tomberlin
+ * Authors:      Jaden Bottemiller, Benton Kwong, Dylan Tomberlin
  * Organization: Husky Robotics Team
  * 
  * This file defines the serial numbers for each device
