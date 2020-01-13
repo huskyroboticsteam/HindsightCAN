@@ -58,16 +58,29 @@ void AssembleInitializePacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint8_t initMode);
+uint8_t GetInitModeFromPacket(CANPacket *packet);
 
-//Limit switch alert TODO: probably need to indicate which limit switch
-void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble);
+//Limit switch alert 
+//each bit represents one limit switch, 1 for closed, 0 for open,
+//switch number corresponds to the bit number
+void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint8_t switches);
+uint8_t GetLimStatusFromPacket(CANPacket *packet);
 
 //Encoder pulses per joint revolution set
-void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble);
+void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint32_t pulses);
 uint32_t GetEncoderPPJRFromPacket(CANPacket *packet);
 
 //Maximum joint rotations set
-void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble);
+void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint32_t revolutions);
 uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
 // Motor Unit Packet IDs
@@ -80,7 +93,7 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x06
 #define ID_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x07
 #define ID_MOTOR_UNIT_INIT              (uint8_t) 0x08
-#define ID_MOTOR_UNIT_LIM_ALRT          (uint8_t) 0x09
+#define ID_MOTOR_UNIT_LIM_ALERT         (uint8_t) 0x09
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 
@@ -94,7 +107,7 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_INIT              (uint8_t) 0x02
-#define DLC_MOTOR_UNIT_LIM_ALRT          (uint8_t) 0x03
+#define DLC_MOTOR_UNIT_LIM_ALERT          (uint8_t) 0x03
 #define DLC_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x03
 #define DLC_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x02
 
@@ -107,7 +120,7 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 #define PRIO_MOTOR_UNIT_PID_I_SET         PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PID_D_SET         PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_INIT              PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_LIM_ALRT          PACKET_PRIORITY_HIGH
+#define PRIO_MOTOR_UNIT_LIM_ALERT          PACKET_PRIORITY_HIGH
 #define PRIO_MOTOR_UNIT_ENC_PPJR_SET      PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_JNT_REV_SET   PACKET_PRIORITY_NORMAL
 

@@ -40,12 +40,13 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
 
 int32_t GetPWMFromPacket(CANPacket *packet)
 {
-
+    return DecodeBytesToIntMSBFirst(&packet->data, 1, 4);
 }
 
+//Returns 2's compliment MSB (0 for stopped or forward, 1 for reverse)
 int32_t GetDirectionFromPacket(CANPacket *packet)
 {
-
+    return ((packet->data[1]) >> 7) & 0x1;
 }
 
 void AssemblePIDTargetSetPacket(CANPacket *packetToAssemble,
@@ -117,33 +118,59 @@ void AssembleInitializePacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial,
     uint8_t initMode)
 {
-    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_INIT, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_INIT;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_INIT);
     packetToAssemble->data[nextByte] = initMode;
 }
-
-void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble)
+uint8_t GetInitModeFromPacket(CANPacket *packet)
 {
-
+    return packet[1];
 }
 
-void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble)
+void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint8_t switches)
 {
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_LIM_ALRT, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_LIM_ALERT;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_MOTOR_UNIT_LIM_ALERT);
+    packetToAssemble->data[nextByte] = switches; 
+}
+uint8_t GetLimStatusFromPacket(CANPacket *packet)
+{
+    return packet[1];
+}
 
+void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint32_t pulses)
+{
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_ENC_PPJR_SET, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->id = DLC_MOTOR_UNIT_ENC_PPJR_SET;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_ENC_PPJR_SET);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, pulses, nextByte);
 }
 
 uint32_t GetEncoderPPJRFromPacket(CANPacket *packet)
 {
-
+    return DecodeBytesToIntMSBFirst(&(packet->data), 1, 4);
 }
 
-void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble)
+void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint32_t revolutions)
 {
-
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_MAX_JNT_REV_SET, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->id = DLC_MOTOR_UNIT_MAX_JNT_REV_SET;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_MAX_JNT_REV_SET);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, revolutions, nextByte);
+    
 }
-
 uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet)
 {
-
+    return DecodeBytesToIntMSBFirst(&(packet->data), 1, 4);
 }

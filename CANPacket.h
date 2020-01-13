@@ -21,7 +21,7 @@ typedef struct
 CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data);
 uint16_t ConstructCANID(uint8_t priority, uint8_t devGroup, uint8_t devSerial);
 
-int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID);
+int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID);
 int WritePacketIDOnly(uint8_t *data, uint8_t packetID);
 
 uint8_t GetDeviceGroupCode(CANPacket *packet);

@@ -53,15 +53,16 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
 // DO NOT OVERWRITE BYTES 0 AND 1 AFTER CALLING THIS FUNCTION.
 // Inputs:
 //      data:           Data to write to.
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 //      senderGroup:    Device group the sender device is a part of.
 //      senderSerial:   Device serial number for sender.
 //      packetID:       ID for packet to be sent.
 // Output:
 //                      Index of next byte in `data` that can be written
-int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t senderGroup, uint8_t senderSerial, uint8_t packetID)
+int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID)
 {
-    data[0] = ((senderGroup & 0x0C) << 6) | packetID;
-    data[1] = ((senderGroup & 0x03) << 6) | senderSerial;
+    data[0] = ((getLocalDeviceGroup() & 0x0C) << 6) | packetID;
+    data[1] = ((getLocalDeviceGroup() & 0x03) << 6) | getLocalDeviceSerial();
     return 2;
 }
 

@@ -17,6 +17,7 @@
 //      senderDeviceGroup:          Device group of sender device
 //      senderDeviceSerialNumber:   Device serial number of sender device
 //      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerialNumber,
@@ -26,7 +27,7 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
 {
     packet->dlc = DLC_ESTOP;
     packet->id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
-    int nextByte = WriteSenderSerialAndPacketID(packet->data, senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
+    int nextByte = WriteSenderSerialAndPacketID(packet->data,senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
     packet->data[nextByte] = errorCode;
 }
 
@@ -134,6 +135,7 @@ uint8_t GetHeartbeatLeniencyCode(CANPacket *packet)
 //      senderDeviceGroup:      Device group of sender device
 //      heartbeatLeniencyCode:  Max time between heartbeats before system automatically enters a safe operating condition.
 //      timestamp:              Current timestamp as seen by the sender device. (ms)
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
     int broadcast, 
     uint8_t senderDeviceGroup,
@@ -152,6 +154,7 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
     PackIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
 }
 
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleFailReportPacket(CANPacket *packetToAssemble, 
     uint8_t senderGroup, 
     uint8_t senderSerial,
@@ -177,6 +180,7 @@ void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targe
     WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
 }
 
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     uint8_t senderDeviceGroup,
     uint8_t senderDeviceSerial,
@@ -190,6 +194,7 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     packetToAssemble->data[nextByte] = yourChipType;
 }
 
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
     uint8_t senderDeviceGroup,
     uint8_t senderDeviceSerial,
@@ -221,6 +226,7 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     PackIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
 }
 
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
     uint8_t senderGroup,
     uint8_t senderSerial,
@@ -234,6 +240,7 @@ void AssembleTelemetryPullPacket(CANPacket *packetToAssemble,
     packetToAssemble->data[nextByte] = telemetryTypeCode;
 }
 
+//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleTelemetryReportPacket(CANPacket *packetToAssemble, 
     uint8_t senderGroup,
     uint8_t senderSerial,

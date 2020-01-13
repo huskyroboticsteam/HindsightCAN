@@ -11,4 +11,5 @@
 #include "CANPacket.h"
 
 int SendCANPacket(CANPacket packet);
-uint8_t getLocalDeviceSerial(void);
+uint8_t getLocalDeviceSerial();
+uint8_t getLocalDeviceGroup();
