@@ -13,17 +13,11 @@
 void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerialNumber,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerialNumber,
     uint8_t errorCode);
 void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
     uint8_t groupCode, 
-    uint8_t senderDeviceGroup, 
-    uint8_t senderDeviceSerialNumber, 
     uint8_t errorCode);
-void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
-    uint8_t senderDeviceGroup, 
-    uint8_t senderDeviceSerialNumber, 
+void AssembleBrodcastEmergencyStopPacket(CANPacket *packet,
     uint8_t errorCode);
 uint8_t GetEmergencyStopErrorCode(CANPacket *packet);
 
@@ -31,14 +25,10 @@ uint32_t GetTimeBetweenHeartbeatPacket(CANPacket *packet, uint32_t lastHeartbeat
 uint32_t GetHeartbeatTimeStamp(CANPacket *packet);
 void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
     int broadcast, 
-    uint8_t senderSerial,
-    uint8_t senderDeviceGroup,
     uint8_t heartbeatLeniencyCode,
     uint32_t timestamp);
 
 void AssembleFailReportPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup, 
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial,
     uint8_t failedPacketID);
@@ -62,15 +52,11 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
 uint32_t GetTelemetryTimingFromPacket(CANPacket *packetToAssemble);
 
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup,
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial, 
     uint8_t telemetryTypeCode);
 
 void AssembleTelemetryReportPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup,
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial,
     uint8_t telemetryTypeCode,
@@ -97,6 +83,8 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define ID_TELEMETRY_PULL               (uint8_t) 0x35
 #define ID_TELEMETRY_REPORT             (uint8_t) 0x36
 #define ID_LED_COLOR                    (uint8_t) 0x37
+#define ID_CHIP_TYPE_PULL               (uint8_t) 0x38
+#define ID_CHIP_TYPE_REP                (uint8_t) 0x39
 
 // DLC Common Mode Packets 
 #define DLC_ESTOP                        (uint8_t) 0x03
@@ -107,6 +95,11 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define DLC_TELEMETRY_PULL               (uint8_t) 0x03
 #define DLC_TELEMETRY_REPORT             (uint8_t) 0x07
 #define DLC_LED_COLOR                    (uint8_t) 0x06
+#define DLC_CHIP_TYPE_PULL               (uint8_t) 0x03
+#define DLC_CHIP_TYPE_REP                (uint8_t) 0x03
+
+//Packet priorities
+#define PRIO_CHIP_TYPE_REP               PACKET_PRIORITY_NORMAL
 
 // Telemetry Types
 #define PACKET_TELEMETRY_VOLTAGE        (uint8_t) 0x00

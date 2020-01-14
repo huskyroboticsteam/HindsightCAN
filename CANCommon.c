@@ -14,20 +14,15 @@
 //      packet:                     CAN Packet to assemble (will overwrite).
 //      targetDeviceGroup:          Group to target
 //      targetDeviceSerialNumber:   Serial number of target device
-//      senderDeviceGroup:          Device group of sender device
-//      senderDeviceSerialNumber:   Device serial number of sender device
 //      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleEmergencyStopPacket(CANPacket *packet,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerialNumber,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerialNumber,
     uint8_t errorCode)
 {
     packet->dlc = DLC_ESTOP;
     packet->id = ConstructCANID(PACKET_PRIORITY_HIGH, targetDeviceGroup, targetDeviceSerialNumber);
-    int nextByte = WriteSenderSerialAndPacketID(packet->data,senderDeviceGroup, senderDeviceSerialNumber, ID_ESTOP);
+    int nextByte = WriteSenderSerialAndPacketID(packet->data, ID_ESTOP);
     packet->data[nextByte] = errorCode;
 }
 
@@ -36,31 +31,23 @@ void AssembleEmergencyStopPacket(CANPacket *packet,
 // Inputs:
 //      packet:                     CAN Packet to assemble (will overwrite).
 //      deviceGroup:                Group to target
-//      senderDeviceGroup:          Device group of sender device
-//      senderDeviceSerialNumber:   Device serial number of sender device
 //      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
 void AssembleGroupBroadcastingEmergencyStopPacket(CANPacket *packet, 
     uint8_t groupCode, 
-    uint8_t senderDeviceGroup, 
-    uint8_t senderDeviceSerialNumber, 
     uint8_t errorCode)
 {
-    AssembleEmergencyStopPacket(packet, groupCode, DEVICE_SERIAL_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
+    AssembleEmergencyStopPacket(packet, groupCode, DEVICE_SERIAL_BROADCAST, errorCode);
 }
 
 // Assembles Emergency Stop Packet with given parameters.
 // This will broadcast the emergency stop command to all devices
 // Inputs:
 //      packet:                     CAN Packet to assemble (will overwrite).
-//      senderDeviceGroup:          Device group of sender device
-//      senderDeviceSerialNumber:   Device serial number of sender device
 //      errorCode:                  Emergency stop error code. E.G. ESTOP_ERR_GENERAL
 void AssembleBrodcastEmergencyStopPacket(CANPacket *packet, 
-    uint8_t senderDeviceGroup, 
-    uint8_t senderDeviceSerialNumber, 
     uint8_t errorCode)
 {
-    AssembleGroupBroadcastingEmergencyStopPacket(packet, DEVICE_GROUP_BROADCAST, senderDeviceGroup, senderDeviceSerialNumber, errorCode);
+    AssembleGroupBroadcastingEmergencyStopPacket(packet, DEVICE_GROUP_BROADCAST, errorCode);
 }
 
 // Gets the Error Code reported from an emergency stop packet.
@@ -131,15 +118,11 @@ uint8_t GetHeartbeatLeniencyCode(CANPacket *packet)
 // Inputs:
 //      packetToAssemble:       CAN Packet to assemble (will overwrite).
 //      broadcast:              1 if broadcast to all devices. 0 to return to MAIN_CPU / Jetson.
-//      senderSerial:           Serial number of sender device
-//      senderDeviceGroup:      Device group of sender device
 //      heartbeatLeniencyCode:  Max time between heartbeats before system automatically enters a safe operating condition.
 //      timestamp:              Current timestamp as seen by the sender device. (ms)
 //TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleHeartbeatPacket(CANPacket *packetToAssemble, 
     int broadcast, 
-    uint8_t senderDeviceGroup,
-    uint8_t senderSerial,
     uint8_t heartbeatLeniencyCode,
     uint32_t timestamp)
 {
@@ -149,22 +132,19 @@ void AssembleHeartbeatPacket(CANPacket *packetToAssemble,
         packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_HIGH, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON);
     }
     packetToAssemble->dlc = DLC_HEARTBEAT;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderSerial, ID_HEARTBEAT);
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_HEARTBEAT);
     packetToAssemble->data[nextByte] = heartbeatLeniencyCode;
     PackIntIntoDataMSBFirst(packetToAssemble->data, timestamp, 3);
 }
 
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleFailReportPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup, 
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial,
     uint8_t failedPacketID)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_FAIL_REPORT;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->dlc, senderGroup, senderSerial, ID_FAIL_REPORT);
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_FAIL_REPORT);
     packetToAssemble->data[nextByte] = failedPacketID;
 }
 
@@ -185,19 +165,19 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_PULL;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_PULL);
+    packetToAssemble->dlc = DLC_CHIP_TYPE_PULL;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_PULL);
     packetToAssemble->data[nextByte] = getChipType();
 }
 
 void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial);
+    uint8_t targetDeviceSerial)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_REP;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_REP);
-    packetToAssemble->data[nextByte] = chipType;
+    packetToAssemble->dlc = DLC_CHIP_TYPE_REP;
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_REP);
+    packetToAssemble->data[nextByte] = getChipType();
 }
 
 uint8_t GetChipTypeFromPacket(CANPacket *packet)
@@ -219,27 +199,21 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
 }
 uint32_t GetTelemetryTimingFromPacket(CANPacket *packetToAssemble)
 {
-    return uint32_t DecodeTelemetryDataUnsigned(packetToAssemble);
+    return DecodeTelemetryDataUnsigned(packetToAssemble);
 }
 
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup,
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial, 
     uint8_t telemetryTypeCode)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_PULL;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_PULL);
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_TELEMETRY_PULL);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
 }
 
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleTelemetryReportPacket(CANPacket *packetToAssemble, 
-    uint8_t senderGroup,
-    uint8_t senderSerial,
     uint8_t targetGroup, 
     uint8_t targetSerial,
     uint8_t telemetryTypeCode,
@@ -247,7 +221,7 @@ void AssembleTelemetryReportPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_REPORT;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderGroup, senderSerial, ID_TELEMETRY_REPORT);
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_TELEMETRY_REPORT);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
     PackIntIntoDataMSBFirst(packetToAssemble->data, data, 3);
 }

@@ -126,7 +126,7 @@ void AssembleInitializePacket(CANPacket *packetToAssemble,
 }
 uint8_t GetInitModeFromPacket(CANPacket *packet)
 {
-    return packet[1];
+    return packet->data[1];
 }
 
 void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble,
@@ -134,14 +134,14 @@ void AssembleLimitSwitchAlertPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceSerial,
     uint8_t switches)
 {
-    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_LIM_ALRT, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_LIM_ALERT, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_LIM_ALERT;
     int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_MOTOR_UNIT_LIM_ALERT);
     packetToAssemble->data[nextByte] = switches; 
 }
 uint8_t GetLimStatusFromPacket(CANPacket *packet)
 {
-    return packet[1];
+    return packet->data[1];
 }
 
 void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
@@ -160,7 +160,7 @@ uint32_t GetEncoderPPJRFromPacket(CANPacket *packet)
     return DecodeBytesToIntMSBFirst(&(packet->data), 1, 4);
 }
 
-void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble
+void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint32_t revolutions)

@@ -77,7 +77,7 @@ void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
 uint32_t GetEncoderPPJRFromPacket(CANPacket *packet);
 
 //Maximum joint rotations set
-void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble
+void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint32_t revolutions);
@@ -85,8 +85,6 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
 // Motor Unit Packet IDs
 #define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
-#define ID_MOTOR_UNIT_CHIP_TYPE_PULL    (uint8_t) 0x01
-#define ID_MOTOR_UNIT_CHIP_TYPE_REP     (uint8_t) 0x02
 #define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
 #define ID_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x04
 #define ID_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x05
@@ -99,8 +97,6 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x02
-#define DLC_MOTOR_UNIT_CHIP_TYPE_PULL    (uint8_t) 0x03
-#define DLC_MOTOR_UNIT_CHIP_TYPE_REP     (uint8_t) 0x03
 #define DLC_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x05
@@ -113,7 +109,6 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
 //Packet priorities
 #define PRIO_MOTOR_UNIT_MODE_SEL          PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_CHIP_TYPE_REP     PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PWM_DIR_SET       PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PID_POS_TGT_SET   PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PID_P_SET         PACKET_PRIORITY_NORMAL
