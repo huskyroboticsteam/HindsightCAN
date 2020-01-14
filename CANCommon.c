@@ -8,7 +8,7 @@
 
 #include "CANPacket.h"
 #include "CANCommon.h"
-
+#include "Port.h"
 // Assembles Emergency Stop Packet with given parameters
 // Inputs:
 //      packet:                     CAN Packet to assemble (will overwrite).
@@ -185,13 +185,12 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     uint8_t senderDeviceGroup,
     uint8_t senderDeviceSerial,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial,
-    uint8_t yourChipType)
+    uint8_t targetDeviceSerial)
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_PULL;
     int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, senderDeviceGroup, senderDeviceSerial, ID_MOTOR_UNIT_CHIP_TYPE_PULL);
-    packetToAssemble->data[nextByte] = yourChipType;
+    packetToAssemble->data[nextByte] = getChipType();
 }
 
 //TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs

@@ -13,3 +13,11 @@
 int SendCANPacket(CANPacket packet);
 uint8_t getLocalDeviceSerial();
 uint8_t getLocalDeviceGroup();
+
+uint8_t getChipType();
+
+//Chip type constants
+//TODO: Find specific chip names
+#define CHIP_TYPE_STM32Fxxx     0x01
+#define CHIP_TYPE_PSOC4200Mxx   0x02
+#define CHIP_TYPE_ATMEL8BITxx   0x03

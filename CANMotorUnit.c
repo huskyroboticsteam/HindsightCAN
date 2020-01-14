@@ -9,6 +9,7 @@
 
 #include "CANPacket.h"
 #include "CANMotorUnit.h"
+#include "Port.h"
 
 void AssembleModeSetPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
