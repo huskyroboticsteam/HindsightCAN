@@ -4,13 +4,21 @@
  * 
  * This file includes function prototypes for all functions which must be
  * implemented for each ported device.  Just make a .c file called
- * Port[DeviceName].c and include this file in it.
+ * Port[DeviceName].c based on PortTemplate.
+ *
+ * Compile insturctions: in addition to cross compiling, you will need to
+ * define the constant CHIP_TYPE in your compiler options.  On GCC, use
+ * -D CHIP_TYPE=CHIP_TYPE_TEMPLATE
+ *  But obviously substitute template for your own constant.  Add it to the list
+ *  of constants below if its not already been defined.
  */
 #pragma once
 
 #include "CANPacket.h"
 
-int SendCANPacket(CANPacket packet);
+int SendCANPacket(CANPacket *packetToSend);
+CANPacket ReceiveCANPacket();
+
 uint8_t getLocalDeviceSerial();
 uint8_t getLocalDeviceGroup();
 
