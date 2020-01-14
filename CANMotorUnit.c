@@ -36,12 +36,12 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PWM_DIR_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, DLC_MOTOR_UNIT_PWM_DIR_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble, PWMSet, nextByte);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 }
 
 int32_t GetPWMFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(&packet->data, 1, 4);
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 4);
 }
 
 //Returns 2's compliment MSB (0 for stopped or forward, 1 for reverse)
@@ -58,7 +58,7 @@ void AssemblePIDTargetSetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PID_POS_TGT_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PID_POS_TGT_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble, target, nextByte);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, target, nextByte);
 }
 
 uint8_t GetPIDTargetFromPacket(CANPacket *packet)
@@ -74,7 +74,7 @@ void AssemblePSetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PID_P_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PID_P_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble, pCoef, nextByte);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, pCoef, nextByte);
 }
 
 int32_t GetPFromPacket(CANPacket *packet)
@@ -90,7 +90,7 @@ void AssembleISetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PID_I_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PID_I_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble, iCoef, nextByte);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, iCoef, nextByte);
 }
 
 int32_t GetIFromPacket(CANPacket *packet)
@@ -106,7 +106,7 @@ void AssembleDSetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PID_D_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PID_D_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble, dCoef, nextByte);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, dCoef, nextByte);
 }
 
 int32_t GetDFromPacket(CANPacket *packet)
@@ -157,7 +157,7 @@ void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
 
 uint32_t GetEncoderPPJRFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(&(packet->data), 1, 4);
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 4);
 }
 
 void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
@@ -173,5 +173,5 @@ void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
 }
 uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(&(packet->data), 1, 4);
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 4);
 }

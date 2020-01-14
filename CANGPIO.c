@@ -5,7 +5,4 @@
  * This file includes fuction implementations for the GPIO board CAN Communication
  * using the Hindsight CAN Communication standard.
  */
-
-#pragma once
-
 #include "CANPacket.h"

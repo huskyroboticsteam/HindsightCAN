@@ -5,7 +5,5 @@
  * This file includes fuction implementations for the power boards CAN Communication
  * using the Hindsight CAN Communication standard.
  */
-
-#pragma once
-
+#include "CANPower.h"
 #include "CANPacket.h"
