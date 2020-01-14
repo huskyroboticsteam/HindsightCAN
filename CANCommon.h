@@ -47,17 +47,11 @@ void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targe
 
 //Chip type pull
 void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerial,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial,
-    uint8_t yourChipType);
+    uint8_t targetDeviceSerial);
 void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerial,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial,
-    uint8_t chipType);
+    uint8_t targetDeviceSerial);
 uint8_t GetChipTypeFromPacket(CANPacket *packet);
 
 void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
@@ -65,6 +59,7 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     uint8_t targetSerial, 
     uint8_t telemetryTypeCode,
     uint32_t msBetweenReports);
+uint32_t GetTelemetryTimingFromPacket(CANPacket *packetToAssemble);
 
 void AssembleTelemetryPullPacket(CANPacket *packetToAssemble, 
     uint8_t senderGroup,

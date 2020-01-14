@@ -180,10 +180,7 @@ void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targe
     WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
 }
 
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerial,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial)
 {
@@ -193,13 +190,9 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
     packetToAssemble->data[nextByte] = getChipType();
 }
 
-//TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
 void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
-    uint8_t senderDeviceGroup,
-    uint8_t senderDeviceSerial,
     uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial,
-    uint8_t chipType)
+    uint8_t targetDeviceSerial);
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_CHIP_TYPE_REP;
@@ -209,7 +202,7 @@ void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
 
 uint8_t GetChipTypeFromPacket(CANPacket *packet)
 {
-
+    return packet->data[1];
 }
 
 void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
@@ -223,6 +216,10 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
     PackIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
+}
+uint32_t GetTelemetryTimingFromPacket(CANPacket *packetToAssemble)
+{
+    return uint32_t DecodeTelemetryDataUnsigned(packetToAssemble);
 }
 
 //TODO, upon approval from @jaden, delete senderGroup and senderSerial params, as these are handled by getLocal functs
