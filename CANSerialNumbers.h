@@ -6,6 +6,7 @@
  * on the Hindsight (PY2020 Rover). Sorted by Device Group
  * 
  * Serial Numbers are 6bits wide.
+ * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  */
 
 // BROADCAST GROUP
