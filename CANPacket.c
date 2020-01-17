@@ -80,6 +80,17 @@ int WritePacketIDOnly(uint8_t *data, uint8_t packetID)
     return 1;
 }
 
+// Gets the priority  of a given packet
+// Inputs:
+//      packet:     CAN Packet to analyze
+// Outputs:
+//      priority    byte representing packet priority,
+//                  (0 for high, 1 for low)
+uint8_t GetPacketPriority(CANPacket *packet)
+{
+    return (packet->id >> 10) && 0x1;
+}
+
 // Gets the device serial number from CAN packet
 // Inputs:
 //      packet:     CAN Packet to analyze
