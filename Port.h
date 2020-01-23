@@ -11,6 +11,7 @@
  * -D CHIP_TYPE=CHIP_TYPE_TEMPLATE
  *  But obviously substitute template for your own constant.  Add it to the list
  *  of constants below if its not already been defined.
+ * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  */
 #pragma once
 

@@ -5,6 +5,7 @@
  * This file includes fuction prototypes for CAN Packet manipulation
  * using the Hindsight CAN Communication standard. Specific files
  * for the motor unit boards.
+ * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  */
 
 #include "CANPacket.h"
