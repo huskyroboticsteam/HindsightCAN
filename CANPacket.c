@@ -158,6 +158,11 @@ int SenderPacketIsInGroup(CANPacket *packet, uint8_t expectedType)
     return GetSenderDeviceGroupCode(packet) == expectedType;
 }
 
+int SenderPacketIsOfDevice(CANPacket *packet, uint8_t expectedType)
+{
+    return GetSenderDeviceSerialNumber(packet) == expectedType;
+}
+
 int GetPacketID(CANPacket *packet)
 {
     return packet->data[0] & 0x3F;

@@ -24,8 +24,8 @@
 #define DEVICE_SERIAL_MOTOR_SHOULDER            (uint8_t) 0x02
 #define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
 #define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
-#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_1        (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_2        (uint8_t) 0x06
+#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_L        (uint8_t) 0x05
+#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_R        (uint8_t) 0x06
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x07
 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
