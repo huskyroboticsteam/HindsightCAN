@@ -2,6 +2,11 @@
 
 #include "port.h"
 
+void InitCAN(int deviceGroup, int deviceAddress)
+{
+    // Implement hardware initialization of CAN
+    // Including receive filters
+}
 int SendCANPacket(CANPacket *packetToSend)
 {
     //Implement sending/ queing to send packet
