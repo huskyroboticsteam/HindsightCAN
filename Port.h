@@ -17,6 +17,8 @@
 
 #include "CANPacket.h"
 
+void InitCAN(int deviceGroup, int deviceAddress);
+
 int SendCANPacket(CANPacket *packetToSend);
 CANPacket ReceiveCANPacket();
 
