@@ -68,10 +68,13 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 #define ID_GPIO_BOARD_IO_WRITE          (uint8_t) 0x08
 
 // Power Distribution Packet IDs
+/*No longer needed, some of this was put into telemetry, other was put into CANPower.h
+
 #define ID_POWER_DIST_RAIL_SET_STATE    (uint8_t) 0x00
 #define ID_POWER_DIST_RAIL_REQ_STATE    (uint8_t) 0x01
 #define ID_POWER_DIST_RAIL_RESPONSE     (uint8_t) 0x02
 #define ID_POWER_DIST_OVC_LIM_SET       (uint8_t) 0x03
+*/
 
 // Telemetry Packet IDs
 #define ID_TELEMETRY_SET_MAG_OFFSET     (uint8_t) 0x00
