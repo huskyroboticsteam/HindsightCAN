@@ -1,9 +1,9 @@
 /*
  * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  */
-#if CHIP_TYPE == CHIP_TYPE_TEMPLATE//Replace this with the chip you are porting
+#define CHIP_TYPE 0
 
-#include "port.h"
+#include "Port.h"
 
 void InitCAN(int deviceGroup, int deviceAddress)
 {
@@ -34,4 +34,3 @@ uint8_t getChipType()
     return CHIP_TYPE; 
     //Should be same for all ports, just not sure where to put it.
 }
-#endif //CHIP_TYPE == CHIP_TYPE_TEMPLATE
