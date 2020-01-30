@@ -3,7 +3,7 @@
  */
 #if CHIP_TYPE == CHIP_TYPE_TEMPLATE//Replace this with the chip you are porting
 
-#include "port.h"
+#include "Port.h"
 
 void InitCAN(int deviceGroup, int deviceAddress)
 {

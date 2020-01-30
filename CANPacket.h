@@ -34,6 +34,8 @@ uint8_t GetSenderDeviceSerialNumber(CANPacket *packet);
 uint8_t GetSenderDeviceGroupCode(CANPacket *packet);
 
 int PacketIsInGroup(CANPacket *packet, uint8_t expectedType);
+int SenderPacketIsInGroup(CANPacket *packet, uint8_t expectedType);
+int SenderPacketIsOfDevice(CANPacket *packet, uint8_t expectedType);
 int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDeviceSerialNumber);
 
 int GetPacketID(CANPacket *packet);
