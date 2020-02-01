@@ -23,10 +23,12 @@ uint8_t getLocalDeviceSerial()
 {
     //Reading DIP switches? Hard coded?
     //This might be board specific, rather than chip specific.
+    return DEVICE_SERIAL_MOTOR_CHASSIS_FR; // example value (also used for testing)
 }
 uint8_t getLocalDeviceGroup()
 {
     //Definitely board specific.
+    return DEVICE_GROUP_MOTOR_CONTROL; // example value (also used for testing)
 }
 
 uint8_t getChipType()

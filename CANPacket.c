@@ -63,7 +63,7 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
 //                      Index of next byte in `data` that can be written
 int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID)
 {
-    data[0] = ((getLocalDeviceGroup() & 0x0C) << 6) | packetID;
+    data[0] = ((getLocalDeviceGroup() & 0x0C) << 4) | packetID;
     data[1] = ((getLocalDeviceGroup() & 0x03) << 6) | getLocalDeviceSerial();
     return 2;
 }
@@ -202,7 +202,7 @@ void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex)
     data[startIndex]     = (dataToPack & 0xFF000000) >> 24;
     data[startIndex + 1] = (dataToPack & 0x00FF0000) >> 16;
     data[startIndex + 2] = (dataToPack & 0x0000FF00) >> 8;
-    data[startIndex + 4] = (dataToPack & 0x000000FF);
+    data[startIndex + 3] = (dataToPack & 0x000000FF);
 }
 
 int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
@@ -218,6 +218,7 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
 
     for (int i = 0; i < length; i++) 
     {
-        decodedData |= data[startIndex + i] << (8 * i);
+        decodedData |= data[startIndex + i] << (8 * (length-1-i));
     }
+    return decodedData;
 }
