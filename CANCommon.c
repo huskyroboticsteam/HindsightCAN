@@ -229,7 +229,7 @@ void AssembleTelemetryReportPacket(CANPacket *packetToAssemble,
 
 int32_t DecodeTelemetryDataSigned(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, 3, 6);
+    return DecodeBytesToIntMSBFirst(packet->data, 3, 7);
 }
 
 uint32_t DecodeTelemetryDataUnsigned(CANPacket *packet)
