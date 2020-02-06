@@ -161,31 +161,6 @@ void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targe
     WritePacketIDOnly(packetToAssemble->data, ID_OVRD_PROTECTION);
 }
 
-void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
-    uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial)
-{
-    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    packetToAssemble->dlc = DLC_CHIP_TYPE_PULL;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_PULL);
-    packetToAssemble->data[nextByte] = getChipType();
-}
-
-void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
-    uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial)
-{
-    packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
-    packetToAssemble->dlc = DLC_CHIP_TYPE_REP;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_REP);
-    packetToAssemble->data[nextByte] = getChipType();
-}
-
-uint8_t GetChipTypeFromPacket(CANPacket *packet)
-{
-    return packet->data[1];
-}
-
 void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
     uint8_t targetGroup, 
     uint8_t targetSerial, 

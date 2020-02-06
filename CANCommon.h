@@ -36,15 +36,6 @@ void AssembleFailReportPacket(CANPacket *packetToAssemble,
 
 void AssembleOverrideProtectionPacket(CANPacket *packetToAssemble, uint8_t targetGroup, uint8_t targetSerial);
 
-//Chip type pull
-void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
-    uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial);
-void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
-    uint8_t targetDeviceGroup,
-    uint8_t targetDeviceSerial);
-uint8_t GetChipTypeFromPacket(CANPacket *packet);
-
 void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble, 
     uint8_t targetGroup, 
     uint8_t targetSerial, 
@@ -84,8 +75,6 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define ID_TELEMETRY_PULL               (uint8_t) 0x35
 #define ID_TELEMETRY_REPORT             (uint8_t) 0x36
 #define ID_LED_COLOR                    (uint8_t) 0x37
-#define ID_CHIP_TYPE_PULL               (uint8_t) 0x38
-#define ID_CHIP_TYPE_REP                (uint8_t) 0x39
 
 // DLC Common Mode Packets 
 #define DLC_ESTOP                        (uint8_t) 0x03
@@ -96,11 +85,6 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define DLC_TELEMETRY_PULL               (uint8_t) 0x03
 #define DLC_TELEMETRY_REPORT             (uint8_t) 0x07
 #define DLC_LED_COLOR                    (uint8_t) 0x06
-#define DLC_CHIP_TYPE_PULL               (uint8_t) 0x03
-#define DLC_CHIP_TYPE_REP                (uint8_t) 0x03
-
-//Packet priorities
-#define PRIO_CHIP_TYPE_REP               PACKET_PRIORITY_NORMAL
 
 // Telemetry Types
 #define PACKET_TELEMETRY_VOLTAGE        (uint8_t) 0x00
@@ -118,6 +102,9 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define PACKET_TELEMETRY_GYRO_Y         (uint8_t) 0x0C
 #define PACKET_TELEMETRY_GYRO_Z         (uint8_t) 0x0D
 #define PACKET_TELEMETRY_LIM_SW_STATE   (uint8_t) 0x0E
+#define PACKET_TELEMETRY_ADC_RAW        (uint8_t) 0x0F
+#define PACKET_TELEMETRY_GPIO_STATE     (uint8_t) 0x10
+#define PACKET_TELEMETRY_CHIP_TYPE      (uint8_t) 0x11
 
 // ESTOP ERROR CODES
 #define ESTOP_ERR_GENERAL               (uint8_t) 0x00
