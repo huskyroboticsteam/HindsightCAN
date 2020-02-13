@@ -75,9 +75,9 @@ int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID)
 //      packetID:       ID for packet to be sent.
 // Outputs:
 //                      Index to next byte in `data` that can be written;
-int WritePacketIDOnly(uint8_t *data, uint8_t packetID) 
+int WritePacketIDOnly(uint8_t *data, uint8_t packetID)
 {
-    data[0] = ((PACKET_GROUP_NO_SENDER_SERIAL & 0x0C) << 6) | packetID;
+    data[0] = ((PACKET_GROUP_NO_SENDER_SERIAL & 0x0C) << 4) | packetID;
     return 1;
 }
 

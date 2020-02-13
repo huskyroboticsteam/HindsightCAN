@@ -59,7 +59,7 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 #define PACKET_GROUP_NO_SENDER_SERIAL   (uint8_t) 0x0C
 
 // GPIO Board Packet IDs
-#define ID_GPIO_BOARD_PWM_SET_STATE     (uint8_t) 0x00 
+#define ID_GPIO_BOARD_PWM_SET_STATE     (uint8_t) 0x00
 #define ID_GPIO_BOARD_PWM_SET           (uint8_t) 0x01
 #define ID_GPIO_BOARD_ADC_EN_SET        (uint8_t) 0x02
 #define ID_GPIO_BOARD_ADC_READ          (uint8_t) 0x03
