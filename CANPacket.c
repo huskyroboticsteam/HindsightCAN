@@ -25,7 +25,7 @@ uint16_t ConstructCANID(uint8_t priority, uint8_t devGroup, uint8_t devSerial)
     uint16_t CANID = 0x0000;
     CANID = CANID | ((priority & 0x01) << 10);
     CANID = CANID | ((devGroup & 0x0F) << 6);
-    CANID = CANID | (devSerial & 0x2F);
+    CANID = CANID | (devSerial & 0x3F);
 
     return CANID;
 }
@@ -124,7 +124,6 @@ uint8_t GetDeviceGroupCode(CANPacket *packet)
 {
     uint8_t group = 0;
     int id = packet->id;
-    id = id & 0x07F; // Strip to ID-only portion of ID
     group = (uint8_t) ((id & 0x03C0) >> 6);
     return group;
 }
