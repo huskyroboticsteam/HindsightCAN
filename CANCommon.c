@@ -91,9 +91,9 @@ uint32_t GetHeartbeatTimeStamp(CANPacket *packet)
 {
     if (PacketIsOfID(packet, ID_HEARTBEAT)) 
     {
-        uint32_t time = (packet->data[3] << 24);
-        time |= (packet->data[4] << 16);
-        time |= (packet->data[5] << 8);
+        uint32_t time = ((uint32_t)packet->data[3] << 24);
+        time |= ((uint32_t)packet->data[4] << 16);
+        time |= ((uint32_t)packet->data[5] << 8);
         time |= packet->data[6]; 
         return time;
     }
