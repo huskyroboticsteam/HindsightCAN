@@ -17,14 +17,26 @@
 
 #include "CANPacket.h"
 
+
 void InitCAN(int deviceGroup, int deviceAddress);
 
+//TODO: define constants for these error codes
+//Returns 0x0 for successful send
+//returns 0x1 for generic error
+//returns 0x2 all output buffers are full
+//Reserve higher numbers for future error codes
 int SendCANPacket(CANPacket *packetToSend);
-CANPacket ReceiveCANPacket();
+
+//Returns 0x0 for SUCCESSFUL packet return
+//Returns 0x1 for no message received
+//Returns 0x2 for generic error
+//Reserve higher numbers for future error codes
+int PollAndReceiveCANPacket(CANPacket *receivedPacket);
 
 uint8_t getLocalDeviceSerial();
 uint8_t getLocalDeviceGroup();
 
+//Returns constant 
 uint8_t getChipType();
 
 //Chip type constants
