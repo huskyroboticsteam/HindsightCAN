@@ -28,8 +28,9 @@ void InitCAN(int deviceGroup, int deviceAddress);
 int SendCANPacket(CANPacket *packetToSend);
 
 //Returns 0x0 for SUCCESSFUL packet return
-//Returns 0x1 for no message received
-//Returns 0x2 for generic error
+//Returns 0x1 for generic error
+//Returns 0x2 for no message received
+//Returns 0x3 for NULL *receivedPacket
 //Reserve higher numbers for future error codes
 int PollAndReceiveCANPacket(CANPacket *receivedPacket);
 
@@ -45,3 +46,7 @@ uint8_t getChipType();
 #define CHIP_TYPE_STM32Fxxx             0x01
 #define CHIP_TYPE_PSOC_CY8C4248AZI-L485 0x02
 #define CHIP_TYPE_ATMEL8BITxx           0x03
+
+//Error code constants
+#define ERROR_NONE              0x00
+#define ERROR_GENERIC_ERROR     0x01
