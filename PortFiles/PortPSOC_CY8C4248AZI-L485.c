@@ -8,33 +8,34 @@
 #if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI-L485//Replace this with the chip you are porting
 
 #include "Port.h"
-#include "/home/dylan-wsl/Documents/HRT/Motor-Unit-Firmware-A-2019-2020/Generated_Source/PSoC4/CAN/CAN.h"
+//#include "/home/dylan-wsl/Documents/HRT/Motor-Unit-Firmware-A-2019-2020/Generated_Source/PSoC4/CAN/CAN.h"
 //Use include below for code, above is just for development
-//#include "../Generated_Source/PSoC4/CAN/CAN.h"
+#include "../Generated_Source/PSoC4/CAN/CAN.h"
 
-//Flag internal to library, 0xFF if no message waiting, doubles as mailbox number
+//Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
 uint8_t messagePresentFlag = 0xFF;
-uint8_t messageData[8];
-uint8_t messageID;
+CANPacket lastestMessage;//internal to this port
 
 CY_ISR(CAN_FLAG_ISR)
 {
-    if(~messagePresentFlag) //Skip handling interrupt if message has not been handled by loop
+    if(!(~messagePresentFlag)) //Skip handling interrupt if message has not been handled by loop
     //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
     {
      /* Clear Receive Message Register flag */
     CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
 
     messagePresentFlag = Can_addr_Read();
-    messageID = CAN_GET_RX_ID(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE0(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE1(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE2(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE3(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE4(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE5(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE6(messagePresentFlag);
-    messageData[0] = CAN_RX_DATA_BYTE7(messagePresentFlag);
+    lastestMessage.id = CAN_GET_RX_ID(messagePresentFlag);
+    lastestMessage.dlc = CAN_GET_DLC(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE0(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE1(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE2(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE3(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE4(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE5(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE6(messagePresentFlag);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE7(messagePresentFlag);
+    }
 }
 
 int deviceAddress;
@@ -53,9 +54,9 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
     #define ID_BITS_HIGH_PRIO   0x00000000u
     static const CAN_RX_CFG CYCODE CAN_RXConfigStruct[] =
     {
-        { 0u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO },
-        { 1u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO | (deviceGroup << 26)},
-        { 2u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO | (deviceGroup << 26) | (deviceAddress << 22) },
+        { 0u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO },//Broadcast message
+        { 1u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO | (deviceGroup << 26)},//Group broadcast
+        { 2u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO | (deviceGroup << 26) | (deviceAddress << 22) },//Direct Message
         { 3u, 0x28u, 0x1FFFF9u, ID_BITS_HIGH_PRIO },
         { 4u, 0x28u, 0x1FFFF9u, ID_BITS_HIGH_PRIO | (deviceGroup << 26)},
         { 5u, 0x28u, 0x1FFFF9u, ID_BITS_HIGH_PRIO | (deviceGroup << 26) | (deviceAddress << 22) },
@@ -119,11 +120,27 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
 }
 int SendCANPacket(CANPacket *packetToSend)
 {
+    CAN_TX_MESSAGE PSoCMessage;
+    PSoCMessage.id = packetToSend->id;
+    PSoCMessage.rtr = 0x0;
+    PSocMessage.ide = 0x0;//Not extended
+    PSoCMessage.dlc = packetToSend->dlc;
+    PSoCMessage.irq = 0x0;
+    PSoCMessage.message = packetToSend->data;//Only pointers
+
+    CAN_SendMsg(&PSoCMessage);
     //Implement sending/ queing to send packet
 }
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
-    receivedPacket->
+    if(!receivedPacket) {return 0x03;}//NULL pointer error
+    if(~messagePresentFlag)
+    {
+        *(receivedPacket) = lastestMessage;
+        messagePresentFlag = 0xFF; //No message present
+        return ERROR_NONE;
+    }
+    return 0x02; //No message received error
 }
 
 uint8_t getLocalDeviceSerial()
