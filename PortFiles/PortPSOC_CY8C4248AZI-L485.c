@@ -42,6 +42,7 @@ int deviceAddress;
 int deviceGroup;
 void InitCAN(int deviceGroupInput, int deviceAddressInput)
 {
+    CAN_Start();
     //TODO: I'm sure there's a better way of doing this part
     deviceGroup = deviceGroupInput;
     deviceAddress = deviceAddressInput;
