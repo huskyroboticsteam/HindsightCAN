@@ -5,7 +5,7 @@
  * Design must include a CAN block called CAN (not CAN0 or variation)
  * Must auto generate code within PSoC IDE to use APIs
  */
-#if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI-L485//Replace this with the chip you are porting
+#if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485//Replace this with the chip you are porting
 
 #include "Port.h"
 //#include "/home/dylan-wsl/Documents/HRT/Motor-Unit-Firmware-A-2019-2020/Generated_Source/PSoC4/CAN/CAN.h"
@@ -161,4 +161,4 @@ uint8_t getChipType()
     return CHIP_TYPE; 
     //Should be same for all ports, just not sure where to put it.
 }
-#endif //CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI-L485
+#endif //CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485
