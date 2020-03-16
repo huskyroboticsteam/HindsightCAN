@@ -13,7 +13,7 @@
 #include "../../Generated_Source/PSoC4/CAN.h"
 
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
-volatile uint8_t messagePresentFlag = 0xFF;
+volatile uint8_t messagePresentFlag = 0x0;
 CANPacket lastestMessage;//internal to this port
 
 #define STATUS_MAILBOX0 0x1
@@ -24,33 +24,34 @@ CANPacket lastestMessage;//internal to this port
 #define STATUS_MAILBOX5 0x20
 CY_ISR(CAN_FLAG_ISR)
 {
-    if(!(~messagePresentFlag)) //Skip handling interrupt if message has not been handled by loop
+    if(messagePresentFlag) //Skip handling interrupt if message has not been handled by loop
     //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
     {
      /* Clear Receive Message Register flag */
 //    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
-    
+    messagePresentFlag = 0x1; 
     uint32_t statusReg = (uint32_t) CAN_BUF_SR_REG;
+    uint8_t mailboxNumber = 0xFF;
     //Hardcoded for speed, translation from reg
     switch(statusReg)
     {
         case STATUS_MAILBOX0:
-            messagePresentFlag = 0;
+            mailboxNumber = 0;
             break;
         case STATUS_MAILBOX1:
-            messagePresentFlag = 1;
+            mailboxNumber = 1;
             break;
         case STATUS_MAILBOX2:
-            messagePresentFlag = 2;
+            mailboxNumber = 2;
             break;
         case STATUS_MAILBOX3:
-            messagePresentFlag = 3;
+            mailboxNumber = 3;
             break;
         case STATUS_MAILBOX4:
-            messagePresentFlag = 4;
+            mailboxNumber = 4;
             break;
         case STATUS_MAILBOX5:
-            messagePresentFlag = 5;
+            mailboxNumber = 5;
             break;
     }
 
@@ -172,13 +173,13 @@ int SendCANPacket(CANPacket *packetToSend)
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
     if(!receivedPacket) {return ERROR_NULL_POINTER;}
-    if(~messagePresentFlag)
+    if(messagePresentFlag)
     {
         *(receivedPacket) = lastestMessage;
-        messagePresentFlag = 0xFF; //No message present
+        messagePresentFlag = 0x0; 
         return ERROR_NONE;
     }
-    return 0x02; //No message received error
+    return 0x03; //No message received error
 }
 
 uint8_t getLocalDeviceSerial()
