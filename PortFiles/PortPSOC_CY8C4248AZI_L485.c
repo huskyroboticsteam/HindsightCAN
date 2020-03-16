@@ -56,14 +56,14 @@ CY_ISR(CAN_FLAG_ISR)
 
     lastestMessage.id = CAN_GET_RX_ID(messagePresentFlag);
     lastestMessage.dlc = CAN_GET_DLC(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE0(messagePresentFlag);
     lastestMessage.data[0] = CAN_RX_DATA_BYTE1(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE2(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE3(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE4(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE5(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE6(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE7(messagePresentFlag);
+    lastestMessage.data[1] = CAN_RX_DATA_BYTE2(messagePresentFlag);
+    lastestMessage.data[2] = CAN_RX_DATA_BYTE3(messagePresentFlag);
+    lastestMessage.data[3] = CAN_RX_DATA_BYTE4(messagePresentFlag);
+    lastestMessage.data[4] = CAN_RX_DATA_BYTE5(messagePresentFlag);
+    lastestMessage.data[5] = CAN_RX_DATA_BYTE6(messagePresentFlag);
+    lastestMessage.data[6] = CAN_RX_DATA_BYTE7(messagePresentFlag);
+    lastestMessage.data[7] = CAN_RX_DATA_BYTE8(messagePresentFlag);
     }
 }
 
