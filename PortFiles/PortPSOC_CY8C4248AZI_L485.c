@@ -13,7 +13,7 @@
 #include "../Generated_Source/PSoC4/CAN/CAN.h"
 
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
-uint8_t messagePresentFlag = 0xFF;
+volatile uint8_t messagePresentFlag = 0xFF;
 CANPacket lastestMessage;//internal to this port
 
 CY_ISR(CAN_FLAG_ISR)
@@ -53,7 +53,7 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
     Link to TRM description on slite*/
     #define ID_BITS_NORMAL_PRIO 0x80000000u
     #define ID_BITS_HIGH_PRIO   0x00000000u
-    static const CAN_RX_CFG CYCODE CAN_RXConfigStruct[] =
+    const CAN_RX_CFG CYCODE CAN_RXConfigStruct[] =
     {
         { 0u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO },//Broadcast message
         { 1u, 0x28u, 0x1FFFF9u, ID_BITS_NORMAL_PRIO | (deviceGroup << 26)},//Group broadcast
@@ -121,20 +121,28 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
 }
 int SendCANPacket(CANPacket *packetToSend)
 {
-    CAN_TX_MESSAGE PSoCMessage;
+    if(!packetToSend) {return ERROR_NULL_POINTER;}
+    CAN_TX_MSG PSoCMessage;
+    CAN_DATA_BYTES_MSG PSoCData;
     PSoCMessage.id = packetToSend->id;
     PSoCMessage.rtr = 0x0;
-    PSocMessage.ide = 0x0;//Not extended
+    PSoCMessage.ide = 0x0;//Not extended
     PSoCMessage.dlc = packetToSend->dlc;
     PSoCMessage.irq = 0x0;
-    PSoCMessage.message = packetToSend->data;//Only pointers
+    PSoCMessage.msg = PSoCData;
+    
+    memcpy(PSocData.byte, packetToSend->data, 8);
 
-    CAN_SendMsg(&PSoCMessage);
-    //Implement sending/ queing to send packet
+    if(CAN_SendMsg(&PSoCMessage) == CYRET_SUCCESS) {
+        return ERROR_NONE;
+    } else
+    {
+        return ERROR_GENERIC_ERROR;
+    }
 }
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
-    if(!receivedPacket) {return 0x03;}//NULL pointer error
+    if(!receivedPacket) {return ERROR_NULL_POINTER;}
     if(~messagePresentFlag)
     {
         *(receivedPacket) = lastestMessage;
