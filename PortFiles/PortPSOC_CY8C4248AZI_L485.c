@@ -7,24 +7,53 @@
  */
 #if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485//Replace this with the chip you are porting
 
-#include "Port.h"
+#include "../Port.h"
 //#include "/home/dylan-wsl/Documents/HRT/Motor-Unit-Firmware-A-2019-2020/Generated_Source/PSoC4/CAN/CAN.h"
 //Use include below for code, above is just for development
-#include "../Generated_Source/PSoC4/CAN/CAN.h"
+#include "../../Generated_Source/PSoC4/CAN.h"
 
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
 volatile uint8_t messagePresentFlag = 0xFF;
 CANPacket lastestMessage;//internal to this port
 
+#define STATUS_MAILBOX0 0x1
+#define STATUS_MAILBOX1 0x2
+#define STATUS_MAILBOX2 0x4
+#define STATUS_MAILBOX3 0x8
+#define STATUS_MAILBOX4 0x10
+#define STATUS_MAILBOX5 0x20
 CY_ISR(CAN_FLAG_ISR)
 {
     if(!(~messagePresentFlag)) //Skip handling interrupt if message has not been handled by loop
     //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
     {
      /* Clear Receive Message Register flag */
-    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
+//    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
+    
+    uint32_t statusReg = (uint32_t) CAN_BUF_SR_REG;
+    //Hardcoded for speed, translation from reg
+    switch(statusReg)
+    {
+        case STATUS_MAILBOX0:
+            messagePresentFlag = 0;
+            break;
+        case STATUS_MAILBOX1:
+            messagePresentFlag = 1;
+            break;
+        case STATUS_MAILBOX2:
+            messagePresentFlag = 2;
+            break;
+        case STATUS_MAILBOX3:
+            messagePresentFlag = 3;
+            break;
+        case STATUS_MAILBOX4:
+            messagePresentFlag = 4;
+            break;
+        case STATUS_MAILBOX5:
+            messagePresentFlag = 5;
+            break;
+    }
 
-    messagePresentFlag = Can_addr_Read();
     lastestMessage.id = CAN_GET_RX_ID(messagePresentFlag);
     lastestMessage.dlc = CAN_GET_DLC(messagePresentFlag);
     lastestMessage.data[0] = CAN_RX_DATA_BYTE0(messagePresentFlag);
@@ -129,9 +158,9 @@ int SendCANPacket(CANPacket *packetToSend)
     PSoCMessage.ide = 0x0;//Not extended
     PSoCMessage.dlc = packetToSend->dlc;
     PSoCMessage.irq = 0x0;
-    PSoCMessage.msg = PSoCData;
+    PSoCMessage.msg = &PSoCData;
     
-    memcpy(PSocData.byte, packetToSend->data, 8);
+    memcpy(PSoCData.byte, packetToSend->data, 8);
 
     if(CAN_SendMsg(&PSoCMessage) == CYRET_SUCCESS) {
         return ERROR_NONE;
