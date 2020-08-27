@@ -14,6 +14,7 @@
 
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
 volatile uint8_t messagePresentFlag = 0xFF;
+volatile uint8_t messageReadFlag = 0x0;
 CANPacket lastestMessage;//internal to this port
 
 #define STATUS_MAILBOX0 0x1
@@ -31,25 +32,26 @@ CAN_RX_CFG rxMailbox;
 void InitCAN(int deviceGroupInput, int deviceAddressInput)
 {
     CAN_Start();
+    
     //TODO: I'm sure there's a better way of doing this part
     deviceGroup = deviceGroupInput & 0xF; // 4bits of ID
     deviceAddress = deviceAddressInput & (0x3f);//6bits of ID
     
-    //sets up recieve mailbox
+    //sets up inidvidual recieve mailbox (3rd priority mailbox)
     rxMailbox.rxmailbox = 0;
     rxMailbox.rxacr = ((deviceGroup << 6)|(deviceAddress)) << 21;  // first 11 bits are the CAN ID that is not extended
     rxMailbox.rxamr = 0x801FFFFF; // what bits to ignore
     rxMailbox.rxcmd = CAN_RX_CMD_REG(CAN_RX_MAILBOX_0);//need to know what this is
     CAN_RxBufConfig(&rxMailbox);
     
-    //setup broadcast recieve mailbox
+    //setup broadcast recieve mailbox (1st priority mailbox)
     rxMailbox.rxmailbox = 1;
     rxMailbox.rxacr = ((0x0 << 6)|(0x0)) << 21; //0x20F<<21; // first 11 bits are the CAN ID that is not extended
     rxMailbox.rxamr = 0x801FFFFF; // what bits to ignore
     rxMailbox.rxcmd = CAN_RX_CMD_REG(CAN_RX_MAILBOX_1);//need to know what this is
     CAN_RxBufConfig(&rxMailbox);
     
-    //setup group broadcast recieve mailbox
+    //setup group broadcast recieve mailbox (2nd priority mailbox)
     rxMailbox.rxmailbox = 2;
     rxMailbox.rxacr = ((deviceGroup << 6)|(0x0)) << 21; //0x20F<<21; // first 11 bits are the CAN ID that is not extended
     rxMailbox.rxamr = 0x801FFFFF; // what bits to ignore
@@ -59,6 +61,7 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
     CAN_GlobalIntEnable();
     CyIntSetVector(CAN_ISR_NUMBER, CAN_FLAG_ISR);
     //CY_ISR_PROTO(CAN_FLAG_ISR);
+    
 }
 int SendCANPacket(CANPacket *packetToSend)
 {
@@ -81,13 +84,14 @@ int SendCANPacket(CANPacket *packetToSend)
         return ERROR_GENERIC_ERROR;
     }
 }
+//
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
     if(!receivedPacket) {return ERROR_NULL_POINTER;}
-    if(~messagePresentFlag)
+    if(messagePresentFlag)
     {
         *(receivedPacket) = lastestMessage;
-        messagePresentFlag = 0xFF; //No message present
+        messagePresentFlag = 0x0; //No message present
         return ERROR_NONE;
     }
     return 0x02; //No message received error
@@ -113,64 +117,41 @@ uint8_t getChipType()
 
 CY_ISR(CAN_FLAG_ISR)
 {
-    /* Clear Receive Message flag */
-    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
-    //if(!(~messagePresentFlag)) //Skip handling interrupt if message has not been handled by loop
-    //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
-  //  {
-     /* Clear Receive Message Register flag */
-//    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
+
+    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK; //Clear Receive Message flag
     
-    uint32_t statusReg = (uint32_t) CAN_BUF_SR_REG;
-    //Hardcoded for speed, translation from reg
-    if(statusReg & 0b1) { // mailbox0 is full
-        messagePresentFlag = CAN_RX_MAILBOX_0;
-        CAN_RX_ACK_MESSAGE(CAN_RX_MAILBOX_0);
+    uint32_t statusReg = (uint32_t) CAN_BUF_SR_REG; //Hardcoded for speed, translation from reg
+    uint8_t mailbox;
+    
+    if(statusReg & 0b1) { // mailbox0 is full (individual)
+        mailbox = CAN_RX_MAILBOX_0;
     }
-    else if(statusReg & 0b10) { // mailbox1 is full
-        messagePresentFlag = CAN_RX_MAILBOX_1;
-        CAN_RX_ACK_MESSAGE(CAN_RX_MAILBOX_1);
+    else if(statusReg & 0b10) { // mailbox1 is full (broadcast)
+        mailbox = CAN_RX_MAILBOX_1;
     }    
-    else if(statusReg & 0b100) { // mailbox1 is full
-        messagePresentFlag = CAN_RX_MAILBOX_2;
-        CAN_RX_ACK_MESSAGE(CAN_RX_MAILBOX_2);
+    else if(statusReg & 0b100) { // mailbox2 is full (group broadcast)
+        mailbox = CAN_RX_MAILBOX_2;
     } 
-    else if(statusReg & 0b1000) { // mailbox1 is full
-        messagePresentFlag = CAN_RX_MAILBOX_3;
-        CAN_RX_ACK_MESSAGE(CAN_RX_MAILBOX_3);
+    else if(statusReg & 0b1000) { // mailbox3 is full currently recieves anything will remove
+        mailbox = CAN_RX_MAILBOX_3;
     }
-   /* switch(statusReg)
+
+    if(!messagePresentFlag) //Skip handling interrupt if message has not been handled by loop
+    //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
     {
-        case STATUS_MAILBOX0:
-            messagePresentFlag = 0;
-            break;
-        case STATUS_MAILBOX1:
-            messagePresentFlag = 1;
-            break;
-        case STATUS_MAILBOX2:
-            messagePresentFlag = 2;
-            break;
-        case STATUS_MAILBOX3:
-            messagePresentFlag = 3;
-            break;
-        case STATUS_MAILBOX4:
-            messagePresentFlag = 4;
-            break;
-        case STATUS_MAILBOX5:
-            messagePresentFlag = 5;
-            break;
-    }
-*/
-    lastestMessage.id = CAN_GET_RX_ID(messagePresentFlag);
-    lastestMessage.dlc = CAN_GET_DLC(messagePresentFlag);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE1(messagePresentFlag);
-    lastestMessage.data[1] = CAN_RX_DATA_BYTE2(messagePresentFlag);
-    lastestMessage.data[2] = CAN_RX_DATA_BYTE3(messagePresentFlag);
-    lastestMessage.data[3] = CAN_RX_DATA_BYTE4(messagePresentFlag);
-    lastestMessage.data[4] = CAN_RX_DATA_BYTE5(messagePresentFlag);
-    lastestMessage.data[5] = CAN_RX_DATA_BYTE6(messagePresentFlag);
-    lastestMessage.data[6] = CAN_RX_DATA_BYTE7(messagePresentFlag);
-    lastestMessage.data[7] = CAN_RX_DATA_BYTE8(messagePresentFlag);
-   // }
+    lastestMessage.id = CAN_GET_RX_ID(mailbox);
+    lastestMessage.dlc = CAN_GET_DLC(mailbox);
+    lastestMessage.data[0] = CAN_RX_DATA_BYTE1(mailbox);
+    lastestMessage.data[1] = CAN_RX_DATA_BYTE2(mailbox);
+    lastestMessage.data[2] = CAN_RX_DATA_BYTE3(mailbox);
+    lastestMessage.data[3] = CAN_RX_DATA_BYTE4(mailbox);
+    lastestMessage.data[4] = CAN_RX_DATA_BYTE5(mailbox);
+    lastestMessage.data[5] = CAN_RX_DATA_BYTE6(mailbox);
+    lastestMessage.data[6] = CAN_RX_DATA_BYTE7(mailbox);
+    lastestMessage.data[7] = CAN_RX_DATA_BYTE8(mailbox);
+    messagePresentFlag = 0x1;
+    } 
+    //CAN_ReceiveMsg(messagePresentFlag);
+    CAN_RX_ACK_MESSAGE(mailbox);
 }
 #endif //CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485
