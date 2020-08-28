@@ -15,7 +15,15 @@
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
 volatile uint8_t messagePresentFlag = 0xFF;
 volatile uint8_t messageReadFlag = 0x0;
-CANPacket lastestMessage;//internal to this port
+uint8_t FIFOSize(void);
+void countAddFIFO(void);
+void countRemoveFIFO(void);
+
+#define FIFO_SIZE   16
+CANPacket latestMessage[FIFO_SIZE];//internal to this port acts like a FIFO with 10 packet storage
+uint8_t latestMessageHead = 0; //which index to read
+uint8_t latestMessageTail = 0; //which index to write to next
+uint8_t latestMessageFull = 0; //FIFO is full
 
 #define STATUS_MAILBOX0 0x1
 #define STATUS_MAILBOX1 0x2
@@ -24,6 +32,7 @@ CANPacket lastestMessage;//internal to this port
 #define STATUS_MAILBOX4 0x10
 #define STATUS_MAILBOX5 0x20
 
+
 CY_ISR_PROTO(CAN_FLAG_ISR);
 
 int deviceAddress;
@@ -31,7 +40,7 @@ int deviceGroup;
 CAN_RX_CFG rxMailbox;
 void InitCAN(int deviceGroupInput, int deviceAddressInput)
 {
-    CAN_Start();
+    CAN_Start();//must name CAN Top Design block as "CAN"
     
     //TODO: I'm sure there's a better way of doing this part
     deviceGroup = deviceGroupInput & 0xF; // 4bits of ID
@@ -88,10 +97,10 @@ int SendCANPacket(CANPacket *packetToSend)
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
     if(!receivedPacket) {return ERROR_NULL_POINTER;}
-    if(messagePresentFlag)
+    if(FIFOSize())
     {
-        *(receivedPacket) = lastestMessage;
-        messagePresentFlag = 0x0; //No message present
+        *(receivedPacket) = latestMessage[latestMessageHead];
+        countRemoveFIFO();
         return ERROR_NONE;
     }
     return 0x02; //No message received error
@@ -115,6 +124,47 @@ uint8_t getChipType()
     //Should be same for all ports, just not sure where to put it.
 }
 
+//helper function calculate size of Fifo
+uint8_t FIFOSize(){
+    if(latestMessageFull) {
+        return FIFO_SIZE;
+    }
+    else if(latestMessageHead < latestMessageTail) {
+        return latestMessageHead - latestMessageTail;
+    }
+    else if(latestMessageHead > latestMessageTail) {
+        return (FIFO_SIZE - latestMessageHead) + latestMessageTail;
+    }
+    else { // latestMessageHead == latestMessageTail && !latestMessageFull
+        return 0;
+    }
+}
+
+void countAddFIFO(){ 
+    latestMessageTail++;
+    if(latestMessageTail >= FIFO_SIZE){
+        latestMessageTail = 0;
+    }
+    if(latestMessageFull) {
+        latestMessageHead++;
+        if(latestMessageHead >= FIFO_SIZE) {
+            latestMessageHead = 0;
+        }
+    }
+    latestMessageFull = (latestMessageHead == latestMessageTail);
+}
+
+void countRemoveFIFO(){
+    if(FIFOSize() > 0) {
+        latestMessageHead++;
+        if(latestMessageHead >= FIFO_SIZE) {
+            latestMessageHead = 0;
+        }
+    }
+}
+
+
+
 CY_ISR(CAN_FLAG_ISR)
 {
 
@@ -135,22 +185,19 @@ CY_ISR(CAN_FLAG_ISR)
     else if(statusReg & 0b1000) { // mailbox3 is full currently recieves anything will remove
         mailbox = CAN_RX_MAILBOX_3;
     }
+    
+    latestMessage[latestMessageTail].id = CAN_GET_RX_ID(mailbox);
+    latestMessage[latestMessageTail].dlc = CAN_GET_DLC(mailbox);
+    latestMessage[latestMessageTail].data[0] = CAN_RX_DATA_BYTE1(mailbox);
+    latestMessage[latestMessageTail].data[1] = CAN_RX_DATA_BYTE2(mailbox);
+    latestMessage[latestMessageTail].data[2] = CAN_RX_DATA_BYTE3(mailbox);
+    latestMessage[latestMessageTail].data[3] = CAN_RX_DATA_BYTE4(mailbox);
+    latestMessage[latestMessageTail].data[4] = CAN_RX_DATA_BYTE5(mailbox);
+    latestMessage[latestMessageTail].data[5] = CAN_RX_DATA_BYTE6(mailbox);
+    latestMessage[latestMessageTail].data[6] = CAN_RX_DATA_BYTE7(mailbox);
+    latestMessage[latestMessageTail].data[7] = CAN_RX_DATA_BYTE8(mailbox);
+    countAddFIFO();
 
-    if(!messagePresentFlag) //Skip handling interrupt if message has not been handled by loop
-    //TODO: will it immediately retrigger the ISR without giving the loop anytime to run?
-    {
-    lastestMessage.id = CAN_GET_RX_ID(mailbox);
-    lastestMessage.dlc = CAN_GET_DLC(mailbox);
-    lastestMessage.data[0] = CAN_RX_DATA_BYTE1(mailbox);
-    lastestMessage.data[1] = CAN_RX_DATA_BYTE2(mailbox);
-    lastestMessage.data[2] = CAN_RX_DATA_BYTE3(mailbox);
-    lastestMessage.data[3] = CAN_RX_DATA_BYTE4(mailbox);
-    lastestMessage.data[4] = CAN_RX_DATA_BYTE5(mailbox);
-    lastestMessage.data[5] = CAN_RX_DATA_BYTE6(mailbox);
-    lastestMessage.data[6] = CAN_RX_DATA_BYTE7(mailbox);
-    lastestMessage.data[7] = CAN_RX_DATA_BYTE8(mailbox);
-    messagePresentFlag = 0x1;
-    } 
     //CAN_ReceiveMsg(messagePresentFlag);
     CAN_RX_ACK_MESSAGE(mailbox);
 }
