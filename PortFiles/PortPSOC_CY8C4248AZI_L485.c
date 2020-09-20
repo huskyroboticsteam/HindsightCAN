@@ -20,10 +20,10 @@ void countAddFIFO(void);
 void countRemoveFIFO(void);
 
 #define FIFO_SIZE   16
-CANPacket latestMessage[FIFO_SIZE];//internal to this port acts like a FIFO with 10 packet storage
-uint8_t latestMessageHead = 0; //which index to read
-uint8_t latestMessageTail = 0; //which index to write to next
-uint8_t latestMessageFull = 0; //FIFO is full
+volatile CANPacket latestMessage[FIFO_SIZE];//internal to this port acts like a FIFO with 10 packet storage
+volatile uint8_t latestMessageHead = 0; //which index to read
+volatile uint8_t latestMessageTail = 0; //which index to write to next
+volatile uint8_t latestMessageFull = 0; //FIFO is full
 
 #define STATUS_MAILBOX0 0x1
 #define STATUS_MAILBOX1 0x2
@@ -96,8 +96,11 @@ int SendCANPacket(CANPacket *packetToSend)
 //
 int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
-    if(!receivedPacket) {return ERROR_NULL_POINTER;}
-    if(FIFOSize())
+    if(!receivedPacket) {
+        return ERROR_NULL_POINTER;
+    }
+    volatile uint8_t size = FIFOSize();
+    if(size)
     {
         *(receivedPacket) = latestMessage[latestMessageHead];
         countRemoveFIFO();
@@ -130,7 +133,7 @@ uint8_t FIFOSize(){
         return FIFO_SIZE;
     }
     else if(latestMessageHead < latestMessageTail) {
-        return latestMessageHead - latestMessageTail;
+        return latestMessageTail - latestMessageHead;
     }
     else if(latestMessageHead > latestMessageTail) {
         return (FIFO_SIZE - latestMessageHead) + latestMessageTail;
@@ -168,8 +171,8 @@ void countRemoveFIFO(){
 CY_ISR(CAN_FLAG_ISR)
 {
 
-    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK; //Clear Receive Message flag
-    
+    //*(reg32*)0x402F0000 = CAN_RX_MESSAGE_MASK & CAN_SST_FAILURE_MASK & CAN_CRC_ERROR_MASK; //Clear Receive Message flag
+    CAN_INT_SR_REG = CAN_RX_MESSAGE_MASK;
     uint32_t statusReg = (uint32_t) CAN_BUF_SR_REG; //Hardcoded for speed, translation from reg
     uint8_t mailbox;
     
