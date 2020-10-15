@@ -1,7 +1,7 @@
 /*
  * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  */
-#if CHIP_TYPE == CHIP_TYPE_ATMEL8BITxx
+#if CHIP_TYPE == CHIP_TYPE_AT90CANxxx
 
 #include "Port.h"
 #include <stddef.h>
@@ -21,7 +21,7 @@
 #include <util/delay.h>
 
 volatile uint8_t msgs_av; //Number of messages unclaimed messages
-volatile uint8_t rxed_mobs[2]; //Tracks which MObs have messages recieved
+volatile uint8_t rxed_mobs[2]; //Tracks which MObs have messages received
 
 uint8_t devGrp, devSer;
 
@@ -74,15 +74,14 @@ ISR(CANIT_vect){
 /*Reset the receive filter for the given MOb*/
 void set_mob_rx_filter(int mob){
 	select_mob(mob);
-	uint16_t RX_mask = 0x1F; // mask out priority bit, compare on everything else
-	uint16_t RX_tag;
-	if(mob == 0){ //0th MOb is for broadcast packets, all 0s
-		RX_tag = 0;
-	} else if(mob > 0 && mob <= 2){ //1st und 2nd MOb is for device group broadcasts, match device group and 0 serial
+	uint16_t RX_mask = 0x3FF; // mask out priority bit, compare on everything else
+	uint16_t RX_tag = 0; //0th MOb is for broadcast packets, all 0s
+	if(mob > 0 && mob <= 2){ //1st und 2nd MOb is for device group broadcasts, match device group and 0 serial
 		RX_tag = devGrp << 6;
 	} else if(mob > 2 && mob <= 4){ //2nd and 3rd MOb is for the device specific message. Match the whole ID
 		RX_tag = (devGrp << 6) | devSer;
 	}
+
 	CANIDM4 = 0;
 	CANIDM3 = 0;
 	CANIDT4 = 0;
@@ -114,7 +113,7 @@ void init_CAN(uint32_t rate, uint16_t deviceGroup, uint16_t deviceSerial){
 	uint8_t i;
 	/*Initialize MOBs*/
 	for(i = 0;i < 15;i++){
-		if(i <= 4){ /*MObs > 4 are RX mobs
+		if(i <= 4){ /*MObs <= 4 are RX mobs*/
 			/*Set up the match registers*/
 			CANSTMOB &= 0;
 			set_mob_rx_filter(i);
@@ -234,4 +233,4 @@ uint8_t getChipType()
     return CHIP_TYPE; 
     //Should be same for all ports, just not sure where to put it.
 }
-#endif //CHIP_TYPE == CHIP_TYPE_ATMEL8BITxx
+#endif //CHIP_TYPE == CHIP_TYPE_ATMEL90CANxxx
