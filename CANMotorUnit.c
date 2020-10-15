@@ -80,7 +80,7 @@ void AssemblePSetPacket(CANPacket *packetToAssemble,
 
 int32_t GetPFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_P_SET - 5, DLC_MOTOR_UNIT_PID_P_SET - 1);
+    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_P_SET - 4, DLC_MOTOR_UNIT_PID_P_SET );
 }
 
 void AssembleISetPacket(CANPacket *packetToAssemble,
@@ -96,7 +96,7 @@ void AssembleISetPacket(CANPacket *packetToAssemble,
 
 int32_t GetIFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_I_SET - 5, DLC_MOTOR_UNIT_PID_I_SET - 1);
+    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_I_SET - 4, DLC_MOTOR_UNIT_PID_I_SET );
 }
 
 void AssembleDSetPacket(CANPacket *packetToAssemble,
@@ -112,7 +112,7 @@ void AssembleDSetPacket(CANPacket *packetToAssemble,
 
 int32_t GetDFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_D_SET - 5, DLC_MOTOR_UNIT_PID_D_SET - 1);
+    return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_D_SET - 4, DLC_MOTOR_UNIT_PID_D_SET);
 }
 
 void AssembleInitializePacket(CANPacket *packetToAssemble,
@@ -151,7 +151,7 @@ void AssembleEncoderPPJRSetPacket(CANPacket *packetToAssemble,
     uint32_t pulses)
 {
     packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_ENC_PPJR_SET, targetDeviceGroup, targetDeviceSerial);
-    packetToAssemble->id = DLC_MOTOR_UNIT_ENC_PPJR_SET;
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_ENC_PPJR_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_ENC_PPJR_SET);
     PackIntIntoDataMSBFirst(packetToAssemble->data, pulses, nextByte);
 }

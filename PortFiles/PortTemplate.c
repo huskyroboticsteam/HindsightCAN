@@ -14,7 +14,7 @@ int SendCANPacket(CANPacket *packetToSend)
 {
     //Implement sending/ queing to send packet
 }
-CANPacket ReceiveCANPacket()
+int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 {
     //Implement get next CAN packet from buffers/registers
 }

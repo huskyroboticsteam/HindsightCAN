@@ -75,3 +75,17 @@ uint8_t GetGPIOWriteValuesFromPacket(CANPacket *packet);
 #define GPIO_WRITE_OFF      0x0
 #define GPIO_WRITE_ON       0x1
 #define GPIO_WRITE_FLIP     0x2
+
+//GPIO DLC
+#define DLC_GPIO_PWM_FREQ           (uint8_t) 0x04
+#define DLC_GPIO_PWM_DUTY_CYCLE     (uint8_t) 0x04
+#define DLC_GPIO_ADC_STATE          (uint8_t) 0x03
+#define DLC_GPIO_CONFIG             (uint8_t) 0x04
+#define DLC_GPIO_WRITE              (uint8_t) 0x04
+
+//GPIO Packet IDs
+#define ID_GPIO_PWM_FREQ           (uint8_t) 0x00
+#define ID_GPIO_PWM_DUTY_CYCLE     (uint8_t) 0x01
+#define ID_GPIO_ADC_STATE          (uint8_t) 0x02
+#define ID_GPIO_CONFIG             (uint8_t) 0x03
+#define ID_GPIO_WRITE              (uint8_t) 0x04

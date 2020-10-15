@@ -207,10 +207,10 @@ void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex)
 int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
 {
     int length = 4;
-    int32_t decodedData = 0;
+    int32_t decodedData = 0; 
 
     if (endIndex > 0 && startIndex >= 0) {
-        length = endIndex - startIndex;
+        length = endIndex - startIndex + 1;
         if (length > 4) { length = 4; }
         if (length < 1) { length = 0; }
     }
