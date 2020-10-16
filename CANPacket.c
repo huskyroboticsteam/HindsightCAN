@@ -63,7 +63,7 @@ CANPacket ConstructCANPacket(uint16_t id, uint8_t dlc, uint8_t* data)
 //                      Index of next byte in `data` that can be written
 int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID)
 {
-    data[0] = ((getLocalDeviceGroup() & 0x0C) << 4) | packetID;
+    data[0] = packetID;
     data[1] = ((getLocalDeviceGroup() & 0x03) << 6) | getLocalDeviceSerial();
     return 2;
 }
@@ -77,7 +77,7 @@ int WriteSenderSerialAndPacketID(uint8_t *data, uint8_t packetID)
 //                      Index to next byte in `data` that can be written;
 int WritePacketIDOnly(uint8_t *data, uint8_t packetID)
 {
-    data[0] = ((PACKET_GROUP_NO_SENDER_SERIAL & 0x0C) << 4) | packetID;
+    data[0] =  packetID;
     return 1;
 }
 
@@ -164,7 +164,7 @@ int SenderPacketIsOfDevice(CANPacket *packet, uint8_t expectedType)
 
 int GetPacketID(CANPacket *packet)
 {
-    return packet->data[0] & 0x3F;
+    return packet->data[0];
 }
 
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID)
