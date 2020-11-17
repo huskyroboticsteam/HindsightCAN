@@ -95,6 +95,7 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_LIM_ALERT         (uint8_t) 0x09
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
+#define ID_MOTOR_UNIT_SERVO_SET         (uint8_t) 0x0C
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x02

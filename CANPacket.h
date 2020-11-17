@@ -42,6 +42,7 @@ int GetPacketID(CANPacket *packet);
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
 void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex);
+void PackShortIntoDataMSBFirst(uint8_t *data, int16_t dataToPack, int startIndex);
 int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 
 // Device group nibbles

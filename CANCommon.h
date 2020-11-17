@@ -118,6 +118,16 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define PACKET_TELEMETRY_GYRO_Y         (uint8_t) 0x0C
 #define PACKET_TELEMETRY_GYRO_Z         (uint8_t) 0x0D
 #define PACKET_TELEMETRY_LIM_SW_STATE   (uint8_t) 0x0E
+#define PACKET_TELEMETRY_MOTOR1_ENC     (uint8_t) 0x0F
+#define PACKET_TELEMETRY_MOTOR2_ENC     (uint8_t) 0x10
+#define PACKET_TELEMETRY_MOTOR3_ENC     (uint8_t) 0x11
+#define PACKET_TELEMETRY_MOTOR4_ENC     (uint8_t) 0x12
+#define PACKET_TELEMETRY_SENSOR1        (uint8_t) 0x13
+#define PACKET_TELEMETRY_SENSOR2        (uint8_t) 0x14
+#define PACKET_TELEMETRY_SENSOR3        (uint8_t) 0x15
+#define PACKET_TELEMETRY_SENSOR4        (uint8_t) 0x16
+#define PACKET_TELEMETRY_SENSOR5        (uint8_t) 0x17
+#define PACKET_TELEMETRY_SENSOR6        (uint8_t) 0x18
 
 // ESTOP ERROR CODES
 #define ESTOP_ERR_GENERAL               (uint8_t) 0x00
