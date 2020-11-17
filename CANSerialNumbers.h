@@ -14,6 +14,8 @@
 // broadcast a packet to all devices.
 // Use this serial number and a specific device group to 
 // broadcast a packet to all devices within a group.
+#pragma once
+
 #define DEVICE_SERIAL_BROADCAST         (uint8_t) 0x00
 
 // JETSON GROUP
@@ -52,6 +54,7 @@
 #define DEVICE_SERIAL_TELEM_SCIENCE             (uint8_t) 0x04
 
 //Group numbers
+/*
 #define DEVICE_GROUP_BROADCAST  0x0
 #define DEVICE_GROUP_RESERVED   0x1
 #define DEVICE_GROUP_MASTER     0x2
@@ -59,3 +62,4 @@
 #define DEVICE_GROUP_MOTORS     0x4
 #define DEVICE_GROUP_TELEM      0x5
 #define DEVICE_GROUP_GPIO       0x6
+*/
