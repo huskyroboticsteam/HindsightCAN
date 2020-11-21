@@ -37,12 +37,12 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
     packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PWM_DIR_SET;
     int nextByte = WritePacketIDOnly(packetToAssemble->data, DLC_MOTOR_UNIT_PWM_DIR_SET);
-    PackIntIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
+    PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 }
 
 int32_t GetPWMFromPacket(CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, 1, 4);
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
 
 //Returns 2's compliment MSB (0 for stopped or forward, 1 for reverse)
