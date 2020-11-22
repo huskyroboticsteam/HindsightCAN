@@ -22,7 +22,7 @@ uint8_t GetModeFromPacket(CANPacket *packet);
 void AssemblePWMDirSetPacket(CANPacket *packetToAssemble, 
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
-    int32_t PWMSet);
+    int16_t PWMSet);
 int32_t GetPWMFromPacket(CANPacket *packet);
 int32_t GetDirectionFromPacket(CANPacket *packet);
 

@@ -32,7 +32,7 @@ uint8_t GetModeFromPacket(CANPacket *packet)
 void AssemblePWMDirSetPacket(CANPacket *packetToAssemble, 
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
-    int32_t PWMSet)
+    int16_t PWMSet)
 {
     packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_MOTOR_UNIT_PWM_DIR_SET;
