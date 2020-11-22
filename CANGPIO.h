@@ -13,8 +13,8 @@
 
 //Set PWM Frequency
 void AssembleGPIOSetPWMFrequencyPacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t pwmChannel,
     uint16_t frequency);
 uint8_t GetGPIOPWMChannelFromPacket(CANPacket *packet);
@@ -22,8 +22,8 @@ uint16_t GetGPIOPWMFrequencyFromPacket(CANPacket *packet);
 
 //Set PWM Duty Cycle
 void AssembleGPIOSetPWMDutyCyclePacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t pwmChannel,
     uint16_t dutyCycle);
 uint16_t GetGPIOPWMDutyCycle(CANPacket *packetToAssemble);
@@ -31,8 +31,8 @@ uint16_t GetGPIOPWMDutyCycle(CANPacket *packetToAssemble);
 
 //Set ADC State
 void AssembleGPIOSetADCStateConfiguration(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t ADCChannel,
     uint8_t state);
 uint8_t GetGPIOADCChannelFromPacket(CANPacket *packet);
@@ -41,8 +41,8 @@ uint8_t GetGPIOADCStateFromPacket(CANPacket *packet);
 
 //Set GPIO Configuration
 void AssembleGPIOSetConfigurationPacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t GPIORegister,
     uint8_t bitNumber,
     uint8_t bitConfig);
@@ -53,8 +53,8 @@ uint8_t GetGPIOBitConfigFromPacket(CANPacket *packet);
 
 //GPIO Write 
 void AssembleGPIOWrite(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t GPIORegister,
     uint8_t bitNumber,
     uint8_t bitWriteValue);
