@@ -26,4 +26,8 @@ int16_t GetScienceMotorPWMFromPacket(CANPacket *packet);
 
 uint8_t GetScienceMotorIDFromPacket(CANPacket *packet);
 
+uint8_t GetScienceServoIDFromPacket(CANPacket *packet);
+
+uint8_t GetScienceServoAngleFromPacket(CANPacket *packet);
+
 #endif

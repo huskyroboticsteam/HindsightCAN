@@ -53,6 +53,7 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 #define DEVICE_GROUP_MOTOR_CONTROL      (uint8_t) 0x04
 #define DEVICE_GROUP_TELEMETRY          (uint8_t) 0x05
 #define DEVICE_GROUP_GPIO_BOARDS        (uint8_t) 0x06
+#define DEVICE_GROUP_SCIENCE            (uint8_t) 0x07
 
 // Priority bits
 #define PACKET_PRIORITY_HIGH            (uint8_t) 0x00
