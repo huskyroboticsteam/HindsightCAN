@@ -37,18 +37,24 @@ void AssembleScienceServoPacket(CANPacket *packetToAssemble,
 	packetToAssemble->data[2] = degrees;
 }
 
-uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
-	return packet->data[1];
-}
-
-uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
-	return packet->data[2];
-}
-
 int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
 	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
 
 uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
+	return packet->data[2];
+}
+
+uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
+	return packet->data[2];int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
+	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+}
+
+uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
 	return packet->data[3];
+}
+}
+
+uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
+	return packet->data[1];
 }
