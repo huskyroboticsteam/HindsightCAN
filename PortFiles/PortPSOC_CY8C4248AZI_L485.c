@@ -61,7 +61,7 @@ void InitCAN(int deviceGroupInput, int deviceAddressInput)
     
     //setup group broadcast recieve mailbox (2nd priority mailbox)
     rxMailbox.rxmailbox = 2;
-    rxMailbox.rxacr = ((deviceGroup << 6)|(0x0)) << 21; //0x20F<<21; // first 11 bits are the CAN ID that is not extended
+    rxMailbox.rxacr = ((deviceGroup << 6)|(0x3F)) << 21; //0x20F<<21; // first 11 bits are the CAN ID that is not extended
     rxMailbox.rxamr = 0x801FFFFF; // what bits to ignore
     rxMailbox.rxcmd = CAN_RX_CMD_REG(CAN_RX_MAILBOX_2);//need to know what this is
     CAN_RxBufConfig(&rxMailbox);
@@ -110,14 +110,11 @@ int PollAndReceiveCANPacket(CANPacket *receivedPacket)
 
 uint8_t getLocalDeviceSerial()
 {
-    //Reading DIP switches? Hard coded?
-    //This might be board specific, rather than chip specific.
-    return deviceAddress; // example value (also used for testing)
+    return deviceAddress; 
 }
 uint8_t getLocalDeviceGroup()
 {
-    //Definitely board specific.
-    return deviceGroup; // example value (also used for testing)
+    return deviceGroup;
 }
 
 uint8_t getChipType()
@@ -183,7 +180,7 @@ CY_ISR(CAN_FLAG_ISR)
     else if(statusReg & 0b100) { // mailbox2 is full (group broadcast)
         mailbox = CAN_RX_MAILBOX_2;
     } 
-    else if(statusReg & 0b1000) { // mailbox3 is full currently recieves anything will remove
+    else if(statusReg & 0b1000) { // mailbox3 is full currently recieves anything enable in top design 
         mailbox = CAN_RX_MAILBOX_3;
     }
     
