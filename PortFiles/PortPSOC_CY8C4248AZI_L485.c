@@ -1,17 +1,16 @@
 /*
- * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
+ * Authors: Austin Chan
+ * Documentation: ClickUp
  * 
  * Port specific notes:
  * Design must include a CAN block called CAN (not CAN0 or variation)
  * Must auto generate code within PSoC IDE to use APIs
  */
-#if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485//Replace this with the chip you are porting
+#if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485
 
 #include "../Port.h"
-//#include "/home/dylan-wsl/Documents/HRT/Motor-Unit-Firmware-A-2019-2020/Generated_Source/PSoC4/CAN/CAN.h"
-//Use include below for code, above is just for development
-#include "../../Generated_Source/PSoC4/CAN.h"
-
+#include "project.h"
+    
 //Flag internal to this port, 0xFF if no message waiting, doubles as mailbox number
 volatile uint8_t messagePresentFlag = 0xFF;
 volatile uint8_t messageReadFlag = 0x0;
@@ -124,7 +123,6 @@ uint8_t getLocalDeviceGroup()
 uint8_t getChipType()
 {
     return CHIP_TYPE; 
-    //Should be same for all ports, just not sure where to put it.
 }
 
 //helper function calculate size of Fifo
