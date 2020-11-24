@@ -85,17 +85,17 @@ void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
 uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
 // Motor Unit Packet IDs
-#define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0xF0
-#define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0xF3
-#define ID_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0xF4
-#define ID_MOTOR_UNIT_PID_P_SET         (uint8_t) 0xF5
-#define ID_MOTOR_UNIT_PID_I_SET         (uint8_t) 0xF6
-#define ID_MOTOR_UNIT_PID_D_SET         (uint8_t) 0xF7
-#define ID_MOTOR_UNIT_INIT              (uint8_t) 0xF8
-#define ID_MOTOR_UNIT_LIM_ALERT         (uint8_t) 0xF9
-#define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0xFA
-#define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0xFB
-#define ID_MOTOR_UNIT_SERVO_SET         (uint8_t) 0xFC
+#define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
+#define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
+#define ID_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x04
+#define ID_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x05
+#define ID_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x06
+#define ID_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x07
+#define ID_MOTOR_UNIT_INIT              (uint8_t) 0x08
+#define ID_MOTOR_UNIT_LIM_ALERT         (uint8_t) 0x09
+#define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
+#define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
+#define ID_MOTOR_UNIT_SERVO_SET         (uint8_t) 0x0C
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x02
