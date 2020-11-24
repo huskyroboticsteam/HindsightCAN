@@ -116,7 +116,7 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_PID_I_SET            (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_PID_D_SET            (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_INIT                 (uint8_t) 0x02
-#define DLC_MOTOR_UNIT_LIM_ALERT            (uint8_t) 0x03
+#define DLC_MOTOR_UNIT_LIM_ALERT            (uint8_t) 0x04
 #define DLC_MOTOR_UNIT_ENC_PPJR_SET         (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_MAX_JNT_REV_SET      (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
