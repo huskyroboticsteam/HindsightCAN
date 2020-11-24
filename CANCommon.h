@@ -92,7 +92,7 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define DLC_HEARTBEAT                    (uint8_t) 0x08
 #define DLC_FAIL_REPORT                  (uint8_t) 0x04
 #define DLC_OVRD_PROTECTION              (uint8_t) 0x01
-#define DLC_TELEMETRY_TIMING             (uint8_t) 0x06
+#define DLC_TELEMETRY_TIMING             (uint8_t) 0x08
 #define DLC_TELEMETRY_PULL               (uint8_t) 0x04
 #define DLC_TELEMETRY_REPORT             (uint8_t) 0x08
 #define DLC_LED_COLOR                    (uint8_t) 0x06

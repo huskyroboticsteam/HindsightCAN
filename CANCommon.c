@@ -194,9 +194,9 @@ void AssembleTelemetryTimingPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
     packetToAssemble->dlc = DLC_TELEMETRY_TIMING;
-    int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_TELEMETRY_TIMING);
+    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_TELEMETRY_TIMING);
     packetToAssemble->data[nextByte] = telemetryTypeCode;
-    PackIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, 3);
+    PackIntIntoDataMSBFirst(packetToAssemble->data, msBetweenReports, nextByte + 1);
 }
 uint32_t GetTelemetryTimingFromPacket(CANPacket *packetToAssemble)
 {
