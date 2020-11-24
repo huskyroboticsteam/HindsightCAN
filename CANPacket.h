@@ -49,7 +49,7 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
 #define DEVICE_GROUP_BROADCAST          (uint8_t) 0x00
 #define DEVICE_GROUP_RESERVED           (uint8_t) 0x01 // DO NOT USE. For future expansion
 #define DEVICE_GROUP_JETSON             (uint8_t) 0x02
-#define DEVICE_GROUP_MASTER				DEVICE_GROUP_JETSON
+#define DEVICE_GROUP_MASTER             DEVICE_GROUP_JETSON
 #define DEVICE_GROUP_POWER              (uint8_t) 0x03
 #define DEVICE_GROUP_MOTOR_CONTROL      (uint8_t) 0x04
 #define DEVICE_GROUP_TELEMETRY          (uint8_t) 0x05
