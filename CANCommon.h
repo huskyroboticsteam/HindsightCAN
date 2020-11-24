@@ -76,16 +76,16 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
     uint8_t B);
 
 // Common Mode Packet IDs
-#define ID_ESTOP                        (uint8_t) 0x30
-#define ID_HEARTBEAT                    (uint8_t) 0x31
-#define ID_FAIL_REPORT                  (uint8_t) 0x32
-#define ID_OVRD_PROTECTION              (uint8_t) 0x33
-#define ID_TELEMETRY_TIMING             (uint8_t) 0x34
-#define ID_TELEMETRY_PULL               (uint8_t) 0x35
-#define ID_TELEMETRY_REPORT             (uint8_t) 0x36
-#define ID_LED_COLOR                    (uint8_t) 0x37
-#define ID_CHIP_TYPE_PULL               (uint8_t) 0x38
-#define ID_CHIP_TYPE_REP                (uint8_t) 0x39
+#define ID_ESTOP                        (uint8_t) 0x00
+#define ID_HEARTBEAT                    (uint8_t) 0x01
+#define ID_FAIL_REPORT                  (uint8_t) 0x02
+#define ID_OVRD_PROTECTION              (uint8_t) 0x03
+#define ID_TELEMETRY_TIMING             (uint8_t) 0x04
+#define ID_TELEMETRY_PULL               (uint8_t) 0x05
+#define ID_TELEMETRY_REPORT             (uint8_t) 0x06
+#define ID_LED_COLOR                    (uint8_t) 0x07
+#define ID_CHIP_TYPE_PULL               (uint8_t) 0x08
+#define ID_CHIP_TYPE_REP                (uint8_t) 0x09
 
 // DLC Common Mode Packets 
 #define DLC_ESTOP                        (uint8_t) 0x04
