@@ -38,7 +38,7 @@ int SenderPacketIsInGroup(CANPacket *packet, uint8_t expectedType);
 int SenderPacketIsOfDevice(CANPacket *packet, uint8_t expectedType);
 int TargetsDevice(CANPacket *packet, uint8_t targetDeviceGroup, uint8_t targetDeviceSerialNumber);
 
-int GetPacketID(CANPacket *packet);
+uint8_t GetPacketID(CANPacket *packet);
 int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
 void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex);

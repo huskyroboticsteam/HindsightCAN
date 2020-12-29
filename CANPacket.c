@@ -161,7 +161,7 @@ int SenderPacketIsOfDevice(CANPacket *packet, uint8_t expectedType)
     return GetSenderDeviceSerialNumber(packet) == expectedType;
 }
 
-int GetPacketID(CANPacket *packet)
+uint8_t GetPacketID(CANPacket *packet)
 {
     return packet->data[0];
 }

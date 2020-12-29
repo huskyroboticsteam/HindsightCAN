@@ -46,6 +46,8 @@ uint8_t getChipType();
 #define CHIP_TYPE_PSOC_CY8C4248AZI_L485 0x02
 #define CHIP_TYPE_AT90CANxxx            0x03
 
+#define LINUXTEST                       0xFF
+
 //Error code constants
 #define ERROR_NONE              0x00
 #define ERROR_GENERIC_ERROR     0x01
