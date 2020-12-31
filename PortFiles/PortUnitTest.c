@@ -3,7 +3,7 @@
  */
 
 #include "../CANTest.h"
-#if CHIP_TYPE == LINUXTEST//Replace this with the chip you are porting
+#if CHIP_TYPE == CHIP_TYPE_TESTING//Replace this with the chip you are porting
 
 #include "../Port.h"
 

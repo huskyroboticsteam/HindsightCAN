@@ -3,7 +3,7 @@
 #include "CANPacket.h"
 #include "CANTest.h"
 #include "Port.h"
-//#include "CANCommon.h"
+#include "CANCommon.h"
 
 //prints out test outcome
 void testOutcome(char* testName, bool testResult){
@@ -58,12 +58,37 @@ void CANPacketTest(){
 
     //Checking Functions for packing/unpacking
 
+    //TODO ADD FOR LOOPS HERE TO CHECK FOR EVERY VALUE
+    int32_t testDataToPack = 0xFFFFFFFF;
+    uint8_t testDataToPackPtr;
+
+    PackIntIntoDataMSBFirst(&testDataToPackPtr, testDataToPack, 0);
+    int32_t unpackedData = DecodeBytesToIntMSBFirst(&testDataToPackPtr, 0, 3);
+
+    testOutcome("Int Packing & Decoding", (testDataToPack == unpackedData));
 
 
+    int16_t testShortDataToPack = 0xFFFF;
+    uint8_t testShortDataToPackPtr;
+
+    PackShortIntoDataMSBFirst(&testShortDataToPackPtr, testShortDataToPack, 0);
+    int16_t unpackedShortData = DecodeBytesToIntMSBFirst(&testShortDataToPackPtr, 0, 1);
+
+    testOutcome("Short Packing & Decoding", (testShortDataToPack == unpackedShortData));
+
+}
+
+void CANCommonTest(){
+    CANPacket testPkt;
+
+    //THIS FAILED FIND OUT WHY
+    AssembleEmergencyStopPacket(&testPkt, 0xFF, 0xFF, 0xFF);
+    testOutcome("Emergency Stop Packet Assembly & Get Emergency Stop Error Code", (0xFF == GetEmergencyStopErrorCode(&testPkt)));
 }
 
 int main(){
     CANPacketTest();
+    CANCommonTest();
 
     return 0;
 }

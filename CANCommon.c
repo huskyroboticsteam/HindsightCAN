@@ -167,8 +167,7 @@ void AssembleChipTypePullPacket(CANPacket *packetToAssemble,
 {
     packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
     packetToAssemble->dlc = DLC_CHIP_TYPE_PULL;
-    int nextByte = WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_PULL);
-    packetToAssemble->data[nextByte] = getChipType();
+    WriteSenderSerialAndPacketID(packetToAssemble->data, ID_CHIP_TYPE_PULL);
 }
 
 void AssembleChipTypeReportPacket(CANPacket *packetToAssemble,
