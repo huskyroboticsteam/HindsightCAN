@@ -41,20 +41,36 @@ int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
 	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
 
-uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
-	return packet->data[2];
-}
-
 uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
-	return packet->data[2];int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
-	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+	return packet->data[2];
 }
 
 uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
 	return packet->data[3];
 }
-}
 
 uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
 	return packet->data[1];
 }
+
+void AssembleScienceEncoderReportPacket(CANPacket *packetToAssemble,
+	uint8_t targetGroup,
+	uint8_t targetSerial,
+	uint8_t encoder,
+	int32_t count)
+{
+	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
+	packetToAssemble->dlc = 6;
+	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_ENCODER_REPORT);
+	packetToAssemble->data[1] = encoder;
+	PackIntIntoDataMSBFirst(packetToAssemble->data, count, 2);
+}
+
+uint8_t GetScienceEncoderNumberFromPacket(CANPacket *packet){
+	return packet->data[1];
+}
+
+uint32_t GetScienceEncoderCountFromPacket(CANPacket *packet){
+	return DecodeBytesToIntMSBFirst(packet->data, 2, 5);
+}
+
