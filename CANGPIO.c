@@ -16,8 +16,8 @@
 //          pwmChannel - board specific PWM channel
 //          frequency - frequency in Hz
 void AssembleGPIOSetPWMFrequencyPacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t pwmChannel,
     uint16_t frequency){
 
@@ -48,8 +48,8 @@ uint16_t GetGPIOPWMFrequencyFromPacket(CANPacket *packet){
 //          pwmChannel - board specific PWM channel
 //          dutyCycle - duty cycle resolution
 void AssembleGPIOSetPWMDutyCyclePacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t pwmChannel,
     uint16_t dutyCycle){
 
@@ -64,7 +64,7 @@ void AssembleGPIOSetPWMDutyCyclePacket(CANPacket *packetToAssemble,
 //returns GPIO PWM duty cycle
 //accepts packet to return data from
 uint16_t GetGPIOPWMDutyCycle(CANPacket *packetToAssemble){
-    return DecodeBytesToIntMSBFirst(packet->data, 2, 3);
+    return DecodeBytesToIntMSBFirst(packetToAssemble->data, 2, 3);
 }
 
 
@@ -75,8 +75,8 @@ uint16_t GetGPIOPWMDutyCycle(CANPacket *packetToAssemble){
 //          ADCChannel - board specific ADC channel
 //          state - bool (1 enable 0 disable)
 void AssembleGPIOSetADCStateConfiguration(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t ADCChannel,
     uint8_t state){
 
@@ -107,8 +107,8 @@ uint8_t GetGPIOADCStateFromPacket(CANPacket *packet){
 //          GPIO bit number - (number is the bit which is being set)
 //          GPIO bit state - off, in, out, in/out, adc, pwm
 void AssembleGPIOSetConfigurationPacket(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t GPIORegister,
     uint8_t bitNumber,
     uint8_t bitConfig){
@@ -147,8 +147,8 @@ uint8_t GetGPIOBitConfigFromPacket(CANPacket *packet){
 //          GPIO bit number - (number is the bit which is being set)
 //          GPIO bit writevalues - off, on, flip
 void AssembleGPIOWrite(CANPacket *packetToAssemble, 
-    uint8_t targetGroup, 
-    uint8_t targetSerial,
+    uint8_t targetDeviceGroup, 
+    uint8_t targetDeviceSerial,
     uint8_t GPIORegister,
     uint8_t bitNumber,
     uint8_t bitWriteValue){

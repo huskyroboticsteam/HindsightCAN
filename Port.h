@@ -41,7 +41,12 @@ uint8_t getChipType();
 
 //Chip type constants
 //TODO: Find specific chip names
-#define CHIP_TYPE_TEMPLATE      0x00
-#define CHIP_TYPE_STM32Fxxx     0x01
-#define CHIP_TYPE_PSOC4200Mxx   0x02
-#define CHIP_TYPE_AT90CANxxx   0x03
+#define CHIP_TYPE_TEMPLATE              0x00
+#define CHIP_TYPE_STM32Fxxx             0x01
+#define CHIP_TYPE_PSOC_CY8C4248AZI_L485 0x02
+#define CHIP_TYPE_AT90CANxxx            0x03
+
+//Error code constants
+#define ERROR_NONE              0x00
+#define ERROR_GENERIC_ERROR     0x01
+#define ERROR_NULL_POINTER      0x02 
