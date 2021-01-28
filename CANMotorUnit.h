@@ -107,7 +107,6 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 #define ID_MOTOR_UNIT_ENC_INIT          (uint8_t) 0x0C
-<<<<<<< HEAD
 #define ID_MOTOR_UNIT_SERVO_SET         (uint8_t) 0x0D
 
 // Packet DLCs
@@ -133,7 +132,6 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define PRIO_MOTOR_UNIT_LIM_ALERT          PACKET_PRIORITY_HIGH
 #define PRIO_MOTOR_UNIT_ENC_PPJR_SET      PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_JNT_REV_SET   PACKET_PRIORITY_NORMAL
-=======
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02
