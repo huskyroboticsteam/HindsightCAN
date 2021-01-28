@@ -107,31 +107,6 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 #define ID_MOTOR_UNIT_ENC_INIT          (uint8_t) 0x0C
-#define ID_MOTOR_UNIT_SERVO_SET         (uint8_t) 0x0D
-
-// Packet DLCs
-#define DLC_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x02
-#define DLC_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
-#define DLC_MOTOR_UNIT_PID_POS_TGT_SET   (uint8_t) 0x05
-#define DLC_MOTOR_UNIT_PID_P_SET         (uint8_t) 0x05
-#define DLC_MOTOR_UNIT_PID_I_SET         (uint8_t) 0x05
-#define DLC_MOTOR_UNIT_PID_D_SET         (uint8_t) 0x05
-#define DLC_MOTOR_UNIT_INIT              (uint8_t) 0x02
-#define DLC_MOTOR_UNIT_LIM_ALERT         (uint8_t) 0x03
-#define DLC_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x05
-#define DLC_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x02
-
-//Packet priorities
-#define PRIO_MOTOR_UNIT_MODE_SEL          PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_PWM_DIR_SET       PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_PID_POS_TGT_SET   PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_PID_P_SET         PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_PID_I_SET         PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_PID_D_SET         PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_INIT              PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_LIM_ALERT          PACKET_PRIORITY_HIGH
-#define PRIO_MOTOR_UNIT_ENC_PPJR_SET      PACKET_PRIORITY_NORMAL
-#define PRIO_MOTOR_UNIT_MAX_JNT_REV_SET   PACKET_PRIORITY_NORMAL
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02

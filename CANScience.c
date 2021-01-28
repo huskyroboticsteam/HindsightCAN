@@ -32,7 +32,7 @@ void AssembleScienceServoPacket(CANPacket *packetToAssemble,
 {
 	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
 	packetToAssemble->dlc = 3;
-	WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_SERVO_SET);
+	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_SERVO_SET);
 	packetToAssemble->data[1] = servo;
 	packetToAssemble->data[2] = degrees;
 }

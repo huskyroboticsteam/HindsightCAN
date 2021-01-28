@@ -7,6 +7,7 @@
 #define CAN_SCIENCE_SENSOR_MOISTURE PACKET_TELEMETRY_SENSOR4
 
 #define ID_SCIENCE_ENCODER_REPORT 0x0F
+#define ID_SCIENCE_SERVO_SET         (uint8_t) 0x0D
 
 void AssembleScienceSensorPullPacket(CANPacket *packetToAssemble,
 uint8_t targetGroup,
