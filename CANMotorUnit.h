@@ -31,7 +31,7 @@ void AssemblePIDTargetSetPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     int32_t target);
-uint8_t GetPIDTargetFromPacket(CANPacket *packet);
+uint32_t GetPIDTargetFromPacket(CANPacket *packet);
 
 //P coeffiecent set
 void AssemblePSetPacket(CANPacket *packetToAssemble,

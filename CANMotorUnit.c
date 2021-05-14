@@ -62,7 +62,7 @@ void AssemblePIDTargetSetPacket(CANPacket *packetToAssemble,
     PackIntIntoDataMSBFirst(packetToAssemble->data, target, nextByte);
 }
 
-uint8_t GetPIDTargetFromPacket(CANPacket *packet)
+uint32_t GetPIDTargetFromPacket(CANPacket *packet)
 {
     return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_POS_TGT_SET - 4, DLC_MOTOR_UNIT_PID_POS_TGT_SET);
 }
