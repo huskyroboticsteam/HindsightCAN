@@ -214,3 +214,18 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet)
 {
     return(packet->data[1] & 0b001);
 }
+
+void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble, 
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t PWMSetMax)
+    {
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_MAX_PID_PWM, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_MAX_PID_PWM;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, DLC_MOTOR_UNIT_MAX_PID_PWM);
+    PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSetMax, nextByte);
+}
+
+uint16_t GetMaxPIDPWMPacket(CANPacket *packet){
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+}
