@@ -95,6 +95,12 @@ uint8_t GetEncoderTypeFromPacket(CANPacket *packet);
 uint8_t GetEncoderDirectionFromPacket(CANPacket *packet);
 uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 
+void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble, 
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t PWMSetMax);
+uint16_t GetMaxPIDPWMPacket(CANPacket *packet);
+
 // Motor Unit Packet IDs
 #define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
 #define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
@@ -107,6 +113,7 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_ENC_PPJR_SET      (uint8_t) 0x0A
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 #define ID_MOTOR_UNIT_ENC_INIT          (uint8_t) 0x0C
+#define ID_MOTOR_UNIT_MAX_PID_PWM       (uint8_t) 0x0D
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02
@@ -120,6 +127,7 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_ENC_PPJR_SET         (uint8_t) 0x05
 #define DLC_MOTOR_UNIT_MAX_JNT_REV_SET      (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
+#define DLC_MOTOR_UNIT_MAX_PID_PWM          (uint8_t) 0x03
 
 //Packet priorities 
 #define PRIO_MOTOR_UNIT_MODE_SEL            PACKET_PRIORITY_NORMAL
@@ -133,6 +141,7 @@ uint8_t GetEncoderZeroFromPacket(CANPacket *packet);
 #define PRIO_MOTOR_UNIT_ENC_PPJR_SET        PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_JNT_REV_SET     PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_ENC_INIT            PACKET_PRIORITY_NORMAL
+#define PRIO_MOTOR_UNIT_MAX_PID_PWM         PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
 #define MOTOR_UNIT_MODE_PWM             (uint8_t) 0x00
