@@ -99,7 +99,7 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint16_t PWMSetMax);
-uint16_t GetMaxPIDPWMPacket(CANPacket *packet);
+uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 
 // Motor Unit Packet IDs
 #define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
