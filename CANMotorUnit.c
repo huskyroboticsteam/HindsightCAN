@@ -226,6 +226,6 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
     PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSetMax, nextByte);
 }
 
-uint16_t GetMaxPIDPWMPacket(CANPacket *packet){
+uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet){
     return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
