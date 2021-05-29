@@ -40,7 +40,7 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
     PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 }
 
-int32_t GetPWMFromPacket(CANPacket *packet)
+int16_t GetPWMFromPacket(CANPacket *packet)
 {
     return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }

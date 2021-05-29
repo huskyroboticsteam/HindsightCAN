@@ -23,7 +23,7 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     int16_t PWMSet);
-int32_t GetPWMFromPacket(CANPacket *packet);
+int16_t GetPWMFromPacket(CANPacket *packet);
 int32_t GetDirectionFromPacket(CANPacket *packet);
 
 //PID postional target set
