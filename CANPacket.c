@@ -222,7 +222,7 @@ int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
 
     for (int i = 0; i < length; i++) 
     {
-        decodedData |= data[startIndex + i] << (8 * (length-1-i));
+        decodedData |= (int32_t)data[startIndex + i] << (int32_t)(8 * (length-1-i));
     }
     return decodedData;
 }
