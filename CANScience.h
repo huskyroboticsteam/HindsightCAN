@@ -5,6 +5,8 @@
 #define CAN_SCIENCE_SENSOR_UV PACKET_TELEMETRY_SENSOR2
 #define CAN_SCIENCE_SENSOR_AIR_QUALITY PACKET_TELEMETRY_SENSOR3
 
+#include "CANPacket.h"
+
 void AssembleScienceSensorPullPacket(CANPacket *packetToAssemble,
 uint8_t targetGroup,
 uint8_t targetSerial,
