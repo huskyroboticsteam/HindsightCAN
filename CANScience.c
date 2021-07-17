@@ -32,7 +32,7 @@ void AssembleScienceServoPacket(CANPacket *packetToAssemble,
 {
 	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
 	packetToAssemble->dlc = 3;
-	WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_SERVO_SET);
+	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_SERVO_SET);
 	packetToAssemble->data[1] = servo;
 	packetToAssemble->data[2] = degrees;
 }
@@ -41,20 +41,16 @@ int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
 	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
 
-uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
-	return packet->data[2];
-}
-
 uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
-	return packet->data[2];int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
-	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+	return packet->data[2];
 }
 
 uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
 	return packet->data[3];
 }
-}
 
 uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
 	return packet->data[1];
 }
+
+
