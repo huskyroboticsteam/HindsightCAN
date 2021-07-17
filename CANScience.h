@@ -9,6 +9,8 @@
 #define ID_SCIENCE_ENCODER_REPORT 0x0F
 #define ID_SCIENCE_SERVO_SET         (uint8_t) 0x0D
 
+#include "CANPacket.h"
+
 void AssembleScienceSensorPullPacket(CANPacket *packetToAssemble,
 uint8_t targetGroup,
 uint8_t targetSerial,

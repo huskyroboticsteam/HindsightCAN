@@ -40,7 +40,7 @@ void AssemblePWMDirSetPacket(CANPacket *packetToAssemble,
     PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 }
 
-int32_t GetPWMFromPacket(CANPacket *packet)
+int16_t GetPWMFromPacket(CANPacket *packet)
 {
     return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
@@ -62,7 +62,7 @@ void AssemblePIDTargetSetPacket(CANPacket *packetToAssemble,
     PackIntIntoDataMSBFirst(packetToAssemble->data, target, nextByte);
 }
 
-uint8_t GetPIDTargetFromPacket(CANPacket *packet)
+int32_t GetPIDTargetFromPacket(CANPacket *packet)
 {
     return DecodeBytesToIntMSBFirst(packet->data, DLC_MOTOR_UNIT_PID_POS_TGT_SET - 4, DLC_MOTOR_UNIT_PID_POS_TGT_SET);
 }
@@ -213,4 +213,19 @@ uint8_t GetEncoderDirectionFromPacket(CANPacket *packet)
 uint8_t GetEncoderZeroFromPacket(CANPacket *packet)
 {
     return(packet->data[1] & 0b001);
+}
+
+void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble, 
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t PWMSetMax)
+    {
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_MAX_PID_PWM, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_MAX_PID_PWM;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, DLC_MOTOR_UNIT_MAX_PID_PWM);
+    PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSetMax, nextByte);
+}
+
+uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet){
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
