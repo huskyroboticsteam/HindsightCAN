@@ -1,6 +1,12 @@
 #ifndef CAN_SCIENCE_H
 #define CAN_SCIENCE_H
 
+#include "CANPacket.h"
+
+#define CAN_SCIENCE_MOTOR_DRILL_HEIGHT  (uint8_t) 0x0
+#define CAN_SCIENCE_MOTOR_DRAWER        (uint8_t) 0x1
+#define CAN_SCIENCE_MOTOR_DRILL_ROTATE  (uint8_t) 0x2
+
 #define CAN_SCIENCE_SENSOR_GAS PACKET_TELEMETRY_SENSOR1
 #define CAN_SCIENCE_SENSOR_UV PACKET_TELEMETRY_SENSOR2
 #define CAN_SCIENCE_SENSOR_AIR_QUALITY PACKET_TELEMETRY_SENSOR3
@@ -8,8 +14,6 @@
 
 #define ID_SCIENCE_ENCODER_REPORT 0x0F
 #define ID_SCIENCE_SERVO_SET         (uint8_t) 0x0D
-
-#include "CANPacket.h"
 
 void AssembleScienceSensorPullPacket(CANPacket *packetToAssemble,
 uint8_t targetGroup,
