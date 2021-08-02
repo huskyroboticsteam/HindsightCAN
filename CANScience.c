@@ -18,8 +18,8 @@ void AssembleScienceMotorControlPacket(CANPacket *packetToAssemble,
 	int16_t PWMSet)
 {
 	packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetGroup, targetSerial);
-	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PWM_DIR_SET);
 	packetToAssemble->dlc = DLC_MOTOR_UNIT_LIM_ALERT;
+	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PWM_DIR_SET);
 	PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 	packetToAssemble->data[nextByte + 2] = motor;
 }
