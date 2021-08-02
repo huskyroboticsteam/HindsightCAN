@@ -18,8 +18,8 @@ void AssembleScienceMotorControlPacket(CANPacket *packetToAssemble,
 	int16_t PWMSet)
 {
 	packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetGroup, targetSerial);
-	packetToAssemble->dlc = 4;
 	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PWM_DIR_SET);
+	packetToAssemble->dlc = DLC_MOTOR_UNIT_LIM_ALERT;
 	PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
 	packetToAssemble->data[nextByte + 2] = motor;
 }
@@ -31,7 +31,7 @@ void AssembleScienceServoPacket(CANPacket *packetToAssemble,
 	uint8_t degrees)
 {
 	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetGroup, targetSerial);
-	packetToAssemble->dlc = 3;
+	packetToAssemble->dlc = DLC_MOTOR_UNIT_PWM_DIR_SET;
 	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_SERVO_SET);
 	packetToAssemble->data[1] = servo;
 	packetToAssemble->data[2] = degrees;
