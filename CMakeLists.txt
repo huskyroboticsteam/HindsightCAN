@@ -15,7 +15,7 @@ include(CMakePackageConfigHelpers)
 #   backwards-compatible changes or bug fixes.
 project(HindsightCAN
   LANGUAGES C
-  VERSION 1.0.2) # <-- Change when you make commits to master; see above
+  VERSION 1.0.3) # <-- Change when you make commits to master; see above
 
 # The list of header files for the CAN library
 set(CAN_HEADERS
@@ -27,7 +27,8 @@ set(CAN_HEADERS
   CANPacket.h
   CANPower.h
   CANScience.h
-  CANSerialNumbers.h)
+  CANSerialNumbers.h
+  Port.h)
 
 # The list of sources for the CAN library
 set(CAN_SOURCES
@@ -37,7 +38,12 @@ set(CAN_SOURCES
   CANMotorUnit.c
   CANPacket.c
   CANPower.c
-  CANScience.c)
+  CANScience.c
+  PortFiles/PortTemplate.c)
+
+# Preprocessor flag required for the CAN library; see
+# https://github.com/huskyroboticsteam/HindsightCAN#how-to-port-to-a-new-chip
+add_definitions(-DCHIP_TYPE=CHIP_TYPE_TEMPLATE)
 
 # Define a static library, compiled from the files in the CAN_SOURCES list
 add_library(HindsightCAN STATIC ${CAN_SOURCES})
