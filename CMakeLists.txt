@@ -15,7 +15,7 @@ include(CMakePackageConfigHelpers)
 #   backwards-compatible changes or bug fixes.
 project(HindsightCAN
   LANGUAGES C
-  VERSION 1.0.1) # <-- Change when you make commits to master; see above
+  VERSION 1.0.2) # <-- Change when you make commits to master; see above
 
 # The list of header files for the CAN library
 set(CAN_HEADERS
@@ -56,7 +56,7 @@ if (DEFINED PROJECT_NAME)
 	EXPORT hindsight-can-targets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
   # Install the header files to the system
-  install(FILES ${CAN_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  install(FILES ${CAN_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/HindsightCAN)
 
   # Install the list of targets to the system
   install(EXPORT hindsight-can-targets
