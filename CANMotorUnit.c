@@ -177,6 +177,46 @@ uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet)
     return DecodeBytesToIntMSBFirst(packet->data, 1, 4);
 }
 
+void AssemblePotHiSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t adcHi,
+    int32_t mdegHi)
+{
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_POT_INIT, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_POT_INIT;
+
+    int idx = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_POT_INIT_HI);
+    PackShortIntoDataMSBFirst(packetToAssemble->data, adcHi, idx);
+    idx += 2;
+    PackIntIntoDataMSBFirst(packetToAssemble->data, mdegHi, idx);
+}
+
+void AssemblePotLoSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t adcLo,
+    int32_t mdegLo)
+{
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_POT_INIT, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_POT_INIT;
+
+    int idx = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_POT_INIT_LO);
+    PackShortIntoDataMSBFirst(packetToAssemble->data, adcLo, idx);
+    idx += 2;
+    PackIntIntoDataMSBFirst(packetToAssemble->data, mdegLo, idx);
+}
+
+uint16_t GetPotADCFromPacket(const CANPacket *packet)
+{
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+}
+
+int32_t GetPotmDegFromPacket(const CANPacket *packet)
+{
+    return DecodeBytesToIntMSBFirst(packet->data, 3, 7);
+}
+
 void AssembleEncoderInitializePacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,

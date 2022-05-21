@@ -209,7 +209,7 @@ void PackShortIntoDataMSBFirst(uint8_t *data, int16_t dataToPack, int startIndex
 	data[startIndex + 1] = (dataToPack & 0x00FF);
 }
 
-int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex)
+int32_t DecodeBytesToIntMSBFirst(const uint8_t *data, int startIndex, int endIndex)
 {
     int length = 4;
     int32_t decodedData = 0; 

@@ -84,6 +84,21 @@ void AssembleMaxJointRevolutionPacket(CANPacket *packetToAssemble,
     uint32_t revolutions);
 uint32_t GetMaxJointRevolutionsFromPacket(CANPacket *packet);
 
+
+// Potentiometer configuration packets
+void AssemblePotHiSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t adcHi,
+    int32_t mdegHi);
+void AssemblePotLoSetPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint16_t adcLo,
+    int32_t mdegLo);
+uint16_t GetPotInitADCFromPacket(const CANPacket *packet);
+int32_t GetPotInitmDegFromPacket(const CANPacket *packet);
+
 //Initialize Encoder Settings
 void AssembleEncoderInitializePacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
@@ -114,6 +129,8 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 #define ID_MOTOR_UNIT_ENC_INIT          (uint8_t) 0x0C
 #define ID_MOTOR_UNIT_MAX_PID_PWM       (uint8_t) 0x0D
+#define ID_MOTOR_UNIT_POT_INIT_LO       (uint8_t) 0x0F
+#define ID_MOTOR_UNIT_POT_INIT_HI       (uint8_t) 0x10
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02
@@ -128,6 +145,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_MAX_JNT_REV_SET      (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_MAX_PID_PWM          (uint8_t) 0x03
+#define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x06
 
 //Packet priorities 
 #define PRIO_MOTOR_UNIT_MODE_SEL            PACKET_PRIORITY_NORMAL
@@ -142,6 +160,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define PRIO_MOTOR_UNIT_MAX_JNT_REV_SET     PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_ENC_INIT            PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_PID_PWM         PACKET_PRIORITY_NORMAL
+#define PRIO_MOTOR_UNIT_POT_INIT            PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
 #define MOTOR_UNIT_MODE_PWM             (uint8_t) 0x00
