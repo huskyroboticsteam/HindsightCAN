@@ -15,7 +15,7 @@ include(CMakePackageConfigHelpers)
 #   backwards-compatible changes or bug fixes.
 project(HindsightCAN
   LANGUAGES C
-  VERSION 1.0.3) # <-- Change when you make commits to master; see above
+  VERSION 1.0.4) # <-- Change when you make commits to master; see above
 
 # The list of header files for the CAN library
 set(CAN_HEADERS

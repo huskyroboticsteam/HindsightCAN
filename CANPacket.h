@@ -43,7 +43,17 @@ int PacketIsOfID(CANPacket *packet, uint8_t expectedID);
 
 void PackIntIntoDataMSBFirst(uint8_t *data, int32_t dataToPack, int startIndex);
 void PackShortIntoDataMSBFirst(uint8_t *data, int16_t dataToPack, int startIndex);
-int32_t DecodeBytesToIntMSBFirst(uint8_t *data, int startIndex, int endIndex);
+/**
+ * @brief Read at most 4 bytes into a signed int.
+ *
+ * @param data The array of bytes to read from, storing the bytes in big-endian order.
+ * @param startIndex The index of the MSB.
+ * @param endIndex The index after the LSB.
+ * @return int32_t The decoded integer.
+ *
+ * @warning Be careful using this for unsigned data, as it could overflow.
+ */
+int32_t DecodeBytesToIntMSBFirst(const uint8_t *data, int startIndex, int endIndex);
 
 // Device group nibbles
 #define DEVICE_GROUP_BROADCAST          (uint8_t) 0x00
