@@ -40,19 +40,19 @@ void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
 	packetToAssemble->data[2] = power;
 }
 
-int8_t GetScienceContServoPowerFromPacket(CANPacket *packet) {
+int8_t GetScienceContServoPowerFromPacket(const CANPacket *packet) {
 	return packet->data[2];
 }
 
-uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
+uint8_t GetScienceServoAngleFromPacket(const CANPacket *packet){
 	return packet->data[2];
 }
 
-uint8_t GetScienceLazySusanPosFromPacket(CANPacket *packet) {
+uint8_t GetScienceLazySusanPosFromPacket(const CANPacket *packet) {
     return packet->data[1];
 }
 
-uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
+uint8_t GetScienceServoIDFromPacket(const CANPacket *packet){
 	return packet->data[1];
 }
 

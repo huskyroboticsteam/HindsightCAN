@@ -101,7 +101,7 @@ void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
  *  @warning This function is intended to be used only on servo-related packets; return value
  *  is undefined if packet is not a servo packet.
  */
-uint8_t GetScienceServoIDFromPacket(CANPacket *packet);
+uint8_t GetScienceServoIDFromPacket(const CANPacket *packet);
 
 /**
  *  @brief Gets the servo angle from a science station servo set packet.
@@ -111,7 +111,7 @@ uint8_t GetScienceServoIDFromPacket(CANPacket *packet);
  *  @warning This function is intended to be used only on positional servo set packets; return
  *  value is undefined otherwise.
  */
-uint8_t GetScienceServoAngleFromPacket(CANPacket *packet);
+uint8_t GetScienceServoAngleFromPacket(const CANPacket *packet);
 
 /**
  *  @brief Gets the Lazy Susan position from a science station Lazy Susan position set packet.
@@ -121,7 +121,7 @@ uint8_t GetScienceServoAngleFromPacket(CANPacket *packet);
  *  @warning This function is intended to be used only on Lazy Susan packets; return value
  *  is undefined otherwise.
  */
-uint8_t GetScienceLazySusanPosFromPacket(CANPacket *packet);
+uint8_t GetScienceLazySusanPosFromPacket(const CANPacket *packet);
 
 /**
  *  @brief Gets the servo power from a science station continuous rotation servo set packet.
@@ -131,6 +131,6 @@ uint8_t GetScienceLazySusanPosFromPacket(CANPacket *packet);
  *  @warning This function is intended to be used only on continuous rotation servo set
  *  packets; return value is undefined otherwise.
  */
-int8_t GetScienceContServoPowerFromPacket(CANPacket *packet);
+int8_t GetScienceContServoPowerFromPacket(const CANPacket *packet);
 
 #endif
