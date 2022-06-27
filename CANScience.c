@@ -3,25 +3,15 @@
 #include "CANScience.h"
 #include "CANMotorUnit.h"
 
-void AssembleScienceSensorPullPacket(CANPacket *packetToAssemble,
-	uint8_t targetGroup,
-	uint8_t targetSerial,
-	uint8_t sensorCode)
+void AssembleScienceLazySusanPosSetPacket(CANPacket *packetToAssemble,
+										  uint8_t targetDeviceGroup,
+										  uint8_t targetDeviceSerial,
+										  uint8_t position)
 {
-	AssembleTelemetryPullPacket(packetToAssemble, targetGroup, targetSerial, sensorCode);
-}
-
-void AssembleScienceMotorControlPacket(CANPacket *packetToAssemble,
-	uint8_t targetGroup,
-	uint8_t targetSerial,
-	uint8_t motor,
-	int16_t PWMSet)
-{
-	packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_PWM_DIR_SET, targetGroup, targetSerial);
-	packetToAssemble->dlc = 4;
-	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_MOTOR_UNIT_PWM_DIR_SET);
-	PackShortIntoDataMSBFirst(packetToAssemble->data, PWMSet, nextByte);
-	packetToAssemble->data[nextByte + 2] = motor;
+	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+	packetToAssemble->dlc = 2;
+	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_LAZY_SUSAN_POS_SET);
+	packetToAssemble->data[1] = position;
 }
 
 void AssembleScienceServoPacket(CANPacket *packetToAssemble,
@@ -37,19 +27,32 @@ void AssembleScienceServoPacket(CANPacket *packetToAssemble,
 	packetToAssemble->data[2] = degrees;
 }
 
-int16_t GetScienceMotorPWMFromPacket(CANPacket *packet){
-	return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
+void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
+											uint8_t targetDeviceGroup,
+											uint8_t targetDeviceSerial,
+											uint8_t servo,
+											int8_t power)
+{
+	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+	packetToAssemble->dlc = 3;
+	WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_CONT_SERVO_POWER_SET);
+	packetToAssemble->data[1] = servo;
+	packetToAssemble->data[2] = power;
 }
 
-uint8_t GetScienceServoAngleFromPacket(CANPacket *packet){
+int8_t GetScienceContServoPowerFromPacket(const CANPacket *packet) {
 	return packet->data[2];
 }
 
-uint8_t GetScienceMotorIDFromPacket(CANPacket *packet){
-	return packet->data[3];
+uint8_t GetScienceServoAngleFromPacket(const CANPacket *packet){
+	return packet->data[2];
 }
 
-uint8_t GetScienceServoIDFromPacket(CANPacket *packet){
+uint8_t GetScienceLazySusanPosFromPacket(const CANPacket *packet) {
+    return packet->data[1];
+}
+
+uint8_t GetScienceServoIDFromPacket(const CANPacket *packet){
 	return packet->data[1];
 }
 

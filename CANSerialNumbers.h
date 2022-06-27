@@ -35,7 +35,8 @@
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BL          (uint8_t) 0x0a 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BR          (uint8_t) 0x0b //Back Right
 
-        //if science has multiple motors, should name for function, not increment
+// if science has multiple motors, should name for function, not increment
+// TODO: add drill arm motors
 #define DEVICE_SERIAL_MOTOR_SCIENCE_1           (uint8_t) 0x0c
 
 //Power group
@@ -50,8 +51,10 @@
 //Telemetry group
 #define DEVICE_SERIAL_TELEM_LOCALIZATION        (uint8_t) 0x01
 #define DEVICE_SERIAL_TELEM_IMU                 (uint8_t) 0x02
-#define DEVICE_SERIAL_TELEM_TEMPERATURE         (uint8_t) 0x03
-#define DEVICE_SERIAL_TELEM_SCIENCE             (uint8_t) 0x04
+#define DEVICE_SERIAL_TELEM_TEMPERATURE (uint8_t)0x03
+
+// Science group
+#define DEVICE_SERIAL_SCIENCE_STATION           ((uint8_t) 0x01)
 
 //Group numbers
 /*
