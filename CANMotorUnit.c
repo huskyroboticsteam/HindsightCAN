@@ -209,12 +209,12 @@ void AssemblePotLoSetPacket(CANPacket *packetToAssemble,
 
 uint16_t GetPotADCFromPacket(const CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, 1, 3);
+    return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
 
 int32_t GetPotmDegFromPacket(const CANPacket *packet)
 {
-    return DecodeBytesToIntMSBFirst(packet->data, 3, 7);
+    return DecodeBytesToIntMSBFirst(packet->data, 3, 6);
 }
 
 void AssembleEncoderInitializePacket(CANPacket *packetToAssemble,
