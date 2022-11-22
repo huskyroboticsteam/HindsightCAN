@@ -72,13 +72,18 @@ if (DEFINED PROJECT_NAME)
 
   # Generate a CMake package configuration file for the library
   configure_package_config_file(
-	${CMAKE_CURRENT_LIST_DIR}/cmake/HindsightCANConfig.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfig.cmake
-	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/HindsightCAN)
+    ${CMAKE_CURRENT_LIST_DIR}/cmake/HindsightCANConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/HindsightCAN)
+  write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfigVersion.cmake
+    VERSION ${CMAKE_PROJECT_VERSION}
+    COMPATIBILITY SameMinorVersion)
   # Install the CMake package configuration file
   install(FILES
-	"${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfig.cmake"
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/HindsightCAN)
+    "${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/HindsightCANConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/HindsightCAN)
 
   ### Packaging configuration ###
   # Borrowed/adapted from https://www.scivision.dev/cmake-cpack-basic/
