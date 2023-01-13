@@ -190,7 +190,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_MAX_JNT_REV_SET      (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_MAX_PID_PWM          (uint8_t) 0x03
-#define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x06
+#define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x07
 
 //Packet priorities 
 #define PRIO_MOTOR_UNIT_MODE_SEL            PACKET_PRIORITY_NORMAL
