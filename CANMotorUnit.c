@@ -269,3 +269,25 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
 uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet){
     return DecodeBytesToIntMSBFirst(packet->data, 1, 2);
 }
+
+void AssembleLimSwEncoderBoundPacket(CANPacket* packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint8_t limSwNum,
+    int32_t encoderBound)
+{
+    packetToAssemble->id = ConstructCANID(PRIO_MOTOR_UNIT_SET_ENCODER_BOUND, targetDeviceGroup, targetDeviceSerial);
+    packetToAssemble->dlc = DLC_MOTOR_UNIT_ENCODER_BOUND;
+    int nextByte = WritePacketIDOnly(packetToAssemble->data, DLC_MOTOR_UNIT_ENCODER_BOUND);
+    packetToAssemble->data[nextByte] = limSwNum;
+    nextByte++;
+    PackIntIntoDataMSBFirst(packetToAssemble->data, encoderBound, nextByte);
+}
+
+int32_t GetEncoderValueFromPacket(const CANPacket* packet) {
+    return DecodeBytesToIntMSBFirst(packet->data, 2, 5);
+}
+
+uint8_t GetLimSwNumFromPacket(const CANPacket* packet) {
+    return packet->data[1];
+}

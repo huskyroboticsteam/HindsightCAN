@@ -161,6 +161,45 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
     uint16_t PWMSetMax);
 uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 
+/**
+ * @brief Assemble a packet to set the encoder bounds on limit switch interrupt
+ *
+ * @param packetToAssemble The packet to write the data into.
+ * @param targetDeviceGroup The group of the target device.
+ * @param targetDeviceSerial The serial code of the target device.
+ * @param limSwNum The limit switch that the encoder bound should be associated
+ *                 with.
+ * @param encoderBound The count the encoder should be set to when the given
+ *                     limit switch is hit.
+ *
+ * @see https://github.com/huskyroboticsteam/HindsightCAN/wiki/Motor-Unit-Packets
+ */
+void AssembleLimSwEncoderBoundPacket(CANPacket* packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint8_t limSwNum,
+    int32_t encoderBound);
+
+/*
+ * @brief Get encoder bound value from the limit switch encoder bound packet
+ *
+ * @param packet The packet, produced by AssembleLimSwEncoderBoundPacket, to
+ *               read from.
+ *
+ * @return int32_t The encoder bound limit.
+ */
+int32_t GetEncoderValueFromPacket(const CANPacket* packet);
+
+/*
+ * @brief Get limit switch number associated with encoder bound.
+ *
+ * @param packet The packet, produced by AssembleLimSwEncoderBoundPacket, to
+ *               read from.
+ *
+ * @return uint8_t The limit switch associated with the encoder bound.
+ */
+uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
+
 // Motor Unit Packet IDs
 #define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
 #define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
@@ -176,6 +215,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define ID_MOTOR_UNIT_MAX_PID_PWM       (uint8_t) 0x0D
 #define ID_MOTOR_UNIT_POT_INIT_LO       (uint8_t) 0x0F
 #define ID_MOTOR_UNIT_POT_INIT_HI       (uint8_t) 0x10
+#define ID_MOTOR_UNIT_SET_ENCODER_BOUND (uint8_t) 0x12
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02
@@ -191,6 +231,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_MAX_PID_PWM          (uint8_t) 0x03
 #define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x07
+#define DLC_MOTOR_UNIT_ENCODER_BOUND        (uint8_t) 0x06
 
 //Packet priorities 
 #define PRIO_MOTOR_UNIT_MODE_SEL            PACKET_PRIORITY_NORMAL
@@ -206,6 +247,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 #define PRIO_MOTOR_UNIT_ENC_INIT            PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_PID_PWM         PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_POT_INIT            PACKET_PRIORITY_NORMAL
+#define PRIO_MOTOR_UNIT_SET_ENCODER_BOUND   PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
 #define MOTOR_UNIT_MODE_PWM             (uint8_t) 0x00
