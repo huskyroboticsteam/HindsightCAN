@@ -26,8 +26,7 @@
 #define DEVICE_SERIAL_MOTOR_SHOULDER            (uint8_t) 0x02
 #define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
 #define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
-#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_L        (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_DIFF_WRIST_R        (uint8_t) 0x06
+#define DEVICE_SERIAL_MOTOR_WRIST               (uint8_t) 0x05
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x07
 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
@@ -35,9 +34,11 @@
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BL          (uint8_t) 0x0a 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BR          (uint8_t) 0x0b //Back Right
 
+#define DEVICE_SERIAL_MOTOR_CHASSIS_SUSPENSION  (uint8_t) 0x0c
+
 // if science has multiple motors, should name for function, not increment
 // TODO: add drill arm motors
-#define DEVICE_SERIAL_MOTOR_SCIENCE_1           (uint8_t) 0x0c
+#define DEVICE_SERIAL_MOTOR_SCIENCE_1           (uint8_t) 0x0d
 
 //Power group
 #define DEVICE_SERIAL_POWER_BATT_MAN            (uint8_t) 0x01
