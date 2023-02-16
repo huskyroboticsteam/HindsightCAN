@@ -27,18 +27,18 @@
 #define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
 #define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
 #define DEVICE_SERIAL_MOTOR_WRIST               (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x07
+#define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
+#define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FR          (uint8_t) 0x09
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BL          (uint8_t) 0x0a 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_BR          (uint8_t) 0x0b //Back Right
 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_SUSPENSION  (uint8_t) 0x0c
-
-// if science has multiple motors, should name for function, not increment
-// TODO: add drill arm motors
-#define DEVICE_SERIAL_MOTOR_SCIENCE_1           (uint8_t) 0x0d
+#define DEVICE_SERIAL_MOTOR_CHASSIS_FL_SW       (uint8_t) 0x18 //Front Left
+#define DEVICE_SERIAL_MOTOR_CHASSIS_FR_SW       (uint8_t) 0x19
+#define DEVICE_SERIAL_MOTOR_CHASSIS_BL_SW       (uint8_t) 0x1a 
+#define DEVICE_SERIAL_MOTOR_CHASSIS_BR_SW       (uint8_t) 0x1b //Back Right
 
 //Power group
 #define DEVICE_SERIAL_POWER_BATT_MAN            (uint8_t) 0x01
@@ -56,6 +56,8 @@
 
 // Science group
 #define DEVICE_SERIAL_SCIENCE_STATION           ((uint8_t) 0x01)
+#define DEVICE_SERIAL_DRILL_ARM_MOTOR           (uint8_t) 0x02
+#define DEVICE_SERIAL_DRILL_MOTOR               (uint8_t) 0x03
 
 //Group numbers
 /*
