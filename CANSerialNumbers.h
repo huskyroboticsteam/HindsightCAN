@@ -22,13 +22,14 @@
 #define DEVICE_SERIAL_JETSON            (uint8_t) 0x01
 
 // MOTOR UNIT GROUP
+#define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x00
 #define DEVICE_SERIAL_MOTOR_BASE                (uint8_t) 0x01
 #define DEVICE_SERIAL_MOTOR_SHOULDER            (uint8_t) 0x02
 #define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
 #define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
 #define DEVICE_SERIAL_MOTOR_WRIST               (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
-#define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
+#define DEVICE_SERIAL_MOTOR_WRIST               (uint8_t) 0x06
+#define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x07
 
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
 #define DEVICE_SERIAL_MOTOR_CHASSIS_FR          (uint8_t) 0x09
