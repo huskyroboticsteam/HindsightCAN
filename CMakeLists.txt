@@ -10,12 +10,12 @@ include(CMakePackageConfigHelpers)
 #   backwards-incompatible changes are made (such as removing packets)
 # - Minor version (second number) should be incremented when features are added
 #   in a backwards-compatible manner (such as adding packets, or adding packet
-#   fields) 
+#   fields)
 # - Patch version (third number) should be incremented when you make small
 #   backwards-compatible changes or bug fixes.
 project(HindsightCAN
   LANGUAGES C
-  VERSION 1.3.0) # <-- Change when you make commits to master; see above
+  VERSION 1.3.1) # <-- Change when you make commits to master; see above
 
 # The list of header files for the CAN library
 set(CAN_HEADERS
@@ -103,4 +103,4 @@ if (DEFINED PROJECT_NAME)
 
 endif()
 
-  
+
