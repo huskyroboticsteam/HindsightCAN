@@ -161,6 +161,17 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
     uint16_t PWMSetMax);
 uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 
+// Assembles a packet to set the angle of the PCA servo
+void AssemblePCAServoPacket(CANPacket *packetToAssemble,
+    uint8_t targetDeviceGroup,
+    uint8_t targetDeviceSerial,
+    uint8_t serverNum,
+    int32_t angle);
+// Get the angle value of the PCA server from the packet
+int32_t GetAngleValueFromPacket(const CANPacket *packet);
+// Get the servo number from the packet
+uint8_t GetServoNumFromPacket(const CANPacket *packet); 
+
 /**
  * @brief Assemble a packet to set the encoder bounds on limit switch interrupt
  *
@@ -215,6 +226,7 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define ID_MOTOR_UNIT_MAX_PID_PWM       (uint8_t) 0x0D
 #define ID_MOTOR_UNIT_POT_INIT_LO       (uint8_t) 0x0F
 #define ID_MOTOR_UNIT_POT_INIT_HI       (uint8_t) 0x10
+#define ID_MOTOR_UNIT_PCA_SERVO         (uint8_t) 0x11
 #define ID_MOTOR_UNIT_SET_ENCODER_BOUND (uint8_t) 0x12
 
 // Packet DLCs
@@ -231,6 +243,7 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define DLC_MOTOR_UNIT_ENC_INIT             (uint8_t) 0x02
 #define DLC_MOTOR_UNIT_MAX_PID_PWM          (uint8_t) 0x03
 #define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x07
+#define DLC_MOTOR_UNIT_PCA_SERVO            (uint8_t) 0x06
 #define DLC_MOTOR_UNIT_ENCODER_BOUND        (uint8_t) 0x06
 
 //Packet priorities 
@@ -247,6 +260,7 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define PRIO_MOTOR_UNIT_ENC_INIT            PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_MAX_PID_PWM         PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_POT_INIT            PACKET_PRIORITY_NORMAL
+#define PRIO_MOTOR_UNIT_PCA_SERVO           PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_SET_ENCODER_BOUND   PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
