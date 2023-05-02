@@ -161,15 +161,39 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
     uint16_t PWMSetMax);
 uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 
-// Assembles a packet to set the angle of the PCA servo
+/**
+ * @brief Assemble a packet to set the low point of the potentiometer.
+ *
+ * This, along with AssemblePCAServoPacket() are required to initialize the PCA servo.
+ *
+ * @param packetToAssemble The packet to write the data into.
+ * @param targetDeviceGroup The group of the target device.
+ * @param targetDeviceSerial The serial code of the target device.
+ * @param serverNum The servo number
+ * @param angle The angle degree in millidegrees
+ *
+ * @see https://github.com/huskyroboticsteam/HindsightCAN/wiki/Motor-Unit-Packets
+ */
 void AssemblePCAServoPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
     uint8_t serverNum,
     int32_t angle);
-// Get the angle value of the PCA server from the packet
+
+/**
+ * @brief Get the PCA servo angle value from its packet
+ *
+ * @param packet The packet, produced by AssemblePCAServoPacket, to read from.
+ * @return int32_t The angle in millidegrees.
+ */
 int32_t GetAngleValueFromPacket(const CANPacket *packet);
-// Get the servo number from the packet
+
+/**
+ * @brief Get the PCA servo number from its packet
+ *
+ * @param packet The packet, produced by AssemblePCAServoPacket, to read from.
+ * @return uint8_t the servo num.
+ */
 uint8_t GetServoNumFromPacket(const CANPacket *packet); 
 
 /**
