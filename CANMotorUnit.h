@@ -162,9 +162,7 @@ void AssembleMaxPIDPWMPacket(CANPacket *packetToAssemble,
 uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 
 /**
- * @brief Assemble a packet to set the low point of the potentiometer.
- *
- * This, along with AssemblePCAServoPacket() are required to initialize the PCA servo.
+ * @brief Assemble a packet to initialize the PCA servo
  *
  * @param packetToAssemble The packet to write the data into.
  * @param targetDeviceGroup The group of the target device.
