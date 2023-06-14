@@ -45,6 +45,7 @@ uint8_t getChipType();
 #define CHIP_TYPE_STM32Fxxx             0x01
 #define CHIP_TYPE_PSOC_CY8C4248AZI_L485 0x02
 #define CHIP_TYPE_AT90CANxxx            0x03
+#define CHIP_TYPE_JETSON                0x04
 
 //Error code constants
 #define ERROR_NONE              0x00
