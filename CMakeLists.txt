@@ -4,18 +4,27 @@ cmake_minimum_required(VERSION 3.12)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-# Define project. Version number should be updated with changes according to
-# Semantic Versioning (https://semver.org)
-# - Major version (first number) should be incremented when
-#   backwards-incompatible changes are made (such as removing packets)
-# - Minor version (second number) should be incremented when features are added
-#   in a backwards-compatible manner (such as adding packets, or adding packet
-#   fields)
-# - Patch version (third number) should be incremented when you make small
-#   backwards-compatible changes or bug fixes.
-project(HindsightCAN
-  LANGUAGES C
-  VERSION 1.4.0) # <-- Change when you make commits to master; see above
+if(DEFINED PROJECT_NAME)
+  set(IS_SUBPROJECT ON)
+else()
+  set(IS_SUBPROJECT OFF)
+endif()
+
+# define the project if we're not being used as a subproject
+if(NOT IS_SUBPROJECT)
+  # Define project. Version number should be updated with changes according to
+  # Semantic Versioning (https://semver.org)
+  # - Major version (first number) should be incremented when
+  #   backwards-incompatible changes are made (such as removing packets)
+  # - Minor version (second number) should be incremented when features are added
+  #   in a backwards-compatible manner (such as adding packets, or adding packet
+  #   fields)
+  # - Patch version (third number) should be incremented when you make small
+  #   backwards-compatible changes or bug fixes.
+  project(HindsightCAN
+    LANGUAGES C
+    VERSION 1.5.0) # <-- Change when you make commits to master; see above
+endif()
 
 # The list of header files for the CAN library
 set(CAN_HEADERS
@@ -48,14 +57,24 @@ add_definitions(-DCHIP_TYPE=CHIP_TYPE_JETSON)
 # Define a static library, compiled from the files in the CAN_SOURCES list
 add_library(HindsightCAN STATIC ${CAN_SOURCES})
 # Include the header files when installed to the system
-target_include_directories(HindsightCAN
-  PUBLIC $<INSTALL_INTERFACE:include>)
+target_include_directories(HindsightCAN PUBLIC
+  $<INSTALL_INTERFACE:include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+
+# kind of a hack: if we're building as a subproject, copy headers to a folder
+# called HindsightCAN in the build directory, so client code can include it
+# by doing #include <HindsightCAN/foo.h>
+if(IS_SUBPROJECT)
+  file(GLOB HEADER_FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+  )
+  file(COPY ${HEADER_FILES} DESTINATION HindsightCAN)
+endif()
 
 ### Installation config ###
 
-# If the project name is defined (i.e. if this project is not being included as
-# a submodule)
-if (DEFINED PROJECT_NAME)
+# If this project is not being included as a submodule
+if (NOT IS_SUBPROJECT)
   # Install the static library to the system, and export the list of installed
   # targets to hindsight-can-targets
   install(TARGETS HindsightCAN
