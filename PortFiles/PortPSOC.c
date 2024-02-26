@@ -6,7 +6,7 @@
  * Design must include a CAN block called CAN (not CAN0 or variation)
  * Must auto generate code within PSoC IDE to use APIs
  */
-#if CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485
+#if CHIP_TYPE == CHIP_TYPE_PSOC
 
 #include "../Port.h"
 #include "project.h"
@@ -199,4 +199,4 @@ CY_ISR(CAN_FLAG_ISR)
     //CAN_ReceiveMsg(messagePresentFlag);
     CAN_RX_ACK_MESSAGE(mailbox);
 }
-#endif //CHIP_TYPE == CHIP_TYPE_PSOC_CY8C4248AZI_L485
+#endif //CHIP_TYPE == CHIP_TYPE_PSOC
