@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12)
 
 # Include some helper packages for installation
 include(GNUInstallDirs)
@@ -23,7 +23,7 @@ if(NOT IS_SUBPROJECT)
   #   backwards-compatible changes or bug fixes.
   project(HindsightCAN
     LANGUAGES C
-    VERSION 1.6.0) # <-- Change when you make commits to master; see above
+    VERSION 1.6.1) # <-- Change when you make commits to master; see above
 endif()
 
 # The list of header files for the CAN library

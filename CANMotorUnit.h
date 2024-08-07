@@ -233,9 +233,20 @@ int32_t GetEncoderValueFromPacket(const CANPacket* packet);
  */
 uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 
-// TODO: add comments
-// ADDED BY ME, MICHAEL
+/**
+ * @brief Get the ID of the peripheral to control.
+ *
+ * @param packet The packet sent to read from.
+ * @return uint8_t The peripheral ID.
+*/
 uint8_t GetPeripheralID(const CANPacket* packet);
+
+/**
+ * @brief Get the data to set the peripheral.
+ *
+ * @param packet The packet sent to read from.
+ * @return uint8_t The data to set the peripheral to.
+*/
 uint16_t GetPeripheralData(const CANPacket* packet);
 
 // Motor Unit Packet IDs
@@ -301,9 +312,7 @@ uint16_t GetPeripheralData(const CANPacket* packet);
 #define MOTOR_UNIT_MODE_PWM     (uint8_t) 0x00
 #define MOTOR_UNIT_MODE_PID     (uint8_t) 0x01
 
-// Secondary includes Linear Actuator and Laser
-#define MOTOR_UNIT_MODE_SECONDARY   (uint8_t) 0x02 // added
-
+// Motor Unit Peripheral IDs
 #define NULL_PERIPH_ID     (uint8_t) 0x00
 #define LASER_PERIPH_ID    (uint8_t) 0x01
 #define LINEAR_PERIPH_ID   (uint8_t) 0x02
