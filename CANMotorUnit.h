@@ -233,6 +233,22 @@ int32_t GetEncoderValueFromPacket(const CANPacket* packet);
  */
 uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 
+/**
+ * @brief Get the ID of the peripheral to control.
+ *
+ * @param packet The packet sent to read from.
+ * @return uint8_t The peripheral ID.
+*/
+uint8_t GetPeripheralID(const CANPacket* packet);
+
+/**
+ * @brief Get the data to set the peripheral.
+ *
+ * @param packet The packet sent to read from.
+ * @return uint8_t The data to set the peripheral to.
+*/
+uint16_t GetPeripheralData(const CANPacket* packet);
+
 // Motor Unit Packet IDs
 #define ID_MOTOR_UNIT_MODE_SEL          (uint8_t) 0x00
 #define ID_MOTOR_UNIT_PWM_DIR_SET       (uint8_t) 0x03
@@ -246,10 +262,12 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define ID_MOTOR_UNIT_MAX_JNT_REV_SET   (uint8_t) 0x0B
 #define ID_MOTOR_UNIT_ENC_INIT          (uint8_t) 0x0C
 #define ID_MOTOR_UNIT_MAX_PID_PWM       (uint8_t) 0x0D
+#define ID_MOTOR_UNIT_PCA_PWM           (uint8_t) 0x0E
 #define ID_MOTOR_UNIT_POT_INIT_LO       (uint8_t) 0x0F
 #define ID_MOTOR_UNIT_POT_INIT_HI       (uint8_t) 0x10
 #define ID_MOTOR_UNIT_PCA_SERVO         (uint8_t) 0x11
 #define ID_MOTOR_UNIT_SET_ENCODER_BOUND (uint8_t) 0x12
+#define ID_MOTOR_UNIT_SET_PERIPHERALS   (uint8_t) 0x13
 
 // Packet DLCs
 #define DLC_MOTOR_UNIT_MODE_SEL             (uint8_t) 0x02
@@ -267,6 +285,7 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x07
 #define DLC_MOTOR_UNIT_PCA_SERVO            (uint8_t) 0x06
 #define DLC_MOTOR_UNIT_ENCODER_BOUND        (uint8_t) 0x06
+#define DLC_MOTOR_UNIT_PERIPHERALS          (uint8_t) 0x2
 
 //Packet priorities 
 #define PRIO_MOTOR_UNIT_MODE_SEL            PACKET_PRIORITY_NORMAL
@@ -284,7 +303,13 @@ uint8_t GetLimSwNumFromPacket(const CANPacket* packet);
 #define PRIO_MOTOR_UNIT_POT_INIT            PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PCA_SERVO           PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_SET_ENCODER_BOUND   PACKET_PRIORITY_NORMAL
+#define PRIO_MOTOR_UNIT_SET_PERIPHERALS     PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
-#define MOTOR_UNIT_MODE_PWM             (uint8_t) 0x00
-#define MOTOR_UNIT_MODE_PID             (uint8_t) 0x01
+#define MOTOR_UNIT_MODE_PWM     (uint8_t) 0x00
+#define MOTOR_UNIT_MODE_PID     (uint8_t) 0x01
+
+// Motor Unit Peripheral IDs
+#define NULL_PERIPH_ID     (uint8_t) 0x00
+#define LASER_PERIPH_ID    (uint8_t) 0x01
+#define LINEAR_PERIPH_ID   (uint8_t) 0x02
