@@ -267,7 +267,6 @@ uint16_t GetPeripheralData(const CANPacket* packet);
 #define ID_MOTOR_UNIT_POT_INIT_HI       (uint8_t) 0x10
 #define ID_MOTOR_UNIT_PCA_SERVO         (uint8_t) 0x11
 #define ID_MOTOR_UNIT_SET_ENCODER_BOUND (uint8_t) 0x12
-
 #define ID_MOTOR_UNIT_SET_PERIPHERALS   (uint8_t) 0x13
 
 // Packet DLCs
@@ -286,7 +285,6 @@ uint16_t GetPeripheralData(const CANPacket* packet);
 #define DLC_MOTOR_UNIT_POT_INIT             (uint8_t) 0x07
 #define DLC_MOTOR_UNIT_PCA_SERVO            (uint8_t) 0x06
 #define DLC_MOTOR_UNIT_ENCODER_BOUND        (uint8_t) 0x06
-
 #define DLC_MOTOR_UNIT_PERIPHERALS          (uint8_t) 0x2
 
 //Packet priorities 
@@ -305,7 +303,6 @@ uint16_t GetPeripheralData(const CANPacket* packet);
 #define PRIO_MOTOR_UNIT_POT_INIT            PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_PCA_SERVO           PACKET_PRIORITY_NORMAL
 #define PRIO_MOTOR_UNIT_SET_ENCODER_BOUND   PACKET_PRIORITY_NORMAL
-
 #define PRIO_MOTOR_UNIT_SET_PERIPHERALS     PACKET_PRIORITY_NORMAL
 
 // Motor Unit Mode IDs
