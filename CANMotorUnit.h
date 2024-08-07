@@ -304,6 +304,6 @@ uint16_t GetPeripheralData(const CANPacket* packet);
 // Secondary includes Linear Actuator and Laser
 #define MOTOR_UNIT_MODE_SECONDARY   (uint8_t) 0x02 // added
 
-#define NULL_PCA_ID     (uint8_t) 0x00
+#define NULL_PERIPH_ID     (uint8_t) 0x00
 #define LASER_PERIPH_ID    (uint8_t) 0x01
 #define LINEAR_PERIPH_ID   (uint8_t) 0x02
