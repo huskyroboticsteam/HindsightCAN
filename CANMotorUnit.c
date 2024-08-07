@@ -316,3 +316,13 @@ int32_t GetEncoderValueFromPacket(const CANPacket* packet) {
 uint8_t GetLimSwNumFromPacket(const CANPacket* packet) {
     return packet->data[1];
 }
+
+
+// ADDED FUNCTIONS (BY ME, MICHAEL)
+uint8_t GetPeripheralID(const CANPacket* packet) {
+    return packet->data[1];
+}
+
+uint16_t GetPeripheralData(const CANPacket* packet) {
+    return (packet->data[2] << 8) | packet->data[3];
+}
