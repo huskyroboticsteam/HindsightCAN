@@ -59,6 +59,8 @@
 #define DEVICE_SERIAL_SCIENCE_STATION           ((uint8_t) 0x01)
 #define DEVICE_SERIAL_DRILL_ARM_MOTOR           (uint8_t) 0x02
 #define DEVICE_SERIAL_DRILL_MOTOR               (uint8_t) 0x03
+#define DEVICE_SERIAL_DRILL_FOUR_BAR_LINKAGE1   (uint8_t) 0x02
+#define DEVICE_SERIAL_DRILL_FOUR_BAR_LINKAGE2   (uint8_t) 0x12
 
 //Group numbers
 /*
