@@ -31,15 +31,8 @@
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
 #define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FR          (uint8_t) 0x09
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BL          (uint8_t) 0x0a 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BR          (uint8_t) 0x0b //Back Right
-
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FL_SW       (uint8_t) 0x18 //Front Left
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FR_SW       (uint8_t) 0x19
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BL_SW       (uint8_t) 0x1a 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BR_SW       (uint8_t) 0x1b //Back Right
+#define DEVICE_SERIAL_TREAD_LEFT                (uint8_t) 0x0d
+#define DEVICE_SERIAL_TREAD_RIGHT               (uint8_t) 0x04
 
 //Power group
 #define DEVICE_SERIAL_POWER_BATT_MAN            (uint8_t) 0x01
