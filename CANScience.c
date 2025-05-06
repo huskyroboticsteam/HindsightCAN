@@ -40,12 +40,51 @@ void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
 	packetToAssemble->data[2] = power;
 }
 
+void AssembleScienceStepperTurnAnglePacket(CANPacket *packetToAssemble,
+	uint8_t targetDeviceGroup,
+	uint8_t targetDeviceSerial,
+	uint8_t stepperID,
+	int16_t degrees)
+{
+	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+	packetToAssemble->dlc = 4;
+	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_STEPPER_TURN_ANGLE);
+	packetToAssemble->data[nextByte] = stepperID;
+	nextByte++;
+	PackShortIntoDataMSBFirst(packetToAssemble->data, degrees, nextByte);
+	
+}
+
+void AssembleScienceStepperTurnStepsPacket(CANPacket *packetToAssemble,
+	uint8_t targetDeviceGroup,
+	uint8_t targetDeviceSerial,
+	uint8_t stepperID,
+	int16_t steps)
+{
+	packetToAssemble->id = ConstructCANID(PACKET_PRIORITY_NORMAL, targetDeviceGroup, targetDeviceSerial);
+	packetToAssemble->dlc = 4;
+	int nextByte = WritePacketIDOnly(packetToAssemble->data, ID_SCIENCE_STEPPER_TURN_STEPS);
+	packetToAssemble->data[nextByte] = stepperID;
+	nextByte++;
+	PackShortIntoDataMSBFirst(packetToAssemble->data, steps, nextByte);
+}
+
 int8_t GetScienceContServoPowerFromPacket(const CANPacket *packet) {
 	return packet->data[2];
 }
 
 uint8_t GetScienceServoAngleFromPacket(const CANPacket *packet){
 	return packet->data[2];
+}
+
+int16_t GetStepperAngleFromPacket(const CANPacket *packet) {
+	return (int16_t)DecodeBytesToIntMSBFirst(packet->data,2,3);
+	
+}
+
+int16_t GetStepperStepsFromPacket(const CANPacket *packet) {
+	return (int16_t)DecodeBytesToIntMSBFirst(packet->data,2,3);
+	
 }
 
 uint8_t GetScienceLazySusanPosFromPacket(const CANPacket *packet) {
@@ -55,5 +94,10 @@ uint8_t GetScienceLazySusanPosFromPacket(const CANPacket *packet) {
 uint8_t GetScienceServoIDFromPacket(const CANPacket *packet){
 	return packet->data[1];
 }
+
+uint8_t GetScienceStepperIDFromPacket(const CANPacket *packet){
+	return packet->data[1];
+}
+
 
 

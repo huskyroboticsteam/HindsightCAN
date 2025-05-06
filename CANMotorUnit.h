@@ -167,7 +167,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
  * @param packetToAssemble The packet to write the data into.
  * @param targetDeviceGroup The group of the target device.
  * @param targetDeviceSerial The serial code of the target device.
- * @param serverNum The servo number
+ * @param servoNum The servo number
  * @param angle The angle degree in millidegrees
  *
  * @see https://github.com/huskyroboticsteam/HindsightCAN/wiki/Motor-Unit-Packets
@@ -175,7 +175,7 @@ uint16_t GetMaxPIDPWMFromPacket(CANPacket *packet);
 void AssemblePCAServoPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
     uint8_t targetDeviceSerial,
-    uint8_t serverNum,
+    uint8_t servoNum,
     int32_t angle);
 
 /**
