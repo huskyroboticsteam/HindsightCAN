@@ -26,6 +26,15 @@
    Packet ID for the continuous rotation servo power set packet.
  */
 #define ID_SCIENCE_CONT_SERVO_POWER_SET ((uint8_t) 0x0E)
+/**
+   Packet ID for the turn stepper motor by angle packet.
+ */
+#define ID_SCIENCE_STEPPER_TURN_ANGLE   ((uint8_t) 0x0B)
+/**
+   Packet ID for the turn stepper motor by a given amount of steps packet.
+ */
+#define ID_SCIENCE_STEPPER_TURN_STEPS   ((uint8_t) 0x0A)
+
 
 #include "CANPacket.h"
 
@@ -94,6 +103,47 @@ void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
 											int8_t power);
 
 /**
+ * @brief Assemble a packet to turn one of the stepper motors a certain number of degrees.
+ * 
+ * @param packetToAssemble The packet to write the data into.
+ * @param targetDeviceGroup The group of the target device.
+ * @param targetDeviceSerial The serial code of the target device.
+ * @param stepperID ID number of the stepper motor to turn.
+ * @param degrees degrees to turn stepper. Positive is clockwise.
+ * @param speed speed to turn stepper motor.
+ *
+ * @warning Angle should be in degrees, not milidegrees.
+ *
+ * @see https://github.com/huskyroboticsteam/HindsightCAN/wiki/Science-Board-Packets
+ */
+void AssembleScienceStepperTurnAnglePacket(CANPacket *packetToAssemble,
+  uint8_t targetDeviceGroup,
+  uint8_t targetDeviceSerial,
+  uint8_t stepperID,
+  int16_t degrees,
+  uint8_t speed);
+
+  /**
+ * @brief Assemble a packet to turn one of the stepper motors a certain number of degrees.
+ * 
+ * @param packetToAssemble The packet to write the data into.
+ * @param targetDeviceGroup The group of the target device.
+ * @param targetDeviceSerial The serial code of the target device.
+ * @param stepperID ID number of the stepper motor to turn.
+ * @param steps number of steps to turn stepper. Positive is clockwise.
+ * @param speed speed to turn stepper motor.
+ *
+ *
+ * @see https://github.com/huskyroboticsteam/HindsightCAN/wiki/Science-Board-Packets
+ */
+void AssembleScienceStepperTurnStepsPacket(CANPacket *packetToAssemble,
+  uint8_t targetDeviceGroup,
+  uint8_t targetDeviceSerial,
+  uint8_t stepperID,
+  int16_t steps,
+  uint8_t speed);
+
+/**
  *  @brief Gets the servo ID from a science station servo packet.
  *  @param A CANPacket, that is one of the two science station servo-related packets.
  *  @return The servo ID for the packet.
@@ -104,6 +154,17 @@ void AssembleScienceContServoPowerSetPacket(CANPacket *packetToAssemble,
 uint8_t GetScienceServoIDFromPacket(const CANPacket *packet);
 
 /**
+ *  @brief Gets the stepper ID from a science station servo packet.
+ *  @param A CANPacket, that is one of the two science station stepper-related packets.
+ *  @return The stepper ID for the packet.
+ *
+ *  @warning This function is intended to be used only on stepper-related packets; return value
+ *  is undefined if packet is not a stepper packet.
+ */
+uint8_t GetScienceStepperIDFromPacket(const CANPacket *packet);
+
+
+/**
  *  @brief Gets the servo angle from a science station servo set packet.
  *  @param A science station servo set packet, as a CANPacket
  *  @return The servo angle in this packet.
@@ -112,6 +173,40 @@ uint8_t GetScienceServoIDFromPacket(const CANPacket *packet);
  *  value is undefined otherwise.
  */
 uint8_t GetScienceServoAngleFromPacket(const CANPacket *packet);
+
+
+/**
+ *  @brief Gets the stepper angle from a science station stepper turn angle set packet.
+ *  @param A science station stepper turn angle packet, as a CANPacket
+ *  @return The stepper angle in this packet.
+ *
+ *  @warning This function is intended to be used only on stepper motor turn angle packets; return
+ *  value is undefined otherwise.
+ */
+int16_t GetStepperAngleFromPacket(const CANPacket *packet);
+
+
+/**
+ *  @brief Gets the stepper angle from a science station stepper turn steps packet.
+ *  @param A science station stepper turn steps packet, as a CANPacket
+ *  @return The stepper steps in this packet.
+ *
+ *  @warning This function is intended to be used only on stepper motor turn steps packets; return
+ *  value is undefined otherwise.
+ */
+int16_t GetStepperStepsFromPacket(const CANPacket *packet);
+
+
+/**
+ *  @brief Gets the stepper speed from a science station stepper turn steps/angles packet.
+ *  @param A science station stepper turn steps packet, as a CANPacket
+ *  @return The stepper speed in this packet.
+ *
+ *  @warning This function is intended to be used only on stepper motor turn angle or steps packets; return
+ *  value is undefined otherwise.
+ */
+uint8_t GetStepperSpeedFromPacket(const CANPacket *packet);
+
 
 /**
  *  @brief Gets the Lazy Susan position from a science station Lazy Susan position set packet.
