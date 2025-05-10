@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.12)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# Enable testing with CTests to run Unity tests in /tst
+enable_testing()
+add_subdirectory(tst) # Run CMakeLists.txt in tst
+
 if(DEFINED PROJECT_NAME)
   set(IS_SUBPROJECT ON)
 else()
