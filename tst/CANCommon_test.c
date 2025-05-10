@@ -7,7 +7,7 @@ void tearDown() {} // Runs after each test
 
 void assembleEmergencyStopPacket_withAddressZero_createsCorrectPacket()
 {
-    CANPacket *testPacket;
+    CANPacket *testPacket = {0};
 
     AssembleEmergencyStopPacket(testPacket, 0, 0, 1);
 }
