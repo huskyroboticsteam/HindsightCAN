@@ -2,6 +2,8 @@
 
 #include "../CANCommon.h"
 
+#include "../CANPacket.h"
+
 void setUp() {}    // Runs before each test
 void tearDown() {} // Runs after each test
 
@@ -28,7 +30,7 @@ void AssembleBroadcastEmergencyStopPacket_createsCorrectPacket()
 {
     CANPacket *testPacket;
 
-    AssembleGroupBrodcastingEmergencyStopPacket(testPacket, 0, GetEmergencyStopErrorCode(testPacket));
+    AssembleGroupBroadcastingEmergencyStopPacket(testPacket, 0, GetEmergencyStopErrorCode(testPacket));
     // GetDeviceGroupCode(testPacket) @ CANPacket ?
 }
 
@@ -72,14 +74,14 @@ void AssembleHeartbeatPacket_toMainCPU()
 
 // lastHeartbeat
 // okay but what is the input for lastHeartbeat huh
-void AssembleHeartbeatPacket_toEverydevices()
+void AssembleHeartbeatPacket_toEverydevicesID()
 {
     CANPacket *testPacket;
 
     AssembleHeartbeatPacket(testPacket, 1, GetHeartbeatLeniencyCode(testPacket), GetTimeBetweenHeartbeatPacket(testPacket, ID_HEARTBEAT));
 }
 
-void AssembleHeartbeatPacket_toMainCPU()
+void AssembleHeartbeatPacket_toMainCPUID()
 {
     CANPacket *testPacket;
 
@@ -89,9 +91,6 @@ void AssembleHeartbeatPacket_toMainCPU()
 // Fail/Override Packet
 // again why is the parameter different hmmmmmmmmmmmmmmmmmmmmmmm
 // okay I don't think I am doing this right but should i keep going or call it a day 
-void AssembleFailReportPacket_IneedEunBeplease() 
-
-void AssembleOverrideProtectionPacket_
 
 
 
@@ -103,6 +102,11 @@ int main()
 
     RUN_TEST(assembleEmergencyStopPacket_withAddressZero_createsCorrectPacket);
     RUN_TEST(AssembleGroupBroadcastingEmergencyStopPacket_withAddressZero_createsCorrectPacket);
+    RUN_TEST(AssembleBroadcastEmergencyStopPacket_createsCorrectPacket);
+    RUN_TEST(AssembleHeartbeatPacket_toEverydevices);
+    RUN_TEST(AssembleHeartbeatPacket_toMainCPU);
+    RUN_TEST(AssembleHeartbeatPacket_toEverydevicesID);
+    RUN_TEST(AssembleHeartbeatPacket_toMainCPUID);
 
     return UNITY_END();
 }
