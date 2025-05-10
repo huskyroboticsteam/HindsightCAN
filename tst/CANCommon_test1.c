@@ -2,6 +2,8 @@
 
 #include "../CANCommon.h"
 
+#include "../CANPacket.h"
+
 void setUp() {}    // Runs before each test
 void tearDown() {} // Runs after each test
 
@@ -28,9 +30,9 @@ void assembleEmergencyStopPacket_withAddressZero_createsCorrectPacket()
 // {
 //     CANPacket *testPacket;
 
-//     AssembleGroupBrodcastingEmergencyStopPacket(testPacket, 0, GetEmergencyStopErrorCode(testPacket));
-//     // GetDeviceGroupCode(testPacket) @ CANPacket ?
-// }
+    AssembleGroupBroadcastingEmergencyStopPacket(testPacket, 0, GetEmergencyStopErrorCode(testPacket));
+    // GetDeviceGroupCode(testPacket) @ CANPacket ?
+}
 
 // // Heartbeat Packet
 
@@ -70,28 +72,28 @@ void assembleEmergencyStopPacket_withAddressZero_createsCorrectPacket()
 // // so its checking ID_Heartbeat is THE ID ig?
 // // okay so it returns heartbeat-heartbeat so i guess this is oh god cse 123 was too long ago like master function or sth?
 
-// // lastHeartbeat
-// // okay but what is the input for lastHeartbeat huh
-// void AssembleHeartbeatPacket_toEverydevices()
-// {
-//     CANPacket *testPacket;
+// lastHeartbeat
+// okay but what is the input for lastHeartbeat huh
+void AssembleHeartbeatPacket_toEverydevicesID()
+{
+    CANPacket *testPacket;
 
 //     AssembleHeartbeatPacket(testPacket, 1, GetHeartbeatLeniencyCode(testPacket), GetTimeBetweenHeartbeatPacket(testPacket, ID_HEARTBEAT));
 // }
 
-// void AssembleHeartbeatPacket_toMainCPU()
-// {
-//     CANPacket *testPacket;
+void AssembleHeartbeatPacket_toMainCPUID()
+{
+    CANPacket *testPacket;
 
 //     AssembleHeartbeatPacket(testPacket, 0, GetHeartbeatLeniencyCode(testPacket), GetTimeBetweenHeartbeatPacket(testPacket, ID_HEARTBEAT));
 // }
 
-// // Fail/Override Packet
-// // again why is the parameter different hmmmmmmmmmmmmmmmmmmmmmmm
-// // okay I don't think I am doing this right but should i keep going or call it a day 
-// void AssembleFailReportPacket_IneedEunBeplease();
+// Fail/Override Packet
+// again why is the parameter different hmmmmmmmmmmmmmmmmmmmmmmm
+// okay I don't think I am doing this right but should i keep going or call it a day 
 
-// // void AssembleOverrideProtectionPacket_
+
+
 
 
 int main()
@@ -99,7 +101,12 @@ int main()
     UNITY_BEGIN();
 
     RUN_TEST(assembleEmergencyStopPacket_withAddressZero_createsCorrectPacket);
-    // RUN_TEST(AssembleGroupBroadcastingEmergencyStopPacket_withAddressZero_createsCorrectPacket);
+    RUN_TEST(AssembleGroupBroadcastingEmergencyStopPacket_withAddressZero_createsCorrectPacket);
+    RUN_TEST(AssembleBroadcastEmergencyStopPacket_createsCorrectPacket);
+    RUN_TEST(AssembleHeartbeatPacket_toEverydevices);
+    RUN_TEST(AssembleHeartbeatPacket_toMainCPU);
+    RUN_TEST(AssembleHeartbeatPacket_toEverydevicesID);
+    RUN_TEST(AssembleHeartbeatPacket_toMainCPUID);
 
     return UNITY_END();
 }
