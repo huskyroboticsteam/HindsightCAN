@@ -30,7 +30,6 @@
 #define DEVICE_SERIAL_MOTOR_WRIST_DIFF_RIGHT    (uint8_t) 0x0c
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
 #define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
-
 #define DEVICE_SERIAL_TREAD_LEFT                (uint8_t) 0x0d
 #define DEVICE_SERIAL_TREAD_RIGHT               (uint8_t) 0x04
 
@@ -46,14 +45,14 @@
 //Telemetry group
 #define DEVICE_SERIAL_TELEM_LOCALIZATION        (uint8_t) 0x01
 #define DEVICE_SERIAL_TELEM_IMU                 (uint8_t) 0x02
-#define DEVICE_SERIAL_TELEM_TEMPERATURE (uint8_t)0x03
+#define DEVICE_SERIAL_TELEM_TEMPERATURE         (uint8_t) 0x03
 
 // Science group
-#define DEVICE_SERIAL_SCIENCE_STATION           ((uint8_t) 0x01)
-#define DEVICE_SERIAL_DRILL_ARM_MOTOR           (uint8_t) 0x02
+#define DEVICE_SERIAL_SCIENCE_STATION           (uint8_t) 0x01
+#define DEVICE_SERIAL_DRILL_ACTUATOR            (uint8_t) 0x13
 #define DEVICE_SERIAL_DRILL_MOTOR               (uint8_t) 0x03
-#define DEVICE_SERIAL_DRILL_FOUR_BAR_LINKAGE1   (uint8_t) 0x02
-#define DEVICE_SERIAL_DRILL_FOUR_BAR_LINKAGE2   (uint8_t) 0x12
+#define DEVICE_SERIAL_FOUR_BAR_LINKAGE_1        (uint8_t) 0x02
+#define DEVICE_SERIAL_FOUR_BAR_LINKAGE_2        (uint8_t) 0x12
 
 //Group numbers
 /*
