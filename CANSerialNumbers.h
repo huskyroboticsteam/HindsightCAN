@@ -48,7 +48,8 @@
 #define DEVICE_SERIAL_TELEM_TEMPERATURE         (uint8_t) 0x03
 
 // Science group
-#define DEVICE_SERIAL_SCIENCE_STATION           (uint8_t) 0x01
+#define DEVICE_SERIAL_SCIENCE_STEPPER           (uint8_t) 0x04
+#define DEVICE_SERIAL_SCIENCE_SERVO             (uint8_t) 0x05
 #define DEVICE_SERIAL_DRILL_ACTUATOR            (uint8_t) 0x13
 #define DEVICE_SERIAL_DRILL_MOTOR               (uint8_t) 0x03
 #define DEVICE_SERIAL_FOUR_BAR_LINKAGE_1        (uint8_t) 0x02
