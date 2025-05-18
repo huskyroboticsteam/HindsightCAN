@@ -6,7 +6,7 @@
  * using the Hindsight CAN Communication standard.
  * Documentation: https://huskyroboticsteam.slite.com/app/channels/iU0BryG7M9/collections/aXvWTcIR6c/notes/4otlSFsSp2
  * 
- * Modified to include CANSimple protocol command IDs for ODrive BLDC motor driver.
+ * Modified to include CANSimple protocol command IDs, packet assembly, decoding functions, and RTR support for ODrive BLDC motor driver.
  */
 
 #pragma once
@@ -138,18 +138,22 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define ESTOP_ERR_GENERAL               (uint8_t) 0x00
 // MORE TBD...
 
+// Node IDs for the two ODrive boards
+#define NODE_ID_1                       (uint8_t) 0x01
+#define NODE_ID_2                       (uint8_t) 0x02
+
 // CANSimple Protocol Command IDs for ODrive BLDC Motor Driver
 // Format: 11-bit CAN ID = [node_id (5 bits) | cmd_id (6 bits)]
 // Below are the cmd_id values and associated metadata (direction, signals).
-// Data alignment for signals will be handled later.
 
 // CMD ID: 0x000 - Get_Version (ODrive → Host)
-// Signals: Protocol_Version, Hw_Version_Major, Hw_Version_Minor, Hw_Version_Variant,
-//          Fw_Version_Major, Fw_Version_Minor, Fw_Version_Revision, Fw_Version_Unreleased
+// Signals: Protocol_Version (uint32_t), Hw_Version_Major (uint8_t), Hw_Version_Minor (uint8_t),
+//          Hw_Version_Variant (uint8_t), Fw_Version_Major (uint8_t), Fw_Version_Minor (uint8_t),
+//          Fw_Version_Revision (uint8_t), Fw_Version_Unreleased (uint8_t)
 #define ID_ODRIVE_GET_VERSION           (uint8_t) 0x000
 
 // CMD ID: 0x001 - Heartbeat (ODrive → Host)
-// Signals: Axis_Error, Axis_State, Procedure_Result, Trajectory_Done_Flag
+// Signals: Axis_Error (uint32_t), Axis_State (uint32_t), Procedure_Result (uint32_t), Trajectory_Done_Flag (uint8_t)
 #define ID_ODRIVE_HEARTBEAT             (uint8_t) 0x001
 
 // CMD ID: 0x002 - Estop (Host → ODrive)
@@ -157,103 +161,192 @@ void AssembleRGBColorPacket(CANPacket *packetToAssemble,
 #define ID_ODRIVE_ESTOP                 (uint8_t) 0x002
 
 // CMD ID: 0x003 - Get_Error (ODrive → Host)
-// Signals: Active_Errors, Disarm_Reason
+// Signals: Active_Errors (uint32_t), Disarm_Reason (uint32_t)
 #define ID_ODRIVE_GET_ERROR             (uint8_t) 0x003
 
 // CMD ID: 0x004 - RxSdo (Host → ODrive)
-// Signals: Opcode, Endpoint_ID, Reserved, Value
+// Signals: Opcode (uint8_t), Endpoint_ID (uint32_t), Reserved (uint32_t), Value (uint32_t)
 #define ID_ODRIVE_RX_SDO                (uint8_t) 0x004
 
 // CMD ID: 0x005 - TxSdo (ODrive → Host)
-// Signals: Reserved0, Endpoint_ID, Reserved1, Value
+// Signals: Reserved0 (uint32_t), Endpoint_ID (uint32_t), Reserved1 (uint32_t), Value (uint32_t)
 #define ID_ODRIVE_TX_SDO                (uint8_t) 0x005
 
 // CMD ID: 0x006 - Address (Host → ODrive, ODrive → Host)
-// Signals: Node_ID, Serial_Number, Connection_ID
+// Signals: Node_ID (uint32_t), Serial_Number (uint32_t), Connection_ID (uint32_t)
 #define ID_ODRIVE_ADDRESS               (uint8_t) 0x006
 
 // CMD ID: 0x007 - Set_Axis_State (Host → ODrive)
-// Signals: Axis_Requested_State
+// Signals: Axis_Requested_State (uint32_t)
 #define ID_ODRIVE_SET_AXIS_STATE        (uint8_t) 0x007
 
 // CMD ID: 0x009 - Get_Encoder_Estimates (ODrive → Host)
-// Signals: Pos_Estimate, Vel_Estimate
+// Signals: Pos_Estimate (float), Vel_Estimate (float)
 #define ID_ODRIVE_GET_ENCODER_ESTIMATES (uint8_t) 0x009
 
 // CMD ID: 0x00B - Set_Controller_Mode (Host → ODrive)
-// Signals: Control_Mode, Input_Mode
+// Signals: Control_Mode (uint32_t), Input_Mode (uint32_t)
 #define ID_ODRIVE_SET_CONTROLLER_MODE   (uint8_t) 0x00B
 
 // CMD ID: 0x00C - Set_Input_Pos (Host → ODrive)
-// Signals: Input_Pos, Vel_FF, Torque_FF
+// Signals: Input_Pos (float), Vel_FF (float), Torque_FF (float)
 #define ID_ODRIVE_SET_INPUT_POS         (uint8_t) 0x00C
 
 // CMD ID: 0x00D - Set_Input_Vel (Host → ODrive)
-// Signals: Input_Vel, Input_Torque_FF
+// Signals: Input_Vel (float), Input_Torque_FF (float)
 #define ID_ODRIVE_SET_INPUT_VEL         (uint8_t) 0x00D
 
 // CMD ID: 0x00E - Set_Input_Torque (Host → ODrive)
-// Signals: Input_Torque
+// Signals: Input_Torque (float)
 #define ID_ODRIVE_SET_INPUT_TORQUE      (uint8_t) 0x00E
 
 // CMD ID: 0x00F - Set_Limits (Host → ODrive)
-// Signals: Velocity_Limit, Current_Limit
+// Signals: Velocity_Limit (float), Current_Limit (float)
 #define ID_ODRIVE_SET_LIMITS            (uint8_t) 0x00F
 
 // CMD ID: 0x011 - Set_Traj_Vel_Limit (Host → ODrive)
-// Signals: Traj_Vel_Limit
+// Signals: Traj_Vel_Limit (float)
 #define ID_ODRIVE_SET_TRAJ_VEL_LIMIT    (uint8_t) 0x011
 
 // CMD ID: 0x012 - Set_Traj_Accel_Limits (Host → ODrive)
-// Signals: Traj_Accel_Limit, Traj_Decel_Limit
+// Signals: Traj_Accel_Limit (float), Traj_Decel_Limit (float)
 #define ID_ODRIVE_SET_TRAJ_ACCEL_LIMITS (uint8_t) 0x012
 
 // CMD ID: 0x013 - Set_Traj_Inertia (Host → ODrive)
-// Signals: Traj_Inertia
+// Signals: Traj_Inertia (float)
 #define ID_ODRIVE_SET_TRAJ_INERTIA      (uint8_t) 0x013
 
 // CMD ID: 0x014 - Get_Iq (ODrive → Host)
-// Signals: Iq_Setpoint, Iq_Measured
+// Signals: Iq_Setpoint (float), Iq_Measured (float)
 #define ID_ODRIVE_GET_IQ                (uint8_t) 0x014
 
 // CMD ID: 0x015 - Get_Temperature (ODrive → Host)
-// Signals: FET_Temperature, Motor_Temperature
+// Signals: FET_Temperature (float), Motor_Temperature (float)
 #define ID_ODRIVE_GET_TEMPERATURE       (uint8_t) 0x015
 
 // CMD ID: 0x016 - Reboot (Host → ODrive)
-// Signals: Action
+// Signals: Action (uint32_t)
 #define ID_ODRIVE_REBOOT                (uint8_t) 0x016
 
 // CMD ID: 0x017 - Get_Bus_Voltage_Current (ODrive → Host)
-// Signals: Bus_Voltage, Bus_Current
+// Signals: Bus_Voltage (float), Bus_Current (float)
 #define ID_ODRIVE_GET_BUS_VOLTAGE_CURRENT (uint8_t) 0x017
 
 // CMD ID: 0x018 - Clear_Errors (Host → ODrive)
-// Signals: Identify
+// Signals: Identify (uint32_t)
 #define ID_ODRIVE_CLEAR_ERRORS          (uint8_t) 0x018
 
 // CMD ID: 0x019 - Set_Absolute_Position (Host → ODrive)
-// Signals: Position
+// Signals: Position (float)
 #define ID_ODRIVE_SET_ABSOLUTE_POSITION (uint8_t) 0x019
 
 // CMD ID: 0x01A - Set_Pos_Gain (Host → ODrive)
-// Signals: Pos_Gain
+// Signals: Pos_Gain (float)
 #define ID_ODRIVE_SET_POS_GAIN          (uint8_t) 0x01A
 
 // CMD ID: 0x01B - Set_Vel_Gains (Host → ODrive)
-// Signals: Vel_Gain, Vel_Integrator_Gain
+// Signals: Vel_Gain (float), Vel_Integrator_Gain (float)
 #define ID_ODRIVE_SET_VEL_GAINS         (uint8_t) 0x01B
 
 // CMD ID: 0x01C - Get_Torques (ODrive → Host)
-// Signals: Torque_Target, Torque_Estimate
+// Signals: Torque_Target (float), Torque_Estimate (float)
 #define ID_ODRIVE_GET_TORQUES           (uint8_t) 0x01C
 
 // CMD ID: 0x01D - Get_Powers (ODrive → Host)
-// Signals: Electrical_Power, Mechanical_Power
+// Signals: Electrical_Power (float), Mechanical_Power (float)
 #define ID_ODRIVE_GET_POWERS            (uint8_t) 0x01D
 
 // CMD ID: 0x01F - Enter_DFU_Mode (Host → ODrive)
 // Signals: None
 #define ID_ODRIVE_ENTER_DFU_MODE        (uint8_t) 0x01F
+
+// Function prototypes for assembling ODrive CANSimple packets
+void AssembleODriveGetVersionPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t protocol_version, uint8_t hw_version_major, uint8_t hw_version_minor,
+    uint8_t hw_version_variant, uint8_t fw_version_major, uint8_t fw_version_minor,
+    uint8_t fw_version_revision, uint8_t fw_version_unreleased);
+void AssembleODriveHeartbeatPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t axis_error, uint32_t axis_state, uint32_t procedure_result,
+    uint8_t trajectory_done_flag);
+void AssembleODriveEstopPacket(CANPacket *packetToAssemble, uint8_t node_id);
+void AssembleODriveGetErrorPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t active_errors, uint32_t disarm_reason);
+void AssembleODriveRxSdoPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint8_t opcode, uint32_t endpoint_id, uint32_t reserved, uint32_t value);
+void AssembleODriveTxSdoPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t reserved0, uint32_t endpoint_id, uint32_t reserved1, uint32_t value);
+void AssembleODriveAddressPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t node_id_value, uint32_t serial_number, uint32_t connection_id);
+void AssembleODriveSetAxisStatePacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t axis_requested_state);
+void AssembleODriveGetEncoderEstimatesPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float pos_estimate, float vel_estimate);
+void AssembleODriveSetControllerModePacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t control_mode, uint32_t input_mode);
+void AssembleODriveSetInputPosPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float input_pos, float vel_ff, float torque_ff);
+void AssembleODriveSetInputVelPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float input_vel, float input_torque_ff);
+void AssembleODriveSetInputTorquePacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float input_torque);
+void AssembleODriveSetLimitsPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float velocity_limit, float current_limit);
+void AssembleODriveSetTrajVelLimitPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float traj_vel_limit);
+void AssembleODriveSetTrajAccelLimitsPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float traj_accel_limit, float traj_decel_limit);
+void AssembleODriveSetTrajInertiaPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float traj_inertia);
+void AssembleODriveGetIqPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float iq_setpoint, float iq_measured);
+void AssembleODriveGetTemperaturePacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float fet_temperature, float motor_temperature);
+void AssembleODriveRebootPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t action);
+void AssembleODriveGetBusVoltageCurrentPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float bus_voltage, float bus_current);
+void AssembleODriveClearErrorsPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    uint32_t identify);
+void AssembleODriveSetAbsolutePositionPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float position);
+void AssembleODriveSetPosGainPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float pos_gain);
+void AssembleODriveSetVelGainsPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float vel_gain, float vel_integrator_gain);
+void AssembleODriveGetTorquesPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float torque_target, float torque_estimate);
+void AssembleODriveGetPowersPacket(CANPacket *packetToAssemble, uint8_t node_id,
+    float electrical_power, float mechanical_power);
+void AssembleODriveEnterDFUModePacket(CANPacket *packetToAssemble, uint8_t node_id);
+
+// Function prototypes for decoding ODrive CANSimple packets
+void GetODriveGetVersionFromPacket(const CANPacket *packet,
+    uint32_t *protocol_version, uint8_t *hw_version_major, uint8_t *hw_version_minor,
+    uint8_t *hw_version_variant, uint8_t *fw_version_major, uint8_t *fw_version_minor,
+    uint8_t *fw_version_revision, uint8_t *fw_version_unreleased);
+void GetODriveHeartbeatFromPacket(const CANPacket *packet,
+    uint32_t *axis_error, uint32_t *axis_state, uint32_t *procedure_result,
+    uint8_t *trajectory_done_flag);
+void GetODriveGetErrorFromPacket(const CANPacket *packet,
+    uint32_t *active_errors, uint32_t *disarm_reason);
+void GetODriveTxSdoFromPacket(const CANPacket *packet,
+    uint32_t *reserved0, uint32_t *endpoint_id, uint32_t *reserved1, uint32_t *value);
+void GetODriveAddressFromPacket(const CANPacket *packet,
+    uint32_t *node_id_value, uint32_t *serial_number, uint32_t *connection_id);
+void GetODriveGetEncoderEstimatesFromPacket(const CANPacket *packet,
+    float *pos_estimate, float *vel_estimate);
+void GetODriveGetIqFromPacket(const CANPacket *packet,
+    float *iq_setpoint, float *iq_measured);
+void GetODriveGetTemperatureFromPacket(const CANPacket *packet,
+    float *fet_temperature, float *motor_temperature);
+void GetODriveGetBusVoltageCurrentFromPacket(const CANPacket *packet,
+    float *bus_voltage, float *bus_current);
+void GetODriveGetTorquesFromPacket(const CANPacket *packet,
+    float *torque_target, float *torque_estimate);
+void GetODriveGetPowersFromPacket(const CANPacket *packet,
+    float *electrical_power, float *mechanical_power);
+
+// Function to send RTR request for ODrive "Get_" messages
+int SendODriveRTRRequest(uint8_t node_id, uint8_t cmd_id);
 
 #endif
