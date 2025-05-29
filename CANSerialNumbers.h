@@ -24,14 +24,14 @@
 // MOTOR UNIT GROUP
 #define DEVICE_SERIAL_MOTOR_BASE                (uint8_t) 0x01
 #define DEVICE_SERIAL_MOTOR_SHOULDER            (uint8_t) 0x02
-#define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
-#define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
-#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_LEFT     (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_RIGHT    (uint8_t) 0x0c
+#define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x08
+#define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x03
+#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_LEFT     (uint8_t) 0x0F
+#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_RIGHT    (uint8_t) 0x0E
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
 #define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
-#define DEVICE_SERIAL_TREAD_LEFT                (uint8_t) 0x0d
-#define DEVICE_SERIAL_TREAD_RIGHT               (uint8_t) 0x04
+#define DEVICE_SERIAL_TREAD_LEFT                (uint8_t) 0x04
+#define DEVICE_SERIAL_TREAD_RIGHT               (uint8_t) 0x0D
 
 //Power group
 #define DEVICE_SERIAL_POWER_BATT_MAN            (uint8_t) 0x01
