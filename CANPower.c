@@ -12,9 +12,9 @@
 void AssembleCANPacket(CANPacket *p, uint8_t priority, uint8_t group, uint8_t serial, uint8_t pid, uint8_t dlc, uint8_t *data) {
     p->id = ConstructCANID(priority, group, serial);
     p->dlc = dlc;
-	WritePacketIDOnly(p->data, pid);
+    WritePacketIDOnly(p->data, data[0]);
     for (int i = 1; i < dlc; i++) {
-        p->data[i] = data[i-1];
+        p->data[i] = data[i];
     }
 }
 
