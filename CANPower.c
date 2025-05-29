@@ -13,7 +13,7 @@ void AssembleCANPacket(CANPacket *p, uint8_t priority, uint8_t group, uint8_t se
     p->id = ConstructCANID(priority, group, serial);
     p->dlc = dlc;
     WritePacketIDOnly(p->data, data[0]);
-    for (int i = 1; i < dlc; i++) {
+    for (int i = 1; i <= dlc; i++) {
         p->data[i] = data[i];
     }
 }
