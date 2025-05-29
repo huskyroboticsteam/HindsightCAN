@@ -11,6 +11,7 @@
 
 #include "CANPacket.h"
 
+void AssembleCANPacket(CANPacket *p, uint8_t priority, uint8_t group, uint8_t serial, uint8_t pid, uint8_t dlc, uint8_t *data) {
 
 void AssemblePowerRailsSetPacket(CANPacket *packetToAssemble,
     uint8_t targetDeviceGroup,
