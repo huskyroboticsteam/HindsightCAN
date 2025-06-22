@@ -24,22 +24,14 @@
 // MOTOR UNIT GROUP
 #define DEVICE_SERIAL_MOTOR_BASE                (uint8_t) 0x01
 #define DEVICE_SERIAL_MOTOR_SHOULDER            (uint8_t) 0x02
-#define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x03
-#define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x04
-#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_LEFT     (uint8_t) 0x05
-#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_RIGHT    (uint8_t) 0x0c
+#define DEVICE_SERIAL_MOTOR_ELBOW               (uint8_t) 0x08
+#define DEVICE_SERIAL_MOTOR_FOREARM             (uint8_t) 0x03
+#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_LEFT     (uint8_t) 0x0F
+#define DEVICE_SERIAL_MOTOR_WRIST_DIFF_RIGHT    (uint8_t) 0x0E
 #define DEVICE_SERIAL_MOTOR_HAND                (uint8_t) 0x06
 #define DEVICE_SERIAL_LINEAR_ACTUATOR           (uint8_t) 0x07
-
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FL          (uint8_t) 0x08 //Front Left
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FR          (uint8_t) 0x09
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BL          (uint8_t) 0x0a 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BR          (uint8_t) 0x0b //Back Right
-
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FL_SW       (uint8_t) 0x18 //Front Left
-#define DEVICE_SERIAL_MOTOR_CHASSIS_FR_SW       (uint8_t) 0x19
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BL_SW       (uint8_t) 0x1a 
-#define DEVICE_SERIAL_MOTOR_CHASSIS_BR_SW       (uint8_t) 0x1b //Back Right
+#define DEVICE_SERIAL_TREAD_LEFT                (uint8_t) 0x04
+#define DEVICE_SERIAL_TREAD_RIGHT               (uint8_t) 0x0D
 
 //Power group
 #define DEVICE_SERIAL_POWER_BATT_MAN            (uint8_t) 0x01
@@ -53,12 +45,15 @@
 //Telemetry group
 #define DEVICE_SERIAL_TELEM_LOCALIZATION        (uint8_t) 0x01
 #define DEVICE_SERIAL_TELEM_IMU                 (uint8_t) 0x02
-#define DEVICE_SERIAL_TELEM_TEMPERATURE (uint8_t)0x03
+#define DEVICE_SERIAL_TELEM_TEMPERATURE         (uint8_t) 0x03
 
 // Science group
-#define DEVICE_SERIAL_SCIENCE_STATION           ((uint8_t) 0x01)
-#define DEVICE_SERIAL_DRILL_ARM_MOTOR           (uint8_t) 0x02
+#define DEVICE_SERIAL_SCIENCE_STEPPER           (uint8_t) 0x04
+#define DEVICE_SERIAL_SCIENCE_SERVO             (uint8_t) 0x05
+#define DEVICE_SERIAL_DRILL_ACTUATOR            (uint8_t) 0x13
 #define DEVICE_SERIAL_DRILL_MOTOR               (uint8_t) 0x03
+#define DEVICE_SERIAL_FOUR_BAR_LINKAGE_1        (uint8_t) 0x02
+#define DEVICE_SERIAL_FOUR_BAR_LINKAGE_2        (uint8_t) 0x12
 
 //Group numbers
 /*
